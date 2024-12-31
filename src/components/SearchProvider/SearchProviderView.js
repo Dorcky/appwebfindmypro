@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { Link } from 'react-router-dom';  // Import Link component for routing
+import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { collection, getDocs, query, where, addDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import './SearchProviderView.css';
 import { auth, db } from '../firebaseConfig';
+import './SearchProviderView.css'
 
 const SearchProviderView = () => {
   const [searchText, setSearchText] = useState('');
@@ -24,7 +24,7 @@ const SearchProviderView = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user) {
-        fetchUserProfile(user.uid);  // Fetch user profile image URL
+        fetchUserProfile(user.uid);
       }
     });
 
@@ -47,12 +47,12 @@ const SearchProviderView = () => {
         setUserProfileImageURL(userDocSnap.data().profileImageURL || 'https://via.placeholder.com/40');
       }
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error('Error fetching user profile:', error);
     }
   };
 
   const getUserLocation = () => {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -60,11 +60,11 @@ const SearchProviderView = () => {
           setCenter([latitude, longitude]);
         },
         (error) => {
-          console.error("Error getting user location:", error);
+          console.error('Error getting user location:', error);
         }
       );
     } else {
-      console.log("Geolocation is not available in your browser.");
+      console.log('Geolocation is not available in your browser.');
     }
   };
 
@@ -73,7 +73,11 @@ const SearchProviderView = () => {
       const querySnapshot = await getDocs(collection(db, 'service_providers'));
       const providers = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        if (data.gpsLocation && typeof data.gpsLocation.latitude === 'number' && typeof data.gpsLocation.longitude === 'number') {
+        if (
+          data.gpsLocation &&
+          typeof data.gpsLocation.latitude === 'number' &&
+          typeof data.gpsLocation.longitude === 'number'
+        ) {
           return {
             ...data,
             gpsLocation: {
@@ -91,6 +95,7 @@ const SearchProviderView = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      console.error('Error fetching service providers:', error);
     }
   };
 
@@ -106,7 +111,7 @@ const SearchProviderView = () => {
       const favoriteIds = querySnapshot.docs.map((doc) => doc.data()['service_provider_id']);
       setFavoriteProviderIds(new Set(favoriteIds));
     } catch (error) {
-      console.error("Error fetching favorites:", error);
+      console.error('Error fetching favorites:', error);
     }
   };
 
@@ -142,7 +147,7 @@ const SearchProviderView = () => {
         setFavoriteProviderIds(new Set([...favoriteProviderIds, providerId]));
       }
     } catch (error) {
-      console.error("Error toggling favorite status:", error);
+      console.error('Error toggling favorite status:', error);
     }
   };
 
@@ -150,17 +155,18 @@ const SearchProviderView = () => {
     L.divIcon({
       html: `<div class="custom-marker-icon" style="background-image: url('${profileImageURL || 'https://via.placeholder.com/40'}'); background-size: cover;"></div>`,
       className: 'leaflet-div-icon custom-marker',
-      iconSize: [40, 40],  // Size of the marker icon
+      iconSize: [40, 40],
     });
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   };
 
@@ -175,22 +181,26 @@ const SearchProviderView = () => {
   };
 
   return (
-    <div className="container">
-      <input
-        className="search-input"
-        placeholder="Rechercher un prestataire"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
-      
+    <div className="search-provider-view">
+      <div className="search-bar">
+        <input
+          className="search-input"
+          placeholder="Rechercher un prestataire"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
+
       {isLoading ? (
-        <div className="loader">Chargement...</div>
+        <div className="loading-message">Chargement...</div>
+      ) : filteredServiceProviders.length === 0 ? (
+        <div className="no-results">Aucun prestataire trouvé</div>
       ) : (
         <>
           <div className="provider-list">
             {filteredServiceProviders.map((provider) => (
               <div key={provider.id} className="provider-item">
-                <Link to={`/provider/${provider.id}`} className="provider-link"> {/* Link to provider profile */}
+                <Link to={`/provider/${provider.id}`} className="provider-link">
                   <h3>{provider.name}</h3>
                   <p>{provider.serviceType}</p>
                   {userLocation && (
@@ -200,7 +210,7 @@ const SearchProviderView = () => {
                     ).toFixed(2)} km</p>
                   )}
                 </Link>
-                <button onClick={() => toggleFavoriteStatus(provider.id)}>
+                <button onClick={() => toggleFavoriteStatus(provider.id)} className="favorite-btn">
                   {isFavorite(provider.id) ? 'Enlever des favoris' : 'Ajouter aux favoris'}
                 </button>
               </div>

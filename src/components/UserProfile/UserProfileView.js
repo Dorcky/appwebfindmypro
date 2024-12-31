@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db, auth, storage } from '../firebaseConfig'; // Assurez-vous d'importer la configuration Firebase
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { uploadProfileImage } from '../utils/imageUpload'; // Assurez-vous d'importer la fonction utilitaire pour télécharger l'image
 
 import './UserProfileView.css'; // Import du fichier CSS pour le style
+import { loadGoogleMapsScript } from '../utils/googleMaps'; // Fonction pour charger l'API Google Maps
 
 const UserProfileView = () => {
   const [userData, setUserData] = useState(null);  // État pour les données de l'utilisateur
@@ -17,6 +18,7 @@ const UserProfileView = () => {
     language: '',
     notificationsEnabled: false,
   });
+  const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false); // Indicateur pour savoir si Google Maps est chargé
 
   // Charge les informations de l'utilisateur depuis Firebase
   useEffect(() => {
@@ -35,7 +37,29 @@ const UserProfileView = () => {
     };
 
     fetchUserData();
+
+    // Charger Google Maps API uniquement si elle n'est pas déjà chargée
+    loadGoogleMapsScript(() => setGoogleMapsLoaded(true));
   }, []);
+
+  // Initialiser l'auto-complétion de l'adresse quand Google Maps est chargé
+  useEffect(() => {
+    if (googleMapsLoaded && window.google) {
+      const input = document.getElementById('address-input');
+      if (input) {
+        const autocomplete = new window.google.maps.places.Autocomplete(input);
+        autocomplete.setFields(['address_component', 'formatted_address']);
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          const address = place.formatted_address;
+          setFormData((prevData) => ({
+            ...prevData,
+            address: address || '',
+          }));
+        });
+      }
+    }
+  }, [googleMapsLoaded]);
 
   // Fonction pour gérer les changements de formulaire
   const handleInputChange = (e) => {
@@ -63,30 +87,12 @@ const UserProfileView = () => {
         
         // Si un fichier image est sélectionné, on le télécharge dans Firebase Storage
         if (profileImage) {
-          const storageRef = ref(storage, `profile_images/${profileImage.name}`);
-          const uploadTask = uploadBytesResumable(storageRef, profileImage);
-          
-          uploadTask.on('state_changed', 
-            (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('Upload is ' + progress + '% done');
-            }, 
-            (error) => {
-              console.error('Erreur lors du téléchargement', error);
-            }, 
-            async () => {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              // Mettre à jour le profil dans Firestore avec l'URL de l'image
-              await updateDoc(userRef, {
-                ...formData,
-                profileImageURL: downloadURL,
-              });
-            }
-          );
+          await uploadProfileImage(profileImage, storage, formData, userRef);
         } else {
           // Si aucune image n'est sélectionnée, on met simplement à jour les autres informations
           await updateDoc(userRef, formData);
         }
+
         setIsEditing(false); // Quitter le mode édition après la sauvegarde
       }
     } catch (error) {
@@ -105,11 +111,14 @@ const UserProfileView = () => {
   return (
     <div className="user-profile-container">
       <h1>Mon Profil</h1>
-      <div className="profile-info">
-        <div className="profile-image">
+
+      <div className="profile-card">
+        {/* Avatar */}
+        <div className="avatar">
           <img src={userData.profileImageURL || '/default-profile.png'} alt="Profil" />
         </div>
-        <div className="profile-details">
+
+        <div className="profile-info">
           {isEditing ? (
             <div className="edit-form">
               <input
@@ -136,6 +145,7 @@ const UserProfileView = () => {
               />
               <input
                 type="text"
+                id="address-input" // Important pour l'auto-complétion
                 name="address"
                 value={formData.address}
                 onChange={handleInputChange}

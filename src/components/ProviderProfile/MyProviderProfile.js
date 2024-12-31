@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { loadGoogleMapsScript } from '../utils/googleMaps'; // Importer la fonction
 import './MyProviderProfile.css';
 
 const MyProviderProfile = () => {
@@ -25,18 +26,8 @@ const MyProviderProfile = () => {
 
   useEffect(() => {
     fetchProfileData();
-    loadGoogleMapsScript();
+    loadGoogleMapsScript(initAutocomplete); // Charger le script Google Maps
   }, []);
-
-  const loadGoogleMapsScript = () => {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-    
-    script.onload = initAutocomplete;
-  };
 
   const initAutocomplete = () => {
     const input = document.getElementById('address-input');
@@ -51,21 +42,6 @@ const MyProviderProfile = () => {
       const place = autocomplete.getPlace();
       if (!place.geometry) return;
 
-      setProfile(prev => ({
-        ...prev,
-        address: place.formatted_address,
-        gpsLocation: [
-          place.geometry.location.lat(),
-          place.geometry.location.lng()
-        ]
-      }));
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      if (!place.geometry) return;
-
-      // Use the place data for the selected address
       setProfile(prev => ({
         ...prev,
         address: place.formatted_address,

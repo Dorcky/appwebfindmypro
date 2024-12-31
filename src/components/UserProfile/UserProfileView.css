@@ -1,125 +1,123 @@
+/* Container principal du profil */
 .user-profile-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  color: #333;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px; /* Plus d'espace autour */
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+  min-height: 100vh; /* Assure que le container prend au moins toute la hauteur de l'écran */
+  justify-content: center; /* Centrer verticalement le contenu */
   text-align: center;
 }
 
-.profile-info {
+/* Titre */
+h1 {
+  font-size: 36px; /* Augmenter la taille du titre */
+  color: #24292e;
+  margin-bottom: 30px; /* Plus d'espace sous le titre */
+}
+
+/* Carte du profil */
+.profile-card {
+  width: 600px; /* Augmenter la largeur de la carte */
+  height: 800px; /* Fixer la hauteur de la carte (ajustez la valeur à votre convenance) */
+  background-color: white;
+  border-radius: 12px; /* Coins légèrement plus arrondis */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
+  padding: 30px; /* Plus de padding pour une meilleure aération */
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px; /* Espacement entre le titre et la carte */
 }
 
-.profile-image {
-  flex: 0 0 200px;
+
+/* Avatar */
+.avatar {
+  margin-bottom: 25px; /* Augmenter l'espacement autour de l'avatar */
 }
 
-.profile-image img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+.avatar img {
+  width: 100px; /* Agrandir l'avatar */
+  height: 100px;
   border-radius: 50%;
-  border: 4px solid #f0f0f0;
-  transition: all 0.3s ease;
+  object-fit: cover;
+  border: 4px solid #8b949e; /* Bordure plus large */
 }
 
-.profile-image img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.profile-details {
-  flex: 1;
-}
-
-.profile-details p {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  color: #555;
-}
-
-.profile-details strong {
-  color: #333;
-  font-weight: 600;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-.edit-form input[type="text"],
-.edit-form input[type="email"] {
+/* Informations du profil */
+.profile-info {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.edit-form input[type="file"] {
-  margin-bottom: 1rem;
+.profile-info p {
+  font-size: 16px; /* Agrandir la taille de texte pour les infos */
+  color: #6e7781;
+  margin-bottom: 12px; /* Plus d'espace entre chaque ligne */
+}
+
+.profile-info strong {
+  color: #24292e;
+  font-weight: bold; /* Rendre les labels un peu plus visibles */
+}
+
+/* Formulaire d'édition */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-form input {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #24292e;
+  width: 100%; /* Les inputs prennent toute la largeur */
+  box-sizing: border-box; /* Assure que le padding ne dépasse pas la largeur */
+}
+
+.edit-form input:disabled {
+  background-color: #f0f2f5;
 }
 
 .toggle-notifications {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 20px; /* Augmenter l'espacement entre les éléments */
 }
 
-.toggle-notifications label {
-  display: flex;
-  align-items: center;
+button {
+  background-color: #0366d6;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 16px;
+  width: 100%; /* Le bouton prend toute la largeur */
+  box-sizing: border-box;
+  margin-top: 10px; /* Ajouter un petit espacement avant le bouton */
 }
 
-.toggle-notifications input[type="checkbox"] {
-  margin-left: 10px;
+button:hover {
+  background-color: #005bb5;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .profile-info {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .profile-image {
-    margin-bottom: 2rem;
-  }
-
-  .profile-details {
-    width: 100%;
-  }
+/* Style du bouton "Modifier" */
+button.modify-button {
+  background-color: #24292e;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px; /* Plus d'espace avant ce bouton */
 }
 
-/* Animation pour le mode édition */
-.edit-form {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+button.modify-button:hover {
+  background-color: #444;
 }
