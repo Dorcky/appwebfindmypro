@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 100vh;
+    background-color: #fff;
+  }
+  
+  .icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: brown;
+    margin-bottom: 30px;
+  }
+  
+  .input {
+    width: 80%;
+    height: 45px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    padding: 0 10px;
+    border-radius: 8px;
+  }
+  
+  .button {
+    width: 80%;
+    padding: 15px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  
+  .error-text {
+    color: red;
+    margin-bottom: 15px;
+  }
+  
+  .sign-up-text {
+    color: #4CAF50;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  

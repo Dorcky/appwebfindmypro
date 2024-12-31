@@ -1,0 +1,114 @@
+/* Conteneur principal */
+.message-list-container {
+  padding: 10px;
+  max-width: 600px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* En-tête avec l'image du fournisseur */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.provider-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.provider-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.provider-info h3 {
+  margin: 0;
+}
+
+.provider-info p {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* Zone des messages */
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.message {
+  display: flex;
+  margin: 10px 0;
+}
+
+.message .message-content {
+  max-width: 60%;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background-color: #e1f5fe;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.message.provider-message .message-content {
+  background-color: #f1f1f1;
+  align-self: flex-end;
+}
+
+.message-status {
+  font-size: 0.8rem;
+  color: #888;
+  padding: 5px 0;
+}
+
+.message-meta {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.file-thumbnail {
+  width: 50px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Zone de saisie */
+.input-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input[type="file"] {
+  align-self: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #0097a7;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #00838f;
+}

@@ -1,0 +1,81 @@
+/* Conteneur principal des rendez-vous */
+.appointments-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Titre */
+  .appointments-container h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Liste des rendez-vous */
+  .appointments-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Élément de rendez-vous */
+  .appointment-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointment-details {
+    flex: 1;
+  }
+  
+  .appointment-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .appointment-actions button {
+    padding: 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Style des boutons d'annulation et de suppression */
+  .cancel-btn {
+    background-color: #f39c12;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #e67e22;
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Statut du rendez-vous */
+  .reserved {
+    color: #27ae60;
+    font-weight: bold;
+  }
+  
+  .cancelled {
+    color: #c0392b;
+    font-weight: bold;
+  }
+  

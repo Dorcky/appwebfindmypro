@@ -1,0 +1,113 @@
+/* Container principal */
+.availabilityContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Styles généraux */
+h2, h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Styles du DatePicker */
+.react-datepicker {
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.react-datepicker__header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Style pour les jours disponibles */
+.react-datepicker__day--highlighted {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.react-datepicker__day--highlighted:hover {
+  background-color: #45a049 !important;
+}
+
+/* Styles des créneaux horaires */
+.slots {
+  margin-top: 2rem;
+}
+
+.slots ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.slot {
+  padding: 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.slot:hover:not(.disabled) {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.slot.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.slot.disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Bouton de confirmation */
+.confirmBooking {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.confirmBooking button {
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.confirmBooking button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.confirmBooking button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* États de chargement et d'erreur */
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+}
+
+.error {
+  color: #dc3545;
+}

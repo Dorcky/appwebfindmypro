@@ -1,0 +1,90 @@
+/* Conteneur principal du tableau de bord */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  background-color: #f4f7fa;
+}
+
+/* Titre du tableau de bord */
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Style des boutons du tableau de bord */
+.dashboard-button {
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 15px 25px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 250px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Effet de survol pour les boutons */
+.dashboard-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Affichage du message "Utilisateur non connecté" */
+.dashboard-container p {
+  font-size: 1.2rem;
+  color: #d9534f;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+/* Style de l'espace de mise en page pour les boutons */
+.dashboard-container button {
+  display: block;
+}
+
+/* Rendre la mise en page responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-button {
+    width: 200px;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
+}
+
+/* En cas d'écran très petit */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 5px;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .dashboard-button {
+    width: 180px;
+    font-size: 0.8rem;
+    padding: 10px 15px;
+  }
+}
