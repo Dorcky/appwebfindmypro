@@ -18,11 +18,16 @@ const ChatApp = ({ currentUser }) => {
   const [allParticipants, setAllParticipants] = useState([]);
   const fileInputRef = useRef(null);
 
-  // Load both users and service providers
+  // Vérification de la présence de currentUser avant de charger les participants
   useEffect(() => {
+    if (!currentUser || !currentUser.id) {
+      console.error("currentUser is not defined or has no ID");
+      return;
+    }
+
     const loadParticipants = async () => {
       try {
-        // Load regular users
+        // Charger les utilisateurs réguliers
         const usersRef = collection(db, 'users');
         const usersSnapshot = await getDocs(usersRef);
         const usersList = usersSnapshot.docs.map(doc => ({
@@ -33,7 +38,7 @@ const ChatApp = ({ currentUser }) => {
           profileImage: doc.data().profileImageURL
         }));
 
-        // Load service providers
+        // Charger les fournisseurs de services
         const providersRef = collection(db, 'service_providers');
         const providersSnapshot = await getDocs(providersRef);
         const providersList = providersSnapshot.docs.map(doc => ({
@@ -44,10 +49,10 @@ const ChatApp = ({ currentUser }) => {
           profileImage: doc.data().profileImageURL
         }));
 
-        // Combine and set all participants
+        // Combiner et définir tous les participants
         const allParticipantsList = [...usersList, ...providersList]
           .filter(participant => participant.id !== currentUser.id);
-        
+
         setAllParticipants(allParticipantsList);
       } catch (error) {
         console.error('Error loading participants:', error);
@@ -56,9 +61,9 @@ const ChatApp = ({ currentUser }) => {
     };
 
     loadParticipants();
-  }, [currentUser.id]);
+  }, [currentUser]);
 
-  // Generate chat ID based on two users' IDs
+  // Fonction pour générer un ID de chat basé sur les IDs des utilisateurs
   const getChatId = (user1Id, user2Id) => {
     if (!user1Id || !user2Id) {
       console.error('Invalid user IDs:', user1Id, user2Id);
@@ -67,16 +72,16 @@ const ChatApp = ({ currentUser }) => {
     return [user1Id, user2Id].sort().join('_');
   };
 
-  // Load messages for the selected user
+  // Charger les messages pour le user sélectionné
   useEffect(() => {
-    const loadMessages = async () => {
-      if (selectedUser) {
+    if (selectedUser && currentUser && selectedUser.id && currentUser.id) {
+      const loadMessages = async () => {
         const chatId = getChatId(currentUser.id, selectedUser.id);
         if (!chatId) return;
 
         const messagesRef = collection(db, `chats/${chatId}/messages`);
         const q = query(messagesRef, orderBy('timestamp', 'asc'));
-        
+
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const loadedMessages = querySnapshot.docs.map(doc => ({
             id: doc.id,
@@ -86,18 +91,18 @@ const ChatApp = ({ currentUser }) => {
         });
 
         return unsubscribe;
-      }
-    };
+      };
 
-    const unsubscribe = loadMessages();
-    return () => {
-      if (typeof unsubscribe === 'function') {
-        unsubscribe();
-      }
-    };
-  }, [selectedUser, currentUser.id]);
+      const unsubscribe = loadMessages();
+      return () => {
+        if (typeof unsubscribe === 'function') {
+          unsubscribe();
+        }
+      };
+    }
+  }, [selectedUser, currentUser]);
 
-  // Handle sending a message
+  // Fonction pour envoyer un message
   const sendMessage = async () => {
     if ((!message.trim() && !file) || !selectedUser) {
       console.error('Message or file is missing, or no user selected');
@@ -147,7 +152,7 @@ const ChatApp = ({ currentUser }) => {
     }
   };
 
-  // Handle file upload to Firebase storage
+  // Fonction pour gérer l'upload de fichiers
   const handleFileUpload = async (file) => {
     const storageRef = ref(storage, `chat_files/${file.name}`);
     try {
@@ -160,13 +165,13 @@ const ChatApp = ({ currentUser }) => {
     }
   };
 
-  // Handle emoji selection
+  // Fonction pour ajouter un emoji
   const handleEmojiSelect = (emoji) => {
     setMessage((prev) => prev + emoji.native);
     setAnchorEl(null);
   };
 
-  // Handle file input change
+  // Gérer le changement de fichier
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -178,7 +183,7 @@ const ChatApp = ({ currentUser }) => {
     }
   };
 
-  // Render file preview in message
+  // Rendu de l'aperçu du fichier
   const renderFilePreview = (msg) => {
     if (!msg.file) return null;
 
@@ -205,6 +210,7 @@ const ChatApp = ({ currentUser }) => {
     );
   };
 
+  // Vérification de la présence de currentUser avant le rendu du composant
   if (!currentUser || !currentUser.id) {
     return (
       <Container maxWidth="lg" sx={{ mt: 4 }}>
