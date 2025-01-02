@@ -2,24 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './ServiceProviderDashboardScreen.css';
+import ProviderNavbar from './ProviderNavBar';
 
-const ServiceProviderDashboardScreen = () => {
-  const navigate = useNavigate();
+function ServiceProviderDashboardScreen () {
   const [userId, setUserId] = useState(null);
-  const auth = getAuth();
+ const navigate = useNavigate();
+ const auth = getAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid);
-      } else {
-        console.log('Aucun utilisateur connecté');
-      }
-    });
-    return () => unsubscribe();
-  }, [auth]);
 
-  return (
+ useEffect(() => {
+   const unsubscribe = onAuthStateChanged(auth, (user) => {
+     setUserId(user ? user.uid : null);
+   });
+
+
+   return () => unsubscribe(); // Nettoyer l'abonnement lors du démontage du composant
+ }, [auth]);
+
+
+ return (
+
     <div className="dashboard-container">
       <h1>Tableau de bord du prestataire</h1>
       {userId ? (
@@ -43,6 +45,8 @@ const ServiceProviderDashboardScreen = () => {
       ) : (
         <p>Chargement de l'ID utilisateur...</p>
       )}
+      <ProviderNavbar userId={userId} />
+
     </div>
   );
 };

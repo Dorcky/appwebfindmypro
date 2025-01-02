@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Assurez-vous d'importer useNavigate
+import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import UserNavBar from './UserNavbar'; // Assurez-vous que le fichier Navbar.js existe dans le même répertoire
 import './UserDashboardScreen.css';
 
 function UserDashboardScreen() {
   const [userId, setUserId] = useState(null);
-  const navigate = useNavigate();  // Initialisez useNavigate
+  const navigate = useNavigate();
   const auth = getAuth();
 
   useEffect(() => {
@@ -13,13 +14,14 @@ function UserDashboardScreen() {
       setUserId(user ? user.uid : null);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Nettoyer l'abonnement lors du démontage du composant
   }, [auth]);
 
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Tableau de bord</h1>
 
+      {/* Boutons du tableau de bord */}
       <button className="dashboard-button" onClick={() => navigate('/user-profile')}>
         Mon profil
       </button>
@@ -32,7 +34,6 @@ function UserDashboardScreen() {
           <button className="dashboard-button" onClick={() => navigate('/favorites')}>
             Mes favoris
           </button>
-          {/* Modification du bouton ici */}
           <button className="dashboard-button" onClick={() => navigate('/user-chat-list')}>
             Mes messages
           </button>
@@ -46,6 +47,9 @@ function UserDashboardScreen() {
       ) : (
         <p>Utilisateur non connecté</p>
       )}
+
+      {/* Intégration de la Navbar */}
+      <UserNavBar userId={userId} />
     </div>
   );
 }

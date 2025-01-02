@@ -1,0 +1,33 @@
+.navbar {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row; /* Changé de column à row */
+    gap: 10px;
+}
+
+.navbar-item {
+    display: flex;
+}
+
+.navbar-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center; /* Changé de left à center pour un meilleur alignement */
+    width: auto; /* Changé de 100% à auto pour s'adapter au contenu */
+}
+
+.navbar-button:hover {
+    background-color: #0056b3;
+}

@@ -1,6 +1,6 @@
 // src/context/AuthContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; // Importez signOut
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../components/firebaseConfig';
 
@@ -68,8 +68,19 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  // Fonction de déconnexion
+  const logout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth); // Déconnecte l'utilisateur
+      setCurrentUser(null); // Réinitialise currentUser
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, loading }}>
+    <AuthContext.Provider value={{ currentUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
