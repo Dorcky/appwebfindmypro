@@ -7,7 +7,7 @@ import L from 'leaflet';
 import { collection, getDocs, query, where, addDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
-import './SearchProviderView.css'
+import './SearchProviderView.css';
 
 const SearchProviderView = () => {
   const [searchText, setSearchText] = useState('');
@@ -41,7 +41,7 @@ const SearchProviderView = () => {
 
   const fetchUserProfile = async (userId) => {
     try {
-      const userDocRef = doc(db, 'users', userId);
+      const userDocRef = doc(db, 'normal_users', userId);
       const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
         setUserProfileImageURL(userDocSnap.data().profileImageURL || 'https://via.placeholder.com/40');
@@ -73,23 +73,36 @@ const SearchProviderView = () => {
       const querySnapshot = await getDocs(collection(db, 'service_providers'));
       const providers = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        if (
-          data.gpsLocation &&
-          typeof data.gpsLocation.latitude === 'number' &&
-          typeof data.gpsLocation.longitude === 'number'
-        ) {
-          return {
-            ...data,
-            gpsLocation: {
+  
+        // Handle different formats of gpsLocation
+        let gpsLocation = null;
+        if (data.gpsLocation) {
+          if (Array.isArray(data.gpsLocation) && data.gpsLocation.length === 2) {
+            gpsLocation = {
+              latitude: data.gpsLocation[0],
+              longitude: data.gpsLocation[1],
+            };
+          } else if (typeof data.gpsLocation.latitude === 'number' && typeof data.gpsLocation.longitude === 'number') {
+            gpsLocation = {
               latitude: data.gpsLocation.latitude,
               longitude: data.gpsLocation.longitude,
-            },
-            id: doc.id,
-          };
+            };
+          }
         }
-        return null;
-      }).filter((provider) => provider !== null);
-
+  
+        if (gpsLocation) {
+          return {
+            ...data,
+            gpsLocation,
+            id: doc.id,
+            profileImageURL: data.profileImageURL || 'https://via.placeholder.com/40',
+          };
+        } else {
+          console.warn(`Prestataire ${doc.id} ignoré à cause de coordonnées GPS manquantes`);
+          return null;
+        }
+      }).filter((provider) => provider !== null); // Filter out providers with missing data
+  
       setServiceProviders(providers);
       setFilteredServiceProviders(providers);
       setIsLoading(false);
@@ -104,11 +117,11 @@ const SearchProviderView = () => {
       setFavoriteProviderIds(new Set());
       return;
     }
-
+  
     try {
       const q = query(collection(db, 'favorites'), where('user_id', '==', currentUser.uid));
       const querySnapshot = await getDocs(q);
-      const favoriteIds = querySnapshot.docs.map((doc) => doc.data()['service_provider_id']);
+      const favoriteIds = querySnapshot.docs.map((doc) => doc.data().service_provider_id);
       setFavoriteProviderIds(new Set(favoriteIds));
     } catch (error) {
       console.error('Error fetching favorites:', error);
@@ -133,18 +146,24 @@ const SearchProviderView = () => {
     if (!currentUser) {
       return;
     }
-
+  
     try {
       const favoritesRef = collection(db, 'favorites');
-      const q = query(favoritesRef, where('user_id', '==', currentUser.uid), where('service_provider_id', '==', providerId));
+      const q = query(
+        favoritesRef,
+        where('user_id', '==', currentUser.uid),
+        where('service_provider_id', '==', providerId)
+      );
       const querySnapshot = await getDocs(q);
-
+  
       if (!querySnapshot.empty) {
+        // Si le favori existe, le supprimer
         await deleteDoc(querySnapshot.docs[0].ref);
-        setFavoriteProviderIds(new Set([...favoriteProviderIds].filter((id) => id !== providerId)));
+        setFavoriteProviderIds((prev) => new Set([...prev].filter((id) => id !== providerId)));
       } else {
+        // Si le favori n'existe pas, l'ajouter
         await addDoc(favoritesRef, { service_provider_id: providerId, user_id: currentUser.uid });
-        setFavoriteProviderIds(new Set([...favoriteProviderIds, providerId]));
+        setFavoriteProviderIds((prev) => new Set([...prev, providerId]));
       }
     } catch (error) {
       console.error('Error toggling favorite status:', error);
@@ -194,7 +213,7 @@ const SearchProviderView = () => {
       {isLoading ? (
         <div className="loading-message">Chargement...</div>
       ) : filteredServiceProviders.length === 0 ? (
-        <div className="no-results">Aucun prestataire trouvé</div>
+        <div className="no-results">Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.</div>
       ) : (
         <>
           <div className="provider-list">

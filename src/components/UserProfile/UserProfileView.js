@@ -25,7 +25,7 @@ const UserProfileView = () => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
       if (user) {
-        const userRef = doc(db, 'users', user.uid);
+        const userRef = doc(db, 'normal_users', user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           setUserData(userSnap.data());
@@ -44,23 +44,37 @@ const UserProfileView = () => {
 
   // Initialiser l'auto-complétion de l'adresse quand Google Maps est chargé
   useEffect(() => {
-    if (googleMapsLoaded && window.google) {
+    console.log("Vérification de l'état de googleMapsLoaded :", googleMapsLoaded);
+  
+    if (googleMapsLoaded && window.google && isEditing) {
+      console.log("L'API Google Maps est prête. Initialisation de l'autocomplétion...");
+  
       const input = document.getElementById('address-input');
       if (input) {
-        const autocomplete = new window.google.maps.places.Autocomplete(input);
+        console.log("Élément input trouvé dans le DOM.");
+  
+        const autocomplete = new window.google.maps.places.Autocomplete(input, {
+          types: ['geocode'],
+        });
         autocomplete.setFields(['address_component', 'formatted_address']);
         autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
           const address = place.formatted_address;
+          console.log("Adresse sélectionnée :", address);
           setFormData((prevData) => ({
             ...prevData,
             address: address || '',
           }));
         });
+  
+        console.log("Autocomplétion initialisée avec succès.");
+      } else {
+        console.error("Élément input non trouvé dans le DOM.");
       }
+    } else {
+      console.log("L'API Google Maps n'est pas encore chargée ou le mode édition est désactivé.");
     }
-  }, [googleMapsLoaded]);
-
+  }, [googleMapsLoaded, isEditing]); // Ajoutez isEditing comme dépendance
   // Fonction pour gérer les changements de formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,27 +92,34 @@ const UserProfileView = () => {
     }
   };
 
-  // Fonction pour sauvegarder les modifications dans Firebase
-  const handleSaveChanges = async () => {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-        
-        // Si un fichier image est sélectionné, on le télécharge dans Firebase Storage
-        if (profileImage) {
-          await uploadProfileImage(profileImage, storage, formData, userRef);
-        } else {
-          // Si aucune image n'est sélectionnée, on met simplement à jour les autres informations
-          await updateDoc(userRef, formData);
-        }
+ // Dans la fonction handleSaveChanges
+ const handleSaveChanges = async () => {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, 'normal_users', user.uid);
+      console.log("Données à sauvegarder :", formData);
 
-        setIsEditing(false); // Quitter le mode édition après la sauvegarde
+      // Sauvegarder les données dans Firestore
+      if (profileImage) {
+        await uploadProfileImage(profileImage, storage, formData, userRef);
+      } else {
+        await updateDoc(userRef, formData);
       }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour du profil", error);
+
+      // Mise à jour immédiate du state pour refléter les changements
+      setUserData(prevData => ({
+        ...prevData,
+        ...formData,
+      }));
+
+      setIsEditing(false);
+      console.log("Profil mis à jour avec succès.");
     }
-  };
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du profil", error);
+  }
+};
 
   // Fonction pour passer en mode édition
   const handleEdit = () => {

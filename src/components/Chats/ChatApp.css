@@ -9,9 +9,9 @@ body {
   
   .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 40px auto; /* Ajoutez une marge supérieure de 40px */
     padding: 20px;
-  }
+}
   
   /* Chat sidebar */
   .sidebar {

@@ -1,7 +1,7 @@
 /* General container for the page */
 .search-provider-view {
     font-family: Arial, sans-serif;
-    margin: 0 auto;
+    margin-top: 200px;
     max-width: 1200px;
     padding: 20px;
   }

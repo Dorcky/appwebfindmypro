@@ -1,72 +1,85 @@
-/* ServiceProviderDashboardScreen.css */
+/* Navbar toujours en haut */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
 
-/* Styles globaux */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f7fb;
-  }
-  
-  .dashboard-container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Styling for the buttons in the dashboard */
-  .dashboard-item {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 10px 0;
-    font-size: 18px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dashboard-item:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Add some space between sections */
-  .container {
-    margin: 20px 0;
-  }
-  
-  /* Styling for the text inside the individual views */
-  .container p {
-    font-size: 18px;
-    color: #333;
-    text-align: center;
-  }
-  
-  /* Ensure buttons and content are well spaced and mobile-friendly */
-  @media (max-width: 600px) {
-    .dashboard-container {
-      padding: 15px;
-    }
-  
-    h1 {
-      font-size: 20px;
-    }
-  
-    .dashboard-item {
-      font-size: 16px;
-      padding: 10px 15px;
-    }
-  }
-  
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar-links li {
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links li:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.navbar-auth {
+  font-size: 1rem;
+}
+
+.logout-button {
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #cc0000;
+}
+
+/* Conteneur principal */
+.dashboard-container {
+  margin-top: 80px; /* Pour éviter que le contenu soit caché par la navbar */
+  padding: 20px;
+}
+
+.dashboard-main {
+  margin-top: 20px;
+}
+
+.dashboard-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dashboard-item {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-item:hover {
+  background-color: #0056b3;
+}

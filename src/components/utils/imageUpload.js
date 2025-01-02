@@ -1,5 +1,5 @@
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 // Fonction pour télécharger l'image et obtenir l'URL
 export const uploadProfileImage = (profileImage, storage, formData, userRef) => {
   return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ export const uploadProfileImage = (profileImage, storage, formData, userRef) => 
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        await userRef.update({
+        await updateDoc(userRef, {
           ...formData,
           profileImageURL: downloadURL,
         });

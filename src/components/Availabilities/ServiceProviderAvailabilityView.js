@@ -29,6 +29,27 @@ const ServiceProviderAvailabilityView = () => {
     }
   };
 
+  // Fonction pour récupérer les disponibilités
+  const fetchAvailabilities = async () => {
+    try {
+      const availabilitiesRef = collection(db, 'service_provider_availabilities');
+      const availabilitiesQuery = query(
+        availabilitiesRef,
+        where('service_provider_id', '==', serviceProviderId)
+      );
+
+      const querySnapshot = await getDocs(availabilitiesQuery);
+      const availabilitiesData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setAvailabilities(availabilitiesData);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   // Fetch provider details and availabilities
   useEffect(() => {
     const fetchData = async () => {
@@ -51,22 +72,8 @@ const ServiceProviderAvailabilityView = () => {
         }
 
         // Then fetch availabilities
-        const availabilitiesRef = collection(db, 'service_provider_availabilities');
-        const availabilitiesQuery = query(
-          availabilitiesRef,
-          where('service_provider_id', '==', serviceProviderId)
-        );
-
-        const querySnapshot = await getDocs(availabilitiesQuery);
-        const availabilitiesData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-
-        console.log("✅ Availabilities fetched:", availabilitiesData);
-        setAvailabilities(availabilitiesData);
+        await fetchAvailabilities();
       } catch (err) {
-        console.error('Error fetching data:', err);
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -78,7 +85,6 @@ const ServiceProviderAvailabilityView = () => {
 
   const getAvailableSlotsForDate = (date) => {
     const selectedDayOfWeek = date.toLocaleString('en-us', { weekday: 'long' }).toUpperCase();
-    console.log("🗓️ Selected Day of Week:", selectedDayOfWeek);
 
     const availableSlots = availabilities
       .filter((availability) => availability.day_of_week === selectedDayOfWeek)
@@ -88,29 +94,31 @@ const ServiceProviderAvailabilityView = () => {
         service: providerDetails?.service || 'Service Not Found'
       }));
 
-    console.log("📅 Available slots for selected day:", availableSlots);
     return availableSlots;
   };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedSlot(null);
-    console.log("📅 Selected Date:", date);
   };
 
   const handleSlotSelect = (slot) => {
     if (slot.is_booked) {
-      console.log('❌ Slot already booked:', slot);
       return;
     }
-    console.log('✅ Slot selected:', slot);
     setSelectedSlot(slot);
   };
 
   const handleConfirmBooking = async () => {
     if (!selectedSlot || !serviceProviderId) {
-      console.error("⛔️ Cannot confirm booking: Missing selected slot or provider ID.");
       alert("Please select a valid slot before confirming the booking.");
+      return;
+    }
+
+    // Vérifier si la date sélectionnée est dans le passé
+    const currentDate = new Date();
+    if (selectedDate < currentDate) {
+      alert("You cannot book an appointment in the past.");
       return;
     }
 
@@ -123,11 +131,9 @@ const ServiceProviderAvailabilityView = () => {
 
     try {
       const slotDateTimeString = `${selectedDate.toISOString().split('T')[0]}T${selectedSlot.start_time}`;
-      console.log("📅 Slot DateTime String:", slotDateTimeString);
 
       const timeZone = 'America/New_York';
       const utcDate = fromZonedTime(slotDateTimeString, timeZone);
-      console.log("⏱️ UTC Date:", utcDate);
 
       if (isNaN(utcDate.getTime())) {
         throw new Error(`Invalid date format: ${slotDateTimeString}`);
@@ -145,7 +151,6 @@ const ServiceProviderAvailabilityView = () => {
         created_at: Timestamp.now(),        
       };
 
-      console.log("📄 Appointment Data:", appointmentData);
       await setDoc(appointmentRef, appointmentData);
 
       // Mettre à jour la disponibilité
@@ -156,10 +161,12 @@ const ServiceProviderAvailabilityView = () => {
         user_id: userId // Ajouter l'ID utilisateur dans la disponibilité
       });
 
-      console.log('✅ Appointment booked successfully!');
+      // Recharger les disponibilités après la mise à jour
+      await fetchAvailabilities();
+
       alert('Appointment booked successfully!');
+      setSelectedSlot(null); // Réinitialiser la sélection du créneau horaire
     } catch (err) {
-      console.error('❌ Error confirming booking:', err);
       alert('Error booking the appointment: ' + err.message);
     }
   };
