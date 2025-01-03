@@ -4,14 +4,17 @@ import './WelcomeScreen.css';
 
 const WelcomeScreen = () => {
   return (
-    <div className="welcome-container">
-      <div className="welcome-content">
+    <div className="welcome-container content-center">
+      <div className='absolute top-0'>
+        <img src="../../assets/images/logo.png" alt="logo" />
+      </div>
+      <div className="welcome-content grid content-center">
         <h1 className="welcome-title">FindMyPro</h1>
         <p className="welcome-subtitle">
           Trouvez le professionnel idéal pour vos projets
         </p>
 
-        <div className="welcome-features">
+        <div className="welcome-features flex-col space-y-4 md:flex-row md:space-y-0">
           <div className="feature">
             <i className="icon-search"></i>
             <h3>Recherche Facile</h3>
@@ -32,15 +35,15 @@ const WelcomeScreen = () => {
         </div>
 
         <div className="welcome-actions">
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             className="btn btn-primary"
           >
             Connexion
           </Link>
-          
-          <Link 
-            to="/signup" 
+
+          <Link
+            to="/signup"
             className="btn btn-secondary"
           >
             Inscription
@@ -48,7 +51,7 @@ const WelcomeScreen = () => {
         </div>
 
         <div className="welcome-footer">
-          <p>© 2024 FindMyPro. Tous droits réservés.</p>
+          <p>© 2025 FindMyPro. Tous droits réservés.</p>
         </div>
       </div>
     </div>
