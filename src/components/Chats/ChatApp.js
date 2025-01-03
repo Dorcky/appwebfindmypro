@@ -1,3 +1,4 @@
+import './ChatApp.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Box, Container, Paper, TextField, Button, List, ListItem, Typography, Avatar, IconButton, Popover, CircularProgress } from '@mui/material';
@@ -9,7 +10,7 @@ import data from '@emoji-mart/data';
 import { db, storage } from '../firebaseConfig';
 import { collection, doc, getDocs, setDoc, query, onSnapshot, orderBy, Timestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import './ChatApp.css';
+
 
 const ChatApp = () => {
   const { currentUser, loading: authLoading } = useAuth();
@@ -262,11 +263,11 @@ const ChatApp = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, pt: 16 }} className="chat-app-container">
+ {/* Ajout de padding-top pour éviter que le contenu soit masqué par la navbar */}
       <Box display="flex" gap={2} height="80vh">
         {/* Contacts List */}
-        <Paper elevation={3} sx={{ width: 300, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px' }}>
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
+        <Paper elevation={3} sx={{ width: 300, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px' }} className="chat-app-sidebar">          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
             Contacts
           </Typography>
           {loading ? (
@@ -301,8 +302,7 @@ const ChatApp = () => {
         </Paper>
 
         {/* Chat Area */}
-        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px' }}>
-          {selectedUser ? (
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px' }} className="chat-app-window">          {selectedUser ? (
             <>
               {/* Chat Header */}
               <Box display="flex" alignItems="center" mb={2} p={1} bgcolor="background.default" borderRadius={1}>
@@ -359,8 +359,8 @@ const ChatApp = () => {
               </Box>
 
               {/* Message Input Area */}
-              <Box display="flex" gap={1} alignItems="center">
-                <TextField
+              <Box display="flex" gap={1} alignItems="center" className="chat-app-input-area">
+              <TextField
                   fullWidth
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -370,18 +370,19 @@ const ChatApp = () => {
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                   multiline
                   maxRows={4}
-                  sx={{ bgcolor: '#f5f5f5', borderRadius: '24px' }}
+                  sx={{ bgcolor: '#f5f5f5', borderRadius: '24px' }}    className="chat-app-textfield"
+
                 />
                 <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} color="primary">
                   <EmojiEmotionsIcon />
                 </IconButton>
                 <input ref={fileInputRef} type="file" onChange={handleFileChange} style={{ display: 'none' }} id="file-upload" />
                 <label htmlFor="file-upload">
-                  <IconButton component="span" color="primary">
-                    <AttachFileIcon />
+                <IconButton component="span" color="primary" className="chat-app-file-button">                    <AttachFileIcon />
                   </IconButton>
                 </label>
-                <IconButton color="primary" onClick={sendMessage} disabled={!message.trim() && !file}>
+                <IconButton color="primary" onClick={sendMessage} disabled={!message.trim() && !file}     className="chat-app-send-button"
+>
                   <SendIcon />
                 </IconButton>
                 <Popover

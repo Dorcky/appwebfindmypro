@@ -103,7 +103,7 @@ const FavoritesView = () => {
   }
 
   return (
-    <div className="favorites-container">
+    <div className="favorites-container" style={{ paddingTop: '80px' }}> {/* Ajout de padding-top pour éviter que le contenu soit masqué par la navbar */}
       <h1>Mes Favoris</h1>
       
       {favorites.length === 0 ? (
