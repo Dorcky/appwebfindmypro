@@ -148,8 +148,9 @@ const SignupScreen = () => {
   if (isServiceProvider === null) {
     return (
       <div className="container">
-        <h2 className="title">Quel type de compte souhaitez-vous créer ?</h2>
-        <div className="account-type-container">
+        <div className="p-10 bg-bg_primary rounded-lg shadow-lg">
+          <h2 className="title">Quel type de compte souhaitez-vous créer ?</h2>
+          <div className="account-type-container p-4 ">
           <button onClick={() => handleAccountTypeSelection(false)} className="button">
             Utilisateur à la recherche de service
           </button>
@@ -157,6 +158,8 @@ const SignupScreen = () => {
             Prestataire de service
           </button>
         </div>
+        </div>
+
       </div>
     );
   }
@@ -214,7 +217,7 @@ const SignupScreen = () => {
           className="input"
           required
         />
-        
+
         {isServiceProvider && (
           <>
             <textarea
@@ -243,13 +246,13 @@ const SignupScreen = () => {
             />
           </>
         )}
-        
+
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        
+
         <button type="submit" className="button">
           S'inscrire
         </button>
-        
+
         <div className="already-account">
           <span>Déjà un compte ? </span>
           <a href="/login" className="login-link">Se connecter</a>

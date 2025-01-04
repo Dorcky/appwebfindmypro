@@ -51,7 +51,7 @@ const LoginScreen = () => {
 
   return (
     <div className="container">
-      <div className='flex flex-col items-center align-center'>
+      <div className='flex flex-col items-center align-center bg-bg_primary p-10 rounded-lg shadow-lg'>
         <img src="/path/to/icon.png" alt="Icon" className="icon" />
         <h1 className="title">Se connecter</h1>
 
