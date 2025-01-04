@@ -3,17 +3,10 @@
 /* Global Styles */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f7f8fa;
+  /*background-color: #f7f8fa;*/
   color: #333;
   margin: 0; /* Supprime la marge par défaut du body */
   padding: 0; /* Supprime le padding par défaut du body */
-}
-
-.container {
-  max-width: 1200px;
-  margin: 800px auto 40px auto; /* Ajoute une marge supérieure de 80px pour la navbar */
-  padding: 20px;
-  background-color: red !important; /* Style temporaire */
 }
 
 /* Chat sidebar */

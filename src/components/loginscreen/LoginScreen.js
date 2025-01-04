@@ -51,35 +51,37 @@ const LoginScreen = () => {
 
   return (
     <div className="container">
-      <img src="/path/to/icon.png" alt="Icon" className="icon" />
-      <h1 className="title">Se connecter</h1>
+      <div className='flex flex-col items-center align-center'>
+        <img src="/path/to/icon.png" alt="Icon" className="icon" />
+        <h1 className="title">Se connecter</h1>
 
-      <form onSubmit={login}>
-        <input
-          type="email"
-          className="input"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          className="input"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <form onSubmit={login} className='align-center p-4'>
+          <input
+            type="email"
+            className="input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            className="input"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        {errorMessage && <p className="error-text">{errorMessage}</p>}
+          {errorMessage && <p className="error-text">{errorMessage}</p>}
 
-        <button type="submit" className="button">
-          Se connecter
+          <button type="submit" className="button">
+            Se connecter
+          </button>
+        </form>
+
+        <button onClick={navigateToSignup} className="sign-up-text">
+          Pas de compte ? S&lsquo;inscrire
         </button>
-      </form>
-
-      <button onClick={navigateToSignup} className="sign-up-text">
-        Pas de compte ? S'inscrire
-      </button>
+      </div>
     </div>
   );
 };
