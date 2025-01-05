@@ -45,14 +45,14 @@ const UserProfileView = () => {
   // Initialiser l'auto-complétion de l'adresse quand Google Maps est chargé
   useEffect(() => {
     console.log("Vérification de l'état de googleMapsLoaded :", googleMapsLoaded);
-  
+
     if (googleMapsLoaded && window.google && isEditing) {
       console.log("L'API Google Maps est prête. Initialisation de l'autocomplétion...");
-  
+
       const input = document.getElementById('address-input');
       if (input) {
         console.log("Élément input trouvé dans le DOM.");
-  
+
         const autocomplete = new window.google.maps.places.Autocomplete(input, {
           types: ['geocode'],
         });
@@ -66,7 +66,7 @@ const UserProfileView = () => {
             address: address || '',
           }));
         });
-  
+
         console.log("Autocomplétion initialisée avec succès.");
       } else {
         console.error("Élément input non trouvé dans le DOM.");
@@ -203,9 +203,13 @@ const UserProfileView = () => {
               <p><strong>Adresse:</strong> {userData.address}</p>
               <p><strong>Langue:</strong> {userData.language}</p>
               <p><strong>Notifications activées:</strong> {userData.notificationsEnabled ? 'Oui' : 'Non'}</p>
-              <button onClick={handleEdit}>Modifier</button>
+              <button onClick={handleEdit}>Modifier le profil</button>
             </div>
           )}
+        </div>
+        <div className='flex w-full items-start p-4 mt-8 mb-4 rounded-t-xl bg-[#FAFAFA]'>
+          <h2 className='font-bold mb-4'>Rendez-vous</h2>
+          <p></p>
         </div>
       </div>
     </div>

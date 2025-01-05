@@ -1,18 +1,12 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0 auto;
-  }
+
 
   .signup-form {
-    background-color: white;
+    background-color: #CAF0F8;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
-    width: 450px;
+    max-width: 450px;
   }
 
   .title {
@@ -28,7 +22,7 @@
     border: 1px solid #ccc;
     margin-bottom: 15px;
     padding-left: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
   }
 
   .checkbox-container {

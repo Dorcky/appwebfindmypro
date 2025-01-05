@@ -21,7 +21,7 @@ h1 {
 .profile-card {
   width: 600px; /* Augmenter la largeur de la carte */
   height: 800px; /* Fixer la hauteur de la carte (ajustez la valeur à votre convenance) */
-  background-color: white;
+  background-color: #CAF0F8;
   border-radius: 12px; /* Coins légèrement plus arrondis */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
   padding: 30px; /* Plus de padding pour une meilleure aération */
