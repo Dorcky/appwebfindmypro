@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 import { db } from '../firebaseConfig.js';
@@ -6,12 +7,12 @@ import './MyProviderProfileView.css';
 
 const ProfileHeaderView = React.memo(({ serviceProvider }) => {
   const navigate = useNavigate();
-  
+
   const handleMessageClick = () => {
     if (serviceProvider && serviceProvider.id) {
       navigate(`/chat-app/${serviceProvider.id}`);
     } else {
-      console.error("Service provider ID is missing");
+      console.error('Service provider ID is missing');
     }
   };
 
@@ -35,8 +36,17 @@ const ProfileHeaderView = React.memo(({ serviceProvider }) => {
   );
 });
 
+ProfileHeaderView.propTypes = {
+  serviceProvider: PropTypes.shape({
+    id: PropTypes.string,
+    profileImageURL: PropTypes.string,
+  }).isRequired,
+};
+
+ProfileHeaderView.displayName = 'ProfileHeaderView';
+
 const RatingView = React.memo(({ averageRating }) => {
-  const stars = Array.from({ length: 5 }, (_, i) => i < averageRating ? '★' : '☆');
+  const stars = Array.from({ length: 5 }, (_, i) => (i < averageRating ? '★' : '☆'));
   return (
     <div className="ratingView">
       <p className="ratingText">Average Rating: {averageRating.toFixed(1)}/5</p>
@@ -44,6 +54,12 @@ const RatingView = React.memo(({ averageRating }) => {
     </div>
   );
 });
+
+RatingView.propTypes = {
+  averageRating: PropTypes.number.isRequired,
+};
+
+RatingView.displayName = 'RatingView';
 
 const ProviderInfoView = React.memo(({ serviceProvider }) => (
   <div className="infoView">
@@ -58,6 +74,21 @@ const ProviderInfoView = React.memo(({ serviceProvider }) => (
   </div>
 ));
 
+ProviderInfoView.propTypes = {
+  serviceProvider: PropTypes.shape({
+    name: PropTypes.string,
+    serviceType: PropTypes.string,
+    email: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    address: PropTypes.string,
+    description: PropTypes.string,
+    hourlyRate: PropTypes.number,
+    website: PropTypes.string,
+  }).isRequired,
+};
+
+ProviderInfoView.displayName = 'ProviderInfoView';
+
 const ReviewsViewSection = React.memo(({ reviews }) => (
   <div className="reviewsSection">
     <h3 className="reviewsTitle">Reviews:</h3>
@@ -67,7 +98,7 @@ const ReviewsViewSection = React.memo(({ reviews }) => (
           <div key={item.id || index} className="reviewItem">
             <p className="reviewName">{item.reviewer_name}</p>
             <p className="stars">
-              {Array.from({ length: 5 }, (_, i) => i < item.rating ? '★' : '☆').join('')}
+              {Array.from({ length: 5 }, (_, i) => (i < item.rating ? '★' : '☆')).join('')}
             </p>
             <p className="reviewText">{item.comment}</p>
             {item.response && (
@@ -85,6 +116,20 @@ const ReviewsViewSection = React.memo(({ reviews }) => (
   </div>
 ));
 
+ReviewsViewSection.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      reviewer_name: PropTypes.string,
+      rating: PropTypes.number,
+      comment: PropTypes.string,
+      response: PropTypes.string,
+    })
+  ).isRequired,
+};
+
+ReviewsViewSection.displayName = 'ReviewsViewSection';
+
 const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
   const navigate = useNavigate();
   return (
@@ -97,35 +142,40 @@ const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
   );
 });
 
+AvailabilityButtonView.propTypes = {
+  serviceProviderId: PropTypes.string.isRequired,
+};
+
+AvailabilityButtonView.displayName = 'AvailabilityButtonView';
+
 const MyProviderProfileView = () => {
-    const { serviceProviderId } = useParams();
-    const navigate = useNavigate();
-    const [serviceProvider, setServiceProvider] = useState(null);
-    const [reviews, setReviews] = useState([]);
-    const [averageRating, setAverageRating] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    
+  const { serviceProviderId } = useParams();
+  const navigate = useNavigate();
+  const [serviceProvider, setServiceProvider] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const fetchReviews = useCallback(async () => {
     if (!serviceProviderId) return;
 
     try {
-      // Récupérer les 2 derniers avis
       const reviewsQuery = query(
         collection(db, 'reviews'),
         where('service_provider_id', '==', serviceProviderId),
         orderBy('created_at', 'desc'),
         limit(2)
       );
-      
+
       const reviewsSnapshot = await getDocs(reviewsQuery);
-      const reviewsData = reviewsSnapshot.docs.map(doc => ({
+      const reviewsData = reviewsSnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
-      
+
       setReviews(reviewsData);
-      
+
       if (reviewsData.length > 0) {
         const totalRating = reviewsData.reduce((sum, review) => sum + review.rating, 0);
         setAverageRating(totalRating / reviewsData.length);
@@ -147,11 +197,11 @@ const MyProviderProfileView = () => {
       try {
         const providerDocRef = doc(db, 'service_providers', serviceProviderId);
         const providerDoc = await getDoc(providerDocRef);
-        
+
         if (providerDoc.exists()) {
           setServiceProvider({
-            id: providerDoc.id,  // Include the document ID
-            ...providerDoc.data()
+            id: providerDoc.id,
+            ...providerDoc.data(),
           });
           await fetchReviews();
         } else {
@@ -168,7 +218,6 @@ const MyProviderProfileView = () => {
     fetchServiceProviderData();
   }, [serviceProviderId, fetchReviews]);
 
-  // Bouton pour rediriger vers la page de création/modification de l'avis
   const handleWriteReviewClick = () => {
     navigate(`/review/${serviceProviderId}`);
   };
@@ -190,6 +239,5 @@ const MyProviderProfileView = () => {
     </div>
   );
 };
-
 
 export default MyProviderProfileView;

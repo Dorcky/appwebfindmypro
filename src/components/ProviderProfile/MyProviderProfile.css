@@ -1,12 +1,13 @@
 .provider-profile {
-    max-width: 800px;
-    margin-top: 200px;
-    padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
+  max-width: 800px;
+  margin-top: 200px;
+  margin-left: auto; /* Centre horizontalement */
+  margin-right: auto; /* Centre horizontalement */
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
   .profile-view {
     display: grid;
     gap: 2rem;

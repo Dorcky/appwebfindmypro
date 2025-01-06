@@ -18,46 +18,46 @@ function UserNavbar() {
     <nav className="navbar">
       <ul className="navbar-list">
         <li className="navbar-item">
-          <button className="navbar-button" onClick={() => navigate('/user-profile')}>
-            <FontAwesomeIcon icon={faUser} /> Mon profil
-          </button>
+          <span className="navbar-link" onClick={() => navigate('/user-profile')}>
+            <FontAwesomeIcon icon={faUser} className="navbar-icon" /> Mon profil
+          </span>
         </li>
         <li className="navbar-item">
-          <button className="navbar-button" onClick={() => navigate('/search-provider')}>
-            <FontAwesomeIcon icon={faSearch} /> Rechercher un prestataire
-          </button>
+          <span className="navbar-link" onClick={() => navigate('/search-provider')}>
+            <FontAwesomeIcon icon={faSearch} className="navbar-icon" /> Rechercher un prestataire
+          </span>
         </li>
         {currentUser ? (
           <>
             <li className="navbar-item">
-              <button className="navbar-button" onClick={() => navigate('/favorites')}>
-                <FontAwesomeIcon icon={faStar} /> Mes favoris
-              </button>
+              <span className="navbar-link" onClick={() => navigate('/favorites')}>
+                <FontAwesomeIcon icon={faStar} className="navbar-icon" /> Mes favoris
+              </span>
             </li>
             <li className="navbar-item">
-              <button className="navbar-button" onClick={() => navigate('/user-chat-list')}>
-                <FontAwesomeIcon icon={faEnvelope} /> Mes messages
-              </button>
+              <span className="navbar-link" onClick={() => navigate('/user-chat-list')}>
+                <FontAwesomeIcon icon={faEnvelope} className="navbar-icon" /> Mes messages
+              </span>
             </li>
             <li className="navbar-item">
-              <button className="navbar-button" onClick={() => navigate('/appointment-booking')}>
-                <FontAwesomeIcon icon={faCalendar} /> Prendre un rendez-vous
-              </button>
+              <span className="navbar-link" onClick={() => navigate('/appointment-booking')}>
+                <FontAwesomeIcon icon={faCalendar} className="navbar-icon" /> Prendre un rendez-vous
+              </span>
             </li>
             <li className="navbar-item">
-              <button className="navbar-button" onClick={() => navigate('/appointments')}>
-                <FontAwesomeIcon icon={faCalendar} /> Mes rendez-vous
-              </button>
+              <span className="navbar-link" onClick={() => navigate('/appointments')}>
+                <FontAwesomeIcon icon={faCalendar} className="navbar-icon" /> Mes rendez-vous
+              </span>
             </li>
             <li className="navbar-item">
-              <button className="logout-button" onClick={handleLogout}>
-                <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
-              </button>
+              <span className="navbar-link logout-link" onClick={handleLogout}>
+                <FontAwesomeIcon icon={faSignOutAlt} className="navbar-icon" /> Déconnexion
+              </span>
             </li>
           </>
         ) : (
           <li className="navbar-item">
-            <p>Utilisateur non connecté</p>
+            <p className="not-connected">Utilisateur non connecté</p>
           </li>
         )}
       </ul>

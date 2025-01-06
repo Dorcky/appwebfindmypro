@@ -1,10 +1,12 @@
 /* General container for the page */
 .search-provider-view {
-    font-family: Arial, sans-serif;
-    margin-top: 200px;
-    max-width: 1200px;
-    padding: 20px;
-  }
+  font-family: Arial, sans-serif;
+  margin-top: 200px;
+  max-width: 1200px;
+  margin-left: auto; /* Centre horizontalement */
+  margin-right: auto; /* Centre horizontalement */
+  padding: 20px;
+}
   
   /* Search bar styles */
   .search-bar {
@@ -36,6 +38,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
+    margin-bottom: 20px;
   }
   
   .provider-item {

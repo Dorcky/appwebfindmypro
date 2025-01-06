@@ -1,67 +1,75 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // Importez useAuth
+import { useAuth } from '../../context/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faUser,
+  faEnvelope,
+  faCalendarAlt,
+  faSignOutAlt,
+  faClock,
+} from '@fortawesome/free-solid-svg-icons';
 import './ProviderNavBar.css';
 
 function ProviderNavbar() {
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth(); // Utilisez currentUser et logout depuis AuthContext
+  const { currentUser, logout } = useAuth();
 
   const handleLogout = () => {
-    logout(); // Appelez la fonction de déconnexion
-    navigate('/login'); // Redirigez vers LoginScreen
+    logout();
+    navigate('/login');
   };
 
   return (
     <nav className="navbar">
       <ul className="navbar-list">
         <li className="navbar-item">
-          <button
-            className="dashboard-item"
+          <span
+            className="navbar-link"
             onClick={() => navigate(`/my-provider-profile/${currentUser?.id}`)}
           >
-            Mon profil
-          </button>
+            <FontAwesomeIcon icon={faUser} className="navbar-icon" /> Mon profil
+          </span>
         </li>
 
         {currentUser ? (
           <>
             <li className="navbar-item">
-              <button
-                className="dashboard-button"
+              <span
+                className="navbar-link"
                 onClick={() => navigate('/provider-chat-list')}
               >
-                Mes messages
-              </button>
+                <FontAwesomeIcon icon={faEnvelope} className="navbar-icon" /> Mes messages
+              </span>
             </li>
             <li className="navbar-item">
-              <button
-                className="dashboard-item"
+              <span
+                className="navbar-link"
                 onClick={() => navigate('/availability-list')}
               >
-                Mes disponibilités
-              </button>
+                <FontAwesomeIcon icon={faClock} className="navbar-icon" /> Mes disponibilités
+              </span>
             </li>
             <li className="navbar-item">
-              <button
-                className="navbar-button"
+              <span
+                className="navbar-link"
                 onClick={() => navigate('/appointments')}
               >
-                Mes rendez-vous
-              </button>
+                <FontAwesomeIcon icon={faCalendarAlt} className="navbar-icon" /> Mes rendez-vous
+              </span>
             </li>
             <li className="navbar-item">
-              <button
-                className="logout-button"
-                onClick={handleLogout} // Bouton de déconnexion
+              <span
+                className="navbar-link logout-link"
+                onClick={handleLogout}
               >
-                Déconnexion
-              </button>
+                <FontAwesomeIcon icon={faSignOutAlt} className="navbar-icon" /> Déconnexion
+              </span>
             </li>
           </>
         ) : (
           <li className="navbar-item">
-            <p>Utilisateur non connecté</p>
+            <p className="not-connected">Utilisateur non connecté</p>
           </li>
         )}
       </ul>
