@@ -18,6 +18,7 @@ function UserDashboardScreen() {
   }, [auth]);
 
   return (
+
     <div className="dashboard-container">
       <h1 className="dashboard-title">Tableau de bord</h1>
 
@@ -29,7 +30,7 @@ function UserDashboardScreen() {
         Rechercher un prestataire
       </button>
 
-      {userId ? (
+      {userId  ? (
         <>
           <button className="dashboard-button" onClick={() => navigate('/favorites')}>
             Mes favoris
@@ -44,12 +45,15 @@ function UserDashboardScreen() {
             Mes rendez-vous
           </button>
         </>
-      ) : (
+      )  : (
         <p>Utilisateur non connecté</p>
-      )}
+      ) }
 
       {/* Intégration de la Navbar */}
+
       <UserNavBar userId={userId} />
+
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebaseConfig';
 import { signOut } from 'firebase/auth';
@@ -101,5 +102,10 @@ const Navigation = ({ isServiceProvider, userId }) => {
     </nav>
   );
 };
+Navigation.propTypes = {
+  isServiceProvider: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
+};
+
 
 export default Navigation;

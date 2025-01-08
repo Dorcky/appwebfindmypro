@@ -73,7 +73,7 @@ const SearchProviderView = () => {
       const querySnapshot = await getDocs(collection(db, 'service_providers'));
       const providers = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-  
+
         // Handle different formats of gpsLocation
         let gpsLocation = null;
         if (data.gpsLocation) {
@@ -89,7 +89,7 @@ const SearchProviderView = () => {
             };
           }
         }
-  
+
         if (gpsLocation) {
           return {
             ...data,
@@ -102,7 +102,7 @@ const SearchProviderView = () => {
           return null;
         }
       }).filter((provider) => provider !== null); // Filter out providers with missing data
-  
+
       setServiceProviders(providers);
       setFilteredServiceProviders(providers);
       setIsLoading(false);
@@ -117,7 +117,7 @@ const SearchProviderView = () => {
       setFavoriteProviderIds(new Set());
       return;
     }
-  
+
     try {
       const q = query(collection(db, 'favorites'), where('user_id', '==', currentUser.uid));
       const querySnapshot = await getDocs(q);
@@ -146,7 +146,7 @@ const SearchProviderView = () => {
     if (!currentUser) {
       return;
     }
-  
+
     try {
       const favoritesRef = collection(db, 'favorites');
       const q = query(
@@ -155,7 +155,7 @@ const SearchProviderView = () => {
         where('service_provider_id', '==', providerId)
       );
       const querySnapshot = await getDocs(q);
-  
+
       if (!querySnapshot.empty) {
         // Si le favori existe, le supprimer
         await deleteDoc(querySnapshot.docs[0].ref);

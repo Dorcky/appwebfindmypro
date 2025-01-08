@@ -131,7 +131,7 @@ const UserProfileView = () => {
 
   return (
     <div className="user-profile-container">
-      <h1>Mon Profil</h1>
+      <h1 className='mt-10'>Mon Profil</h1>
 
       <div className="profile-card">
         {/* Avatar */}

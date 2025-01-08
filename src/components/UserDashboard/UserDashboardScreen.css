@@ -4,9 +4,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   padding: 20px;
-  background-color: #f4f7fa;
+  background-color: #FAFAFA;
 }
 
 /* Titre du tableau de bord */
@@ -49,9 +48,9 @@
 }
 
 /* Style de l'espace de mise en page pour les boutons */
-.dashboard-container button {
+/*.dashboard-container button {
   display: block;
-}
+}*/
 
 /* Rendre la mise en page responsive */
 @media (max-width: 768px) {
