@@ -4,8 +4,8 @@
   margin-left: auto; /* Centre horizontalement */
   margin-right: auto; /* Centre horizontalement */
   padding: 2rem;
-  background: white;
-  border-radius: 8px;
+  background: #CAF0F8;
+  border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
   .profile-view {
@@ -86,8 +86,9 @@
   }
 
   .edit-button {
-    background-color: #007bff;
+    background-color: #668BAE;
     color: white;
+    border-radius: 15px;
     margin-top: 1rem;
   }
 

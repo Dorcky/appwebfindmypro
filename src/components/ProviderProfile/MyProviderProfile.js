@@ -73,7 +73,7 @@ const MyProviderProfile = () => {
       console.error('Geocoder not initialized!'); // ⚠️ Log if geocoder is missing
       return null;
     }
-    
+
     try {
       const response = await geocoder.geocode({ address });
       if (response.results && response.results[0]) {
@@ -151,10 +151,10 @@ const MyProviderProfile = () => {
       setProfileImage(file); // Stocke l'image dans l'état local
     }
   };
-  
+
   const uploadProfileImage = async (imageFile) => {
     if (!imageFile) return null;
-  
+
     const storageRef = ref(storage, `profile_images/${auth.currentUser?.uid}`);
     try {
       const snapshot = await uploadBytes(storageRef, imageFile);
@@ -165,33 +165,33 @@ const MyProviderProfile = () => {
       return null;
     }
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     try {
       const userId = auth.currentUser?.uid;
       if (!userId) throw new Error('User not authenticated');
-  
+
       let coordinates = profile.gpsLocation;
       if (!coordinates && profile.address.trim() !== "") {
         coordinates = await geocodeAddress(profile.address);
       }
-  
+
       let profileImageURL = profile.profileImageURL; // Garde l'ancienne image
       if (profileImage) {
         // Si une nouvelle image a été sélectionnée, téléchargez-la
         profileImageURL = await uploadProfileImage(profileImage);
       }
-  
+
       const updatedProfile = {
         ...profile,
         gpsLocation: coordinates,
         profileImageURL, // Met à jour l'URL de l'image de profil
       };
-  
+
       const docRef = doc(db, 'service_providers', userId);
       await updateDoc(docRef, updatedProfile);
       setProfile(updatedProfile);
@@ -203,7 +203,7 @@ const MyProviderProfile = () => {
       setIsLoading(false);
     }
   };
-  
+
 
   if (!auth.currentUser) {
     return <div>Please log in to view your profile.</div>;
@@ -220,7 +220,7 @@ const MyProviderProfile = () => {
             className="profile-image"
           />
           <div className="profile-info">
-            <h2>{profile.name}</h2>
+            <h2 className="font-bold text-xl">{profile.name}</h2>
             <p>
               <strong>Service:</strong> {profile.serviceType}
             </p>
@@ -234,7 +234,7 @@ const MyProviderProfile = () => {
               <strong>Adresse:</strong> {profile.address}
             </p>
             <p>
-              <strong>Coordonnées GPS:</strong> 
+              <strong>Coordonnées GPS:</strong>
               {profile.gpsLocation ? (
                 <span>{`Lat: ${profile.gpsLocation[0]}, Lng: ${profile.gpsLocation[1]}`}</span>
               ) : (
@@ -395,7 +395,7 @@ const MyProviderProfile = () => {
               Annuler
             </button>
           </div>
-        </form> 
+        </form>
       )}
     </div>
 
