@@ -230,11 +230,11 @@ body {
       display: none;
   }
 
-  .container {
+  /* .container {
       max-width: 100%;
       padding: 0;
       margin: 60px auto 20px auto; /* Ajustement pour les mobiles */
-  }
+ /* }*/
 
   .chat-header .name {
       font-size: 1.125rem;

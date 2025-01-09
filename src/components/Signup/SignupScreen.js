@@ -5,6 +5,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 import { loadGoogleMapsScript } from '../utils/googleMaps';
 import './SignupScreen.css';
+import logo from '../../assets/images/logo.png';
 
 const SignupScreen = () => {
   const [fullName, setFullName] = useState('');
@@ -148,7 +149,8 @@ const SignupScreen = () => {
   if (isServiceProvider === null) {
     return (
       <div className="container">
-        <div className="p-10 bg-bg_primary rounded-lg shadow-lg">
+        <div>
+          <img src={logo} alt="Icon" className="icon" />
           <h2 className="title">Quel type de compte souhaitez-vous créer ?</h2>
           <div className="account-type-container p-4 ">
           <button onClick={() => handleAccountTypeSelection(false)} className="button">

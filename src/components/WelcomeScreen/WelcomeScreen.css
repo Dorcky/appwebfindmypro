@@ -1,16 +1,6 @@
-.welcome-container {
-    min-height: 100vh;
-    padding: 20px;
-  }
-
   .welcome-content {
     text-align: center;
     margin: 0 auto;
-    max-width: 800px;
-    background-color: #CAF0F8;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    padding: 40px;
   }
 
   .welcome-title {
@@ -21,7 +11,7 @@
   }
 
   .welcome-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #666;
     margin-bottom: 30px;
   }
@@ -34,7 +24,7 @@
 
   .feature {
     flex: 1;
-    padding: 20px;
+    padding: 40px;
     margin: 0 10px;
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -49,14 +39,16 @@
     display: flex;
     justify-content: center;
     gap: 20px;
+    padding: 10px;
   }
 
   .btn {
     text-decoration: none;
-    padding: 12px 30px;
+    padding: 15px 30px;
     border-radius: 15px;
     font-weight: bold;
     transition: all 0.3s ease;
+    width: 100%;
   }
 
   .btn-primary {
@@ -74,4 +66,10 @@
     margin-top: 30px;
     color: #888;
     font-size: 0.9rem;
+  }
+
+  @media screen and (min-width:1024px) {
+      .btn {
+        width: 30%;
+      }
   }

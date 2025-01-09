@@ -2,7 +2,7 @@
   .icon {
     width: 100px;
     height: 100px;
-    margin-bottom: 20px;
+    margin: 20px auto;
   }
 
   .title {
