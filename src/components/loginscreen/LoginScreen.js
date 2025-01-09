@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
+import logo from '../../assets/images/logo.png';
+
 import './LoginScreen.css';
 
 const LoginScreen = () => {
@@ -41,7 +43,7 @@ const LoginScreen = () => {
         setErrorMessage('Utilisateur non trouvé.');
       }
     } catch (error) {
-      setErrorMessage(error.message || 'Une erreur inconnue est survenue.');
+       setErrorMessage(error.message || 'Une erreur inconnue est survenue.');
     }
   };
 
@@ -49,10 +51,11 @@ const LoginScreen = () => {
     navigate('/signup');
   };
 
-  return (
+ return (
     <div className="container">
       <div className='flex flex-col items-center align-center bg-bg_primary p-10 rounded-lg shadow-lg'>
-        <img src="../../assets/images/logo.png" alt="Icon" className="icon" />
+      <img src={logo} alt="Icon" className="icon" />
+
         <h1 className="title">Se connecter</h1>
 
         <form onSubmit={login} className='align-center p-4'>

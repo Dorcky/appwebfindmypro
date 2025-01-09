@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './WelcomeScreen.css';
+import logo from '../../assets/images/logo.png';
+
 
 const WelcomeScreen = () => {
   return (
     <div className="welcome-container content-center">
       <div className='absolute top-0'>
-        <img src="../../assets/images/logo.png" alt="logo" />
+      <img src={logo} alt="Icon" className="icon" />
       </div>
       <div className="welcome-content grid content-center">
         <h1 className="welcome-title">FindMyPro</h1>
