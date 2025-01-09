@@ -10,7 +10,6 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-
   const navigate = useNavigate();
 
   const login = async (e) => {
@@ -32,9 +31,9 @@ const LoginScreen = () => {
         const role = userData.role;
 
         if (role === 'user') {
-          navigate('/user-profile');
+          navigate('/user-dashboard');
         } else if (role === 'provider') {
-          navigate('/my-provider-profile/' + user.uid);
+          navigate('/service-provider-dashboard');
         } else {
           setErrorMessage('Rôle non reconnu.');
         }
@@ -53,7 +52,7 @@ const LoginScreen = () => {
   return (
     <div className="container">
       <div className='flex flex-col items-center align-center bg-bg_primary p-10 rounded-lg shadow-lg'>
-        <img src="/path/to/icon.png" alt="Icon" className="icon" />
+        <img src="../../assets/images/logo.png" alt="Icon" className="icon" />
         <h1 className="title">Se connecter</h1>
 
         <form onSubmit={login} className='align-center p-4'>
