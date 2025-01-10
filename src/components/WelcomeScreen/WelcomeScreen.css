@@ -4,14 +4,14 @@
   }
 
   .welcome-title {
-    font-size: 3rem;
+    font-size: 2rem;
     color: #333;
     margin-bottom: 15px;
     font-weight: bold;
   }
 
   .welcome-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #666;
     margin-bottom: 30px;
   }
@@ -45,7 +45,7 @@
   .btn {
     text-decoration: none;
     padding: 15px 30px;
-    border-radius: 15px;
+    border-radius: 10px;
     font-weight: bold;
     transition: all 0.3s ease;
     width: 100%;
@@ -71,5 +71,11 @@
   @media screen and (min-width:1024px) {
       .btn {
         width: 30%;
+      }
+      .welcome-title {
+        font-size: 3rem;
+      }
+      .welcome-subtitle{
+        font-size: 1.5rem;
       }
   }

@@ -40,14 +40,6 @@
     margin-bottom: 15px;
   }
 
-  .button {
-    /*background-color: #007bff;*/
-    color: white;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-  }
-
   .already-account {
     margin-top: 20px;
     text-align: center;

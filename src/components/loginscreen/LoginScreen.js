@@ -33,9 +33,9 @@ const LoginScreen = () => {
         const role = userData.role;
 
         if (role === 'user') {
-          navigate('/user-dashboard');
+          navigate('/user-profile');
         } else if (role === 'provider') {
-          navigate('/service-provider-dashboard');
+          navigate('/my-provider-profile/' + user.uid);
         } else {
           setErrorMessage('Rôle non reconnu.');
         }

@@ -130,10 +130,11 @@ const UserProfileView = () => {
   if (!userData) return <div>Chargement...</div>;
 
   return (
-    <div className="user-profile-container">
-      <h1 className='mt-10'>Mon Profil</h1>
+    <div className="container user-profile-container">
+
 
       <div className="profile-card">
+        <h1 className='mt-10'>Mon Profil</h1>
         {/* Avatar */}
         <div className="avatar">
           <img src={userData.profileImageURL || '/default-profile.png'} alt="Profil" />
@@ -197,19 +198,16 @@ const UserProfileView = () => {
             </div>
           ) : (
             <div>
-              <p><strong>Nom:</strong> {userData.fullName}</p>
-              <p><strong>Email:</strong> {userData.email}</p>
-              <p><strong>Téléphone:</strong> {userData.phoneNumber}</p>
+              <p><strong>{userData.fullName}</strong> </p>
+              <p className='text-black'>{userData.email}</p>
+              <p className='text-black'>{userData.phoneNumber}</p>
+
               <p><strong>Adresse:</strong> {userData.address}</p>
               <p><strong>Langue:</strong> {userData.language}</p>
               <p><strong>Notifications activées:</strong> {userData.notificationsEnabled ? 'Oui' : 'Non'}</p>
               <button onClick={handleEdit}>Modifier le profil</button>
             </div>
           )}
-        </div>
-        <div className='flex w-full items-start p-4 mt-8 mb-4 rounded-t-xl bg-[#FAFAFA]'>
-          <h2 className='font-bold mb-4'>Rendez-vous</h2>
-          <p></p>
         </div>
       </div>
     </div>
