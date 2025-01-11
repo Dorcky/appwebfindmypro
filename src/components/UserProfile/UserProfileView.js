@@ -197,15 +197,15 @@ const UserProfileView = () => {
               <button onClick={handleSaveChanges}>Sauvegarder</button>
             </div>
           ) : (
-            <div>
+            <div className='bg-[#FAFAFA]  rounded-t-xl p-4 shadow-md'>
               <p><strong>{userData.fullName}</strong> </p>
-              <p className='text-black'>{userData.email}</p>
-              <p className='text-black'>{userData.phoneNumber}</p>
+              <p className='text-black'><strong>Email:</strong>{userData.email}</p>
+              <p className='text-black'><strong>Téléphone:</strong>{userData.phoneNumber}</p>
 
               <p><strong>Adresse:</strong> {userData.address}</p>
               <p><strong>Langue:</strong> {userData.language}</p>
               <p><strong>Notifications activées:</strong> {userData.notificationsEnabled ? 'Oui' : 'Non'}</p>
-              <button className='button' onClick={handleEdit}>Modifier le profil</button>
+              <button className='button w-96' onClick={handleEdit}>Modifier le profil</button>
             </div>
           )}
         </div>

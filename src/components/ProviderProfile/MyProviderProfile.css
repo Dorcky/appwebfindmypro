@@ -1,12 +1,11 @@
 .provider-profile {
   max-width: 800px;
   margin-top: 200px;
+  text-align: center;
   margin-left: auto; /* Centre horizontalement */
   margin-right: auto; /* Centre horizontalement */
   padding: 2rem;
   background: #CAF0F8;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
   .profile-view {
     display: grid;
@@ -22,9 +21,9 @@
   }
 
   .profile-info {
-    display: grid;
+    /* display: grid;
     gap: 0.5rem;
-    justify-content: center;
+    justify-content: center; */
   }
 
   .profile-info p {

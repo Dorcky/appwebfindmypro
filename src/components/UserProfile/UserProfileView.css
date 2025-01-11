@@ -1,11 +1,7 @@
 /* Container principal du profil */
 .user-profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh; /* Assure que le container prend au moins toute la hauteur de l'écran */
-  justify-content: center; /* Centrer verticalement le contenu */
   text-align: center;
+  margin: 0 auto;
 }
 
 /* Titre */
