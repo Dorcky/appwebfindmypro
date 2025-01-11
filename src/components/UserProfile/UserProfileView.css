@@ -1,5 +1,10 @@
 /* Container principal du profil */
 .user-profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Assure que le container prend au moins toute la hauteur de l'écran */
+  justify-content: center; /* Centrer verticalement le contenu */
   text-align: center;
 }
 
@@ -14,8 +19,6 @@ h1 {
 .profile-card {
   width: 600px; /* Augmenter la largeur de la carte */
   height: 800px; /* Fixer la hauteur de la carte (ajustez la valeur à votre convenance) */
-  background-color: #CAF0F8;
-
   padding: 30px; /* Plus de padding pour une meilleure aération */
   display: flex;
   flex-direction: column;
@@ -55,10 +58,6 @@ h1 {
   font-weight: bold; /* Rendre les labels un peu plus visibles */
 }
 
-.profile-info button {
-  width: 50%;
-}
-
 /* Formulaire d'édition */
 .edit-form {
   display: flex;
@@ -82,6 +81,23 @@ h1 {
 
 .toggle-notifications {
   margin-bottom: 20px; /* Augmenter l'espacement entre les éléments */
+}
+
+button {
+  /*background-color: #0366d6;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%; /* Le bouton prend toute la largeur */
+  box-sizing: border-box;
+  margin-top: 10px; /* Ajouter un petit espacement avant le bouton */
+}
+
+button:hover {
+  background-color: #005bb5;
 }
 
 /* Style du bouton "Modifier" */

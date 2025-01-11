@@ -186,7 +186,7 @@ const UserProfileView = () => {
               />
               <div className="toggle-notifications">
                 <label>
-                  Notifications activées
+                  <span className=''>Notifications activées</span>
                   <input
                     type="checkbox"
                     checked={formData.notificationsEnabled}
@@ -205,7 +205,7 @@ const UserProfileView = () => {
               <p><strong>Adresse:</strong> {userData.address}</p>
               <p><strong>Langue:</strong> {userData.language}</p>
               <p><strong>Notifications activées:</strong> {userData.notificationsEnabled ? 'Oui' : 'Non'}</p>
-              <button onClick={handleEdit}>Modifier le profil</button>
+              <button className='button' onClick={handleEdit}>Modifier le profil</button>
             </div>
           )}
         </div>
