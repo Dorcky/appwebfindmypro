@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { collection, query, where, getDocs, updateDoc, doc, Timestamp, setDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc, Timestamp, setDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebaseConfig.js';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { fromZonedTime } from 'date-fns-tz';
-import { getAuth } from 'firebase/auth';  // Importation de Firebase Auth
+import { getAuth } from 'firebase/auth';
 import './ServiceProviderAvailabilityView.css';
 
 const ServiceProviderAvailabilityView = () => {
@@ -17,19 +17,17 @@ const ServiceProviderAvailabilityView = () => {
   const [error, setError] = useState(null);
   const [providerDetails, setProviderDetails] = useState(null);
 
-  // Fonction pour récupérer l'utilisateur authentifié
   const getAuthenticatedUserId = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
-      return user.uid;  // Retourner l'ID de l'utilisateur authentifié
+      return user.uid;
     } else {
       setError('Utilisateur non authentifié');
       return null;
     }
   };
 
-  // Fonction pour récupérer les disponibilités
   const fetchAvailabilities = async () => {
     try {
       const availabilitiesRef = collection(db, 'service_provider_availabilities');
@@ -50,7 +48,6 @@ const ServiceProviderAvailabilityView = () => {
     }
   };
 
-  // Fetch provider details and availabilities
   useEffect(() => {
     const fetchData = async () => {
       if (!serviceProviderId) {
@@ -60,7 +57,6 @@ const ServiceProviderAvailabilityView = () => {
       }
 
       try {
-        // First fetch provider details
         const providerDoc = await getDocs(
           query(collection(db, 'service_providers'), 
           where('user_id', '==', serviceProviderId))
@@ -71,7 +67,6 @@ const ServiceProviderAvailabilityView = () => {
           setProviderDetails(providerData);
         }
 
-        // Then fetch availabilities
         await fetchAvailabilities();
       } catch (err) {
         setError(err.message);
@@ -91,7 +86,8 @@ const ServiceProviderAvailabilityView = () => {
       .map(slot => ({
         ...slot,
         provider_name: providerDetails?.name || 'Provider Name Not Found',
-        service: providerDetails?.service || 'Service Not Found'
+        service: providerDetails?.service || 'Service Not Found',
+        is_booked: slot.booked_dates?.some(bookedDate => bookedDate.date === date.toISOString().split('T')[0] && bookedDate.isBooked) || false
       }));
 
     return availableSlots;
@@ -115,14 +111,12 @@ const ServiceProviderAvailabilityView = () => {
       return;
     }
 
-    // Vérifier si la date sélectionnée est dans le passé
     const currentDate = new Date();
     if (selectedDate < currentDate) {
       alert("You cannot book an appointment in the past.");
       return;
     }
 
-    // Récupérer l'ID de l'utilisateur authentifié
     const userId = getAuthenticatedUserId();
     if (!userId) {
       alert("Vous devez être connecté pour réserver un rendez-vous.");
@@ -139,7 +133,6 @@ const ServiceProviderAvailabilityView = () => {
         throw new Error(`Invalid date format: ${slotDateTimeString}`);
       }
 
-      // Créer l'appointment avec tous les champs requis
       const appointmentRef = doc(collection(db, 'appointments'));
       const appointmentData = {
         date: Timestamp.fromDate(utcDate),
@@ -147,25 +140,26 @@ const ServiceProviderAvailabilityView = () => {
         provider_name: selectedSlot.provider_name,
         service: selectedSlot.service,
         status: 'Reservé',
-        user_id: userId, // Ajouter l'ID utilisateur ici
+        user_id: userId,
         created_at: Timestamp.now(),        
       };
 
       await setDoc(appointmentRef, appointmentData);
 
-      // Mettre à jour la disponibilité
+      const newBookedDate = {
+        date: selectedDate.toISOString().split('T')[0],
+        isBooked: true
+      };
+
       const availabilityRef = doc(db, 'service_provider_availabilities', selectedSlot.id);
       await updateDoc(availabilityRef, {
-        is_booked: true,
-        booked_at: Timestamp.now(),
-        user_id: userId // Ajouter l'ID utilisateur dans la disponibilité
+        booked_dates: arrayUnion(newBookedDate)
       });
 
-      // Recharger les disponibilités après la mise à jour
       await fetchAvailabilities();
 
       alert('Appointment booked successfully!');
-      setSelectedSlot(null); // Réinitialiser la sélection du créneau horaire
+      setSelectedSlot(null);
     } catch (err) {
       alert('Error booking the appointment: ' + err.message);
     }

@@ -1,7 +1,7 @@
 /* Container principal */
 .availabilityContainer {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 150px auto 0;
   padding: 20px;
 }
 
@@ -16,12 +16,36 @@ h2, h3 {
   font-family: Arial, sans-serif;
   border: 1px solid #ddd;
   border-radius: 8px;
+  font-size: 1.2em;
+  width: 350px; /* Augmentation de la largeur */
+  height: auto; /* La hauteur s'ajustera automatiquement */
 }
 
-.react-datepicker__header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
+.react-datepicker__month-container {
+  float: none;
+  width: 100%;
 }
+
+.react-datepicker__month {
+  margin: 0.4em 1em;
+}
+
+.react-datepicker__day-names, .react-datepicker__week {
+  display: flex;
+  justify-content: space-around;
+}
+
+.react-datepicker__day-name, .react-datepicker__day {
+  width: 2.5em;
+  line-height: 2.5em;
+  margin: 0.2em;
+}
+
+.react-datepicker__current-month {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
 
 /* Style pour les jours disponibles */
 .react-datepicker__day--highlighted {
