@@ -205,7 +205,7 @@ const UserProfileView = () => {
               <p><strong>Adresse:</strong> {userData.address}</p>
               <p><strong>Langue:</strong> {userData.language}</p>
               <p><strong>Notifications activées:</strong> {userData.notificationsEnabled ? 'Oui' : 'Non'}</p>
-              <button className='button w-96' onClick={handleEdit}>Modifier le profil</button>
+              <button className='py-3.5 px-5  bg-btn_primary text-white mb-4 button w-96' onClick={handleEdit}>Modifier le profil</button>
             </div>
           )}
         </div>

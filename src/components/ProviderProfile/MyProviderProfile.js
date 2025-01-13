@@ -256,7 +256,7 @@ const MyProviderProfile = () => {
           </div>
           <button
             onClick={() => setIsEditing(true)}
-            className="edit-button"
+            className="edit-button py-3.5 px-5 bg-btn_primary text-white mb-4"
           >
             Modifier le profil
           </button>

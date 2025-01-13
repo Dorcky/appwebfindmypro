@@ -251,7 +251,7 @@ const SignupScreen = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <button type="submit" className="py-3.5 px-5 bg-btn_primary text-white mb-4 button mb-4">
+        <button type="submit" className="py-3.5 px-5 bg-btn_primary text-white mb-4 button">
           S'inscrire
         </button>
 
