@@ -33,9 +33,9 @@ const LoginScreen = () => {
         const role = userData.role;
 
         if (role === 'user') {
-          navigate('/user-dashboard');
+          navigate('/user-profile');
         } else if (role === 'provider') {
-          navigate('/service-provider-dashboard');
+          navigate('/my-provider-profile/' + user.uid);
         } else {
           setErrorMessage('Rôle non reconnu.');
         }
@@ -53,12 +53,12 @@ const LoginScreen = () => {
 
  return (
     <div className="container">
-      <div className='flex flex-col items-center align-center bg-bg_primary p-10 rounded-lg shadow-lg'>
+      <div className='flex flex-col items-center align-center'>
       <img src={logo} alt="Icon" className="icon" />
 
         <h1 className="title">Se connecter</h1>
 
-        <form onSubmit={login} className='align-center p-4'>
+        <form onSubmit={login}>
           <input
             type="email"
             className="input"

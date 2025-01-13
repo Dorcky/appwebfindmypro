@@ -99,15 +99,6 @@ input[type="file"] {
   align-self: center;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #0097a7;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
 button:hover {
   background-color: #00838f;
 }

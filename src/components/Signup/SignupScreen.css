@@ -1,12 +1,8 @@
 
 
   .signup-form {
-    background-color: #CAF0F8;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
-    max-width: 450px;
+    max-width: 550px;
   }
 
   .title {
@@ -42,14 +38,6 @@
   .error-message {
     color: red;
     margin-bottom: 15px;
-  }
-
-  .button {
-    /*background-color: #007bff;*/
-    color: white;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
   }
 
   .already-account {

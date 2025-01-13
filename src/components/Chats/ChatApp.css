@@ -1,13 +1,6 @@
 /* ChatApp.css */
 
 /* Global Styles */
-body {
-  font-family: 'Roboto', sans-serif;
-  /*background-color: #f7f8fa;*/
-  color: #333;
-  margin: 0; /* Supprime la marge par défaut du body */
-  padding: 0; /* Supprime le padding par défaut du body */
-}
 
 /* Chat sidebar */
 .sidebar {
@@ -230,11 +223,11 @@ body {
       display: none;
   }
 
-  .container {
+  /* .container {
       max-width: 100%;
       padding: 0;
       margin: 60px auto 20px auto; /* Ajustement pour les mobiles */
-  }
+ /* }*/
 
   .chat-header .name {
       font-size: 1.125rem;

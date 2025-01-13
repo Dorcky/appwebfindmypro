@@ -1,13 +1,7 @@
 /* Container principal du profil */
 .user-profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px; /* Plus d'espace autour */
-  font-family: Arial, sans-serif;
-  min-height: 100vh; /* Assure que le container prend au moins toute la hauteur de l'écran */
-  justify-content: center; /* Centrer verticalement le contenu */
   text-align: center;
+  margin: 0 auto;
 }
 
 /* Titre */
@@ -21,9 +15,6 @@ h1 {
 .profile-card {
   width: 600px; /* Augmenter la largeur de la carte */
   height: 800px; /* Fixer la hauteur de la carte (ajustez la valeur à votre convenance) */
-  background-color: #CAF0F8;
-  border-radius: 12px; /* Coins légèrement plus arrondis */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
   padding: 30px; /* Plus de padding pour une meilleure aération */
   display: flex;
   flex-direction: column;

@@ -211,7 +211,7 @@ const MyProviderProfile = () => {
 
   return (
     <div className="provider-profile">
-      <h1>Mon Profil Professionnel</h1>
+      <h1 className='text-center'>Mon Profil Professionnel</h1>
       {!isEditing ? (
         <div className="profile-view">
           <img
