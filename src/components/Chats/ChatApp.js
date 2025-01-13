@@ -101,7 +101,7 @@ const ChatApp = () => {
         type: 'user',
         profileImage: doc.data().profileImageURL || null,
       }));
-  
+
       // Charger tous les providers
       const providersRef = collection(db, 'service_providers');
       const providersSnapshot = await getDocs(providersRef);
@@ -112,7 +112,7 @@ const ChatApp = () => {
         type: 'provider',
         profileImage: doc.data().profileImageURL || null,
       }));
-  
+
       // Filtrer les participants en fonction du rôle de l'utilisateur actuel
       if (currentUser.role === 'provider') {
         // Pour les providers, ne montrer que les utilisateurs ayant déjà envoyé un message
@@ -370,7 +370,7 @@ const ChatApp = () => {
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                   multiline
                   maxRows={4}
-                  sx={{ bgcolor: '#f5f5f5', borderRadius: '24px' }}    className="chat-app-textfield"
+                  sx={{ bgcolor: '#f5f5f5', borderRadius: '8px' }}    className="chat-app-textfield"
 
                 />
                 <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} color="primary">
