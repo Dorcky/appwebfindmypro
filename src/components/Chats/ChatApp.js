@@ -10,6 +10,7 @@ import data from '@emoji-mart/data';
 import { db, storage } from '../firebaseConfig';
 import { collection, doc, getDocs, setDoc, query, onSnapshot, orderBy, Timestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { debounce } from 'lodash';
 
 
 const ChatApp = () => {
@@ -29,6 +30,12 @@ const ChatApp = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const handleResize = debounce(() => {
+
+  }, 250);
+
+  window.addEventListener('resize', handleResize);
 
   useEffect(() => {
     scrollToBottom();
@@ -265,9 +272,20 @@ const ChatApp = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 4, pt: 16 }} className="chat-app-container">
  {/* Ajout de padding-top pour éviter que le contenu soit masqué par la navbar */}
-      <Box display="flex" gap={2} height="80vh">
+      <Box
+        display="flex"
+        gap={2}
+        height="80vh"
+        sx={{
+          flexDirection: 'row', // default direction
+          '@media (max-width: 768px)': {
+            flexDirection: 'column', // stack items vertically on small screens
+          },
+        }}
+      >
         {/* Contacts List */}
-        <Paper elevation={3} sx={{ width: 300, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px' }} className="chat-app-sidebar">          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
+        <Paper elevation={3} sx={{ width: 300, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px', flexShrink: 0 }} className="chat-app-sidebar">
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
             Contacts
           </Typography>
           {loading ? (
@@ -302,7 +320,7 @@ const ChatApp = () => {
         </Paper>
 
         {/* Chat Area */}
-        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px' }} className="chat-app-window">          {selectedUser ? (
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px', flexShrink: 0 }} className="chat-app-window">          {selectedUser ? (
             <>
               {/* Chat Header */}
               <Box display="flex" alignItems="center" mb={2} p={1} bgcolor="background.default" borderRadius={1}>
