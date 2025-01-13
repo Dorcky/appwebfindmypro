@@ -152,13 +152,13 @@ const SignupScreen = () => {
         <div>
           <img src={logo} alt="Icon" className="icon" />
           <h2 className="title">Quel type de compte souhaitez-vous créer ?</h2>
-          <div className="account-type-container p-4 ">
-          <button onClick={() => handleAccountTypeSelection(false)} className="button">
-            Utilisateur à la recherche de service
-          </button>
-          <button onClick={() => handleAccountTypeSelection(true)} className="button">
-            Prestataire de service
-          </button>
+          <div className="account-type-container p-4 space-y-4">
+            <button onClick={() => handleAccountTypeSelection(false)} className="py-3.5 px-5 bg-btn_primary text-white button">
+              Utilisateur à la recherche de service
+            </button>
+            <button onClick={() => handleAccountTypeSelection(true)} className="py-3.5 px-5 bg-btn_primary text-white button">
+              Prestataire de service
+            </button>
         </div>
         </div>
 
@@ -251,7 +251,7 @@ const SignupScreen = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <button type="submit" className="button">
+        <button type="submit" className="py-3.5 px-5 bg-btn_primary text-white mb-4 button mb-4">
           S'inscrire
         </button>
 

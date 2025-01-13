@@ -76,12 +76,12 @@ const LoginScreen = () => {
 
           {errorMessage && <p className="error-text">{errorMessage}</p>}
 
-          <button type="submit" className="button">
+          <button type="submit" className="py-3.5 px-5 bg-btn_primary text-white mb-2 button">
             Se connecter
           </button>
         </form>
 
-        <button onClick={navigateToSignup} className="sign-up-text">
+        <button onClick={navigateToSignup} className="sign-up-text py-3.5 px-5">
           Pas de compte ? S&lsquo;inscrire
         </button>
       </div>
