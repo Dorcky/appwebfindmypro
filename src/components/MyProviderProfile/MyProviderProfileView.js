@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 import { db } from '../firebaseConfig.js';
+import { Star, StarHalf, Calendar, MessageSquare, Edit } from 'lucide-react';
 import './MyProviderProfileView.css';
 
 const ProfileHeaderView = React.memo(({ serviceProvider }) => {
@@ -17,20 +18,28 @@ const ProfileHeaderView = React.memo(({ serviceProvider }) => {
   };
 
   return (
-    <div className="header">
-      <div className="profileImageContainer">
+    <div className="flex items-start gap-6">
+      <div className="relative">
         <img
           src={serviceProvider.profileImageURL}
           alt="Profile"
-          className="profileImage"
+          className="w-32 h-32 rounded-full object-cover border-4 border-[rgb(102,148,191)]"
           onError={(e) => {
             console.log('Profile image failed to load:', e);
             e.target.src = 'path/to/fallback/image.jpg';
           }}
         />
       </div>
-      <button onClick={handleMessageClick} className="messageButton">
-        Message
+      <div className="flex-1">
+        <h1 className="text-3xl font-semibold text-[rgb(51,77,102)]">{serviceProvider.name}</h1>
+        <p className="text-gray-500 mt-2">{serviceProvider.description}</p>
+      </div>
+      <button
+        onClick={handleMessageClick}
+        className="flex-1 bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] py-3 rounded-lg text-lg flex items-center justify-center"
+      >
+        <MessageSquare className="w-4 h-4 mr-2" />
+        Envoyer un Message
       </button>
     </div>
   );
@@ -40,17 +49,32 @@ ProfileHeaderView.propTypes = {
   serviceProvider: PropTypes.shape({
     id: PropTypes.string,
     profileImageURL: PropTypes.string,
+    name: PropTypes.string,
+    description: PropTypes.string,
   }).isRequired,
 };
 
 ProfileHeaderView.displayName = 'ProfileHeaderView';
 
 const RatingView = React.memo(({ averageRating }) => {
-  const stars = Array.from({ length: 5 }, (_, i) => (i < averageRating ? '★' : '☆'));
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < Math.floor(rating)) {
+        stars.push(<Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />);
+      } else if (i === Math.floor(rating) && rating % 1 !== 0) {
+        stars.push(<StarHalf key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />);
+      } else {
+        stars.push(<Star key={i} className="w-5 h-5 text-yellow-400" />);
+      }
+    }
+    return stars;
+  };
+
   return (
-    <div className="ratingView">
-      <p className="ratingText">Average Rating: {averageRating.toFixed(1)}/5</p>
-      <p className="stars">{stars.join('')}</p>
+    <div className="mt-3">
+      <div className="flex gap-1">{renderStars(averageRating)}</div>
+      <p className="text-gray-500 mt-1">Note moyenne: {averageRating.toFixed(1)}/5</p>
     </div>
   );
 });
@@ -62,59 +86,89 @@ RatingView.propTypes = {
 RatingView.displayName = 'RatingView';
 
 const ProviderInfoView = React.memo(({ serviceProvider }) => (
-  <div className="infoView">
-    <p className="infoText">Name: {serviceProvider.name}</p>
-    <p className="infoText">Service: {serviceProvider.serviceType}</p>
-    <p className="infoText">Email: {serviceProvider.email}</p>
-    <p className="infoText">Phone: {serviceProvider.phoneNumber}</p>
-    <p className="infoText">Address: {serviceProvider.address}</p>
-    <p className="infoText">Description: {serviceProvider.description}</p>
-    <p className="infoText">Hourly Rate: {serviceProvider.hourlyRate}</p>
-    <p className="infoText">Website: {serviceProvider.website || 'N/A'}</p>
+  <div className="mt-4">
+    <p className="text-gray-700"><strong>Service:</strong> {serviceProvider.serviceType}</p>
+    <p className="text-gray-700"><strong>Email:</strong> {serviceProvider.email}</p>
+    <p className="text-gray-700"><strong>Téléphone:</strong> {serviceProvider.phoneNumber}</p>
+    <p className="text-gray-700"><strong>Adresse:</strong> {serviceProvider.address}</p>
+    <p className="text-gray-700"><strong>Tarif horaire:</strong> {serviceProvider.hourlyRate} €/h</p>
+    <p className="text-gray-700"><strong>Site web:</strong> {serviceProvider.website || 'N/A'}</p>
+    <p className="text-gray-700"><strong>Description:</strong> {serviceProvider.description}</p>
   </div>
 ));
 
 ProviderInfoView.propTypes = {
   serviceProvider: PropTypes.shape({
-    name: PropTypes.string,
     serviceType: PropTypes.string,
     email: PropTypes.string,
     phoneNumber: PropTypes.string,
     address: PropTypes.string,
-    description: PropTypes.string,
     hourlyRate: PropTypes.number,
     website: PropTypes.string,
+    description: PropTypes.string,
   }).isRequired,
 };
 
 ProviderInfoView.displayName = 'ProviderInfoView';
 
-const ReviewsViewSection = React.memo(({ reviews }) => (
-  <div className="reviewsSection">
-    <h3 className="reviewsTitle">Reviews:</h3>
-    <div>
-      {reviews.length > 0 ? (
-        reviews.map((item, index) => (
-          <div key={item.id || index} className="reviewItem">
-            <p className="reviewName">{item.reviewer_name}</p>
-            <p className="stars">
-              {Array.from({ length: 5 }, (_, i) => (i < item.rating ? '★' : '☆')).join('')}
-            </p>
-            <p className="reviewText">{item.comment}</p>
-            {item.response && (
-              <div>
-                <p className="responseTitle">Response from provider:</p>
-                <p className="reviewText">{item.response}</p>
+const ReviewsViewSection = React.memo(({ reviews, serviceProviderId }) => {
+  const navigate = useNavigate();
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < Math.floor(rating)) {
+        stars.push(<Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />);
+      } else if (i === Math.floor(rating) && rating % 1 !== 0) {
+        stars.push(<StarHalf key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />);
+      } else {
+        stars.push(<Star key={i} className="w-5 h-5 text-yellow-400" />);
+      }
+    }
+    return stars;
+  };
+
+  const handleViewAllReviews = () => {
+    navigate(`/review/${serviceProviderId}`);
+  };
+
+  return (
+    <section className="mt-8">
+      <h2 className="text-xl font-semibold text-[rgb(51,77,102)] border-b-2 border-[rgb(102,148,191)] pb-2 mb-4">
+        Avis
+      </h2>
+      <div className="space-y-4">
+        {reviews.length > 0 ? (
+          reviews.map((item, index) => (
+            <div key={item.id || index} className="p-4 rounded-lg bg-[rgb(240,248,255)] border border-[rgb(217,237,247)]">
+              <p className="text-gray-700 mb-2">{item.comment}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500 text-sm">- {item.reviewer_name}</span>
+                <div className="flex gap-1">
+                  {renderStars(item.rating)}
+                </div>
               </div>
-            )}
-          </div>
-        ))
-      ) : (
-        <p>No reviews yet</p>
-      )}
-    </div>
-  </div>
-));
+              {item.response && (
+                <div className="mt-2">
+                  <p className="text-sm font-semibold text-[rgb(51,77,102)]">Réponse du prestataire:</p>
+                  <p className="text-gray-600">{item.response}</p>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600">Aucun avis pour le moment</p>
+        )}
+      </div>
+      <button
+        onClick={handleViewAllReviews}
+        className="mt-4 w-full bg-[rgb(102,148,191)] hover:bg-[rgb(81,118,153)] text-white py-3 rounded-lg text-lg flex items-center justify-center"
+      >
+        Voir tous les avis
+      </button>
+    </section>
+  );
+});
 
 ReviewsViewSection.propTypes = {
   reviews: PropTypes.arrayOf(
@@ -126,6 +180,7 @@ ReviewsViewSection.propTypes = {
       response: PropTypes.string,
     })
   ).isRequired,
+  serviceProviderId: PropTypes.string.isRequired,
 };
 
 ReviewsViewSection.displayName = 'ReviewsViewSection';
@@ -134,10 +189,11 @@ const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
   const navigate = useNavigate();
   return (
     <button
-      className="availabilityButton"
+      className="flex-1 bg-[rgb(102,148,191)] hover:bg-[rgb(81,118,153)] text-white py-3 rounded-lg text-lg flex items-center justify-center"
       onClick={() => navigate(`/service-provider-availability/${serviceProviderId}`)}
     >
-      View Availability
+      <Calendar className="w-4 h-4 mr-2" />
+      Voir les disponibilités
     </button>
   );
 });
@@ -222,20 +278,34 @@ const MyProviderProfileView = () => {
     navigate(`/review/${serviceProviderId}`);
   };
 
-  if (isLoading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">Error: {error}</div>;
-  if (!serviceProvider) return <div>No provider found.</div>;
+  if (isLoading) return <div className="loading">Chargement...</div>;
+  if (error) return <div className="error">Erreur: {error}</div>;
+  if (!serviceProvider) return <div>Aucun prestataire trouvé.</div>;
 
   return (
-    <div className="container">
-      <ProfileHeaderView serviceProvider={serviceProvider} />
-      <RatingView averageRating={averageRating} />
-      <ProviderInfoView serviceProvider={serviceProvider} />
-      <ReviewsViewSection reviews={reviews} />
-      <AvailabilityButtonView serviceProviderId={serviceProviderId} />
-      <button className="writeReviewButton" onClick={handleWriteReviewClick}>
-        Écrire un commentaire
-      </button>
+    <div className="min-h-screen bg-[rgb(217,237,247)]">
+      <header className="w-full bg-[rgb(102,148,191)] text-white p-4 text-center text-2xl">
+        Profil du Prestataire
+      </header>
+
+      <main className="max-w-4xl mx-auto p-4">
+        <div className="mt-8 bg-white shadow-lg p-4 rounded-lg">
+          <ProfileHeaderView serviceProvider={serviceProvider} />
+          <RatingView averageRating={averageRating} />
+          <ProviderInfoView serviceProvider={serviceProvider} />
+          <ReviewsViewSection reviews={reviews} serviceProviderId={serviceProviderId} />
+          <div className="flex gap-4 pt-4">
+            <AvailabilityButtonView serviceProviderId={serviceProviderId} />
+            <button
+              className="flex-1 bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] py-3 rounded-lg text-lg flex items-center justify-center"
+              onClick={handleWriteReviewClick}
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Écrire un commentaire
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
