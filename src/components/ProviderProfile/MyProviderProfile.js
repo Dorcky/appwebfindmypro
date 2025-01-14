@@ -199,63 +199,63 @@ const MyProviderProfile = () => {
   return (
     <div className="bg-[rgb(217,237,247)] min-h-screen p-12">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-20">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           {/* Colonne de gauche : Photo et boutons */}
-          <div className="w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
+          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
             <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
-              <img 
+              <img
                 src={profile.profileImageURL || "/api/placeholder/192/192"}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
             <h1 className="text-3xl font-bold text-white text-center">{profile.name}</h1>
-            <button 
+            <button
               onClick={() => setIsEditing(true)}
-              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-full hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
             >
               Edit Profile
             </button>
-            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md">
+            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-lg font-semibold shadow-md">
               Change Password
             </button>
           </div>
 
           {/* Colonne de droite : Informations */}
-          <div className="w-2/3 p-12">
-         
+          <div className="w-full md:w-2/3 p-8">
+
             <h2 className="text-4xl font-bold text-[rgb(51,77,102)] mb-8">My Profile</h2>
             {!isEditing ? (
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.name}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.name}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.email}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.email}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.address}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.address}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Service Type</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.serviceType}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.serviceType}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Hourly Rate</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.hourlyRate}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.hourlyRate}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Availability</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {profile.isAvailable ? 'Available' : 'Not Available'}
                   </p>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</label>
                   <input
@@ -355,14 +355,14 @@ const MyProviderProfile = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
+                    className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
                   >
                     {isLoading ? 'Saving...' : 'Save'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-full hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+                    className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
                   >
                     Cancel
                   </button>

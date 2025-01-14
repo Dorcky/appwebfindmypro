@@ -112,33 +112,33 @@ const UserProfileView = () => {
     <div className="bg-[rgb(217,237,247)] h-[40vh] p-12 pt-20 w-full">
 
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-20">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           {/* Colonne de gauche : Photo et boutons */}
-          <div className="w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
+          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
             <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
-              <img 
+              <img
                 src={userData.profileImageURL || '/default-profile.png'}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
             <h1 className="text-3xl font-bold text-white text-center">{userData.fullName}</h1>
-            <button 
-              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-full hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+            <button
+              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
               onClick={handleEdit}
             >
               Edit Profile
             </button>
-            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md">
+            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-lg font-semibold shadow-md">
               Change Password
             </button>
           </div>
 
           {/* Colonne de droite : Informations */}
-          <div className="w-2/3 p-12">
+          <div className="w-full md:w-2/3 p-8">
             <h2 className="text-4xl font-bold text-[rgb(51,77,102)] mb-8">My Profile</h2>
             {isEditing ? (
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
                   <input
@@ -146,7 +146,7 @@ const UserProfileView = () => {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -157,7 +157,7 @@ const UserProfileView = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     disabled
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -167,7 +167,7 @@ const UserProfileView = () => {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -178,7 +178,7 @@ const UserProfileView = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -188,7 +188,7 @@ const UserProfileView = () => {
                     name="language"
                     value={formData.language}
                     onChange={handleInputChange}
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -196,7 +196,7 @@ const UserProfileView = () => {
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    className="w-full text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
+                    className="w-full text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2"
                   />
                 </div>
                 <div>
@@ -209,38 +209,38 @@ const UserProfileView = () => {
                     <span className="ml-2">Notifications Enabled</span>
                   </label>
                 </div>
-                <button 
-                  className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
+                <button
+                  className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
                   onClick={handleSaveChanges}
                 >
                   Save Changes
                 </button>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.fullName}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.fullName}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.email}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.email}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.phoneNumber}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.phoneNumber}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.address}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.address}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.language}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.language}</p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Notifications Enabled</h3>
-                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.notificationsEnabled ? 'Yes' : 'No'}</p>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.notificationsEnabled ? 'Yes' : 'No'}</p>
                 </div>
               </div>
             )}
