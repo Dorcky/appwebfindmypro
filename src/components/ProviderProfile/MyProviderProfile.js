@@ -6,13 +6,12 @@ import { loadGoogleMapsScript } from '../utils/googleMaps';
 import './MyProviderProfile.css';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-
 const MyProviderProfile = () => {
   const [profile, setProfile] = useState({
     address: '',
     description: '',
     email: '',
-    gpsLocation: null, // GPS location will be stored here
+    gpsLocation: null,
     hourlyRate: '',
     isAvailable: false,
     name: '',
@@ -26,10 +25,8 @@ const MyProviderProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [geocoder, setGeocoder] = useState(null);
   const [autocompleteInstance, setAutocompleteInstance] = useState(null);
-  const storage = getStorage(); // Initialise Firebase Storage
-  const [profileImage, setProfileImage] = useState(null); // Stocke l'image sélectionnée
-
-
+  const storage = getStorage();
+  const [profileImage, setProfileImage] = useState(null);
 
   const auth = getAuth();
 
@@ -68,24 +65,17 @@ const MyProviderProfile = () => {
   };
 
   const geocodeAddress = async (address) => {
-    console.log('Geocoding address:', address); // 🗺️ Log the input address
-    if (!geocoder) {
-      console.error('Geocoder not initialized!'); // ⚠️ Log if geocoder is missing
-      return null;
-    }
+    if (!geocoder) return null;
 
     try {
       const response = await geocoder.geocode({ address });
       if (response.results && response.results[0]) {
         const location = response.results[0].geometry.location;
-        console.log('Geocoding successful:', location.lat(), location.lng()); // 🎉 Log success
         return [location.lat(), location.lng()];
-      } else {
-        console.warn('Geocoding returned no results for:', address); // ⚠️ Log if no results
-        return null;
       }
+      return null;
     } catch (error) {
-      console.error('Geocoding error:', error); // 🚨 Log any errors
+      console.error('Geocoding error:', error);
       return null;
     }
   };
@@ -148,7 +138,7 @@ const MyProviderProfile = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(file); // Stocke l'image dans l'état local
+      setProfileImage(file);
     }
   };
 
@@ -159,13 +149,12 @@ const MyProviderProfile = () => {
     try {
       const snapshot = await uploadBytes(storageRef, imageFile);
       const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL; // Retourne l'URL de l'image téléchargée
+      return downloadURL;
     } catch (error) {
       console.error('Error uploading image:', error);
       return null;
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -180,16 +169,15 @@ const MyProviderProfile = () => {
         coordinates = await geocodeAddress(profile.address);
       }
 
-      let profileImageURL = profile.profileImageURL; // Garde l'ancienne image
+      let profileImageURL = profile.profileImageURL;
       if (profileImage) {
-        // Si une nouvelle image a été sélectionnée, téléchargez-la
         profileImageURL = await uploadProfileImage(profileImage);
       }
 
       const updatedProfile = {
         ...profile,
         gpsLocation: coordinates,
-        profileImageURL, // Met à jour l'URL de l'image de profil
+        profileImageURL,
       };
 
       const docRef = doc(db, 'service_providers', userId);
@@ -204,201 +192,187 @@ const MyProviderProfile = () => {
     }
   };
 
-
   if (!auth.currentUser) {
     return <div>Please log in to view your profile.</div>;
   }
 
   return (
-    <div className="provider-profile">
-      <h1 className='text-center'>Mon Profil Professionnel</h1>
-      {!isEditing ? (
-        <div className="profile-view">
-          <img
-            src={profile.profileImageURL}
-            alt={profile.name}
-            className="profile-image"
-          />
-          <div className="profile-info">
-            <h2 className="font-bold text-xl">{profile.name}</h2>
-            <p>
-              <strong>Service:</strong> {profile.serviceType}
-            </p>
-            <p>
-              <strong>Tarif horaire:</strong> {profile.hourlyRate}
-            </p>
-            <p>
-              <strong>Description:</strong> {profile.description}
-            </p>
-            <p>
-              <strong>Adresse:</strong> {profile.address}
-            </p>
-            <p>
-              <strong>Coordonnées GPS:</strong>
-              {profile.gpsLocation ? (
-                <span>{`Lat: ${profile.gpsLocation[0]}, Lng: ${profile.gpsLocation[1]}`}</span>
-              ) : (
-                <span>Non spécifié</span>
-              )}
-            </p>
-            <p>
-              <strong>Téléphone:</strong> {profile.phoneNumber}
-            </p>
-            <p>
-              <strong>Email:</strong> {profile.email}
-            </p>
-            <p>
-              <strong>Site web:</strong> {profile.website}
-            </p>
-            <p>
-              <strong>Disponible:</strong> {profile.isAvailable ? 'Oui' : 'Non'}
-            </p>
+    <div className="bg-[rgb(217,237,247)] min-h-screen p-12">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-20">
+        <div className="flex">
+          {/* Colonne de gauche : Photo et boutons */}
+          <div className="w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
+            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
+              <img 
+                src={profile.profileImageURL || "/api/placeholder/192/192"}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h1 className="text-3xl font-bold text-white text-center">{profile.name}</h1>
+            <button 
+              onClick={() => setIsEditing(true)}
+              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-full hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+            >
+              Edit Profile
+            </button>
+            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md">
+              Change Password
+            </button>
           </div>
-          <button
-            onClick={() => setIsEditing(true)}
-            className="edit-button py-3.5 px-5 bg-btn_primary text-white mb-4"
-          >
-            Modifier le profil
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="profile-form">
-          <div className="form-group">
-            <label htmlFor="name">Nom</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={profile.name}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="serviceType">Type de service</label>
-            <input
-              type="text"
-              id="serviceType"
-              name="serviceType"
-              value={profile.serviceType}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="address">Adresse</label>
-            <input
-              type="text"
-              id="address-input"
-              name="address"
-              value={profile.address}
-              onChange={handleAddressChange}
-              required
-              placeholder="Entrez votre adresse"
-            />
-            {addressSuggestions.length > 0 && (
-              <ul className="address-suggestions">
-                {addressSuggestions.map((suggestion) => (
-                  <li
-                    key={suggestion.place_id}
-                    onClick={() => handleAddressSelect(suggestion)}
+
+          {/* Colonne de droite : Informations */}
+          <div className="w-2/3 p-12">
+         
+            <h2 className="text-4xl font-bold text-[rgb(51,77,102)] mb-8">My Profile</h2>
+            {!isEditing ? (
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.name}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.email}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.address}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Service Type</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.serviceType}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Hourly Rate</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.hourlyRate}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Availability</h3>
+                  <p className="text-2xl text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {profile.isAvailable ? 'Available' : 'Not Available'}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div>
+                  <label htmlFor="name" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={profile.name}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={profile.email}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="address" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</label>
+                  <input
+                    type="text"
+                    id="address-input"
+                    name="address"
+                    value={profile.address}
+                    onChange={handleAddressChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    required
+                  />
+                  {addressSuggestions.length > 0 && (
+                    <ul className="mt-2 bg-white border border-gray-300 rounded-lg">
+                      {addressSuggestions.map((suggestion) => (
+                        <li
+                          key={suggestion.place_id}
+                          onClick={() => handleAddressSelect(suggestion)}
+                          className="p-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          {suggestion.description}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="serviceType" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Service Type</label>
+                  <input
+                    type="text"
+                    id="serviceType"
+                    name="serviceType"
+                    value={profile.serviceType}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="hourlyRate" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Hourly Rate</label>
+                  <input
+                    type="text"
+                    id="hourlyRate"
+                    name="hourlyRate"
+                    value={profile.hourlyRate}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="isAvailable" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Availability</label>
+                  <input
+                    type="checkbox"
+                    id="isAvailable"
+                    name="isAvailable"
+                    checked={profile.isAvailable}
+                    onChange={handleInputChange}
+                    className="ml-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="profileImage" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Profile Image</label>
+                  <input
+                    type="file"
+                    id="profileImage"
+                    name="profileImage"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                  />
+                </div>
+                <div className="flex space-x-4">
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-full hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
                   >
-                    {suggestion.description}
-                  </li>
-                ))}
-              </ul>
+                    {isLoading ? 'Saving...' : 'Save'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(false)}
+                    className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-full hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             )}
           </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={profile.description}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="hourlyRate">Tarif horaire</label>
-            <input
-              type="text"
-              id="hourlyRate"
-              name="hourlyRate"
-              value={profile.hourlyRate}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="phoneNumber">Téléphone</label>
-            <input
-              type="tel"
-              id="phoneNumber"
-              name="phoneNumber"
-              value={profile.phoneNumber}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={profile.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="website">Site web</label>
-            <input
-              type="url"
-              id="website"
-              name="website"
-              value={profile.website}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group checkbox">
-            <label>
-              <input
-                type="checkbox"
-                name="isAvailable"
-                checked={profile.isAvailable}
-                onChange={handleInputChange}
-              />
-              Disponible pour des services
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="profileImage">Photo de profil</label>
-            <input
-              type="file"
-              id="profileImage"
-              name="profileImage"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
-
-          <div className="form-actions">
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? 'Enregistrement...' : 'Enregistrer'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsEditing(false)}
-            >
-              Annuler
-            </button>
-          </div>
-        </form>
-      )}
+        </div>
+      </div>
     </div>
-
   );
 };
 
