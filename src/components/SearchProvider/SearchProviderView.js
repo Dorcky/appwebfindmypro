@@ -1,13 +1,35 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { collection, getDocs, query, where, addDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, addDoc, deleteDoc, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
+import { Search, Star, StarHalf, MapPin, List, Map, Heart } from "lucide-react";
 import './SearchProviderView.css';
+import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
+
+const RatingStars = ({ rating }) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+
+  for (let i = 0; i < 5; i++) {
+    if (i < fullStars) {
+      stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />);
+    } else if (i === fullStars && hasHalfStar) {
+      stars.push(<StarHalf key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />);
+    } else {
+      stars.push(<Star key={i} className="w-4 h-4 text-gray-300" />);
+    }
+  }
+  return <div className="flex gap-1">{stars}</div>;
+};
+RatingStars.propTypes = {
+  rating: PropTypes.number.isRequired,
+};
 
 const SearchProviderView = () => {
   const [searchText, setSearchText] = useState('');
@@ -19,6 +41,10 @@ const SearchProviderView = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [userProfileImageURL, setUserProfileImageURL] = useState('');
+  const [viewMode, setViewMode] = useState('list');
+  const [reviews, setReviews] = useState({}); // Store reviews for each provider
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -29,15 +55,46 @@ const SearchProviderView = () => {
     });
 
     fetchServiceProviders();
-    fetchFavorites();
     getUserLocation();
 
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
+    if (!currentUser) {
+      setFavoriteProviderIds(new Set());
+      return;
+    }
+
+    // Créer une requête pour les favoris de l'utilisateur courant
+    const q = query(
+      collection(db, 'favorites'),
+      where('user_id', '==', currentUser.uid)
+    );
+
+    // Mettre en place le listener temps réel
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const favoriteIds = snapshot.docs.map(doc => doc.data().service_provider_id);
+      setFavoriteProviderIds(new Set(favoriteIds));
+    }, (error) => {
+      console.error("Erreur lors de l'écoute des favoris:", error);
+    });
+
+    // Nettoyer le listener quand le composant est démonté ou que l'utilisateur change
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  useEffect(() => {
     filterProviders();
   }, [searchText]);
+
+  useEffect(() => {
+    if (filteredServiceProviders.length > 0) {
+      filteredServiceProviders.forEach((provider) => {
+        fetchReviews(provider.id);  // Charger les avis à chaque fois que les fournisseurs sont filtrés
+      });
+    }
+  }, [filteredServiceProviders]);
 
   const fetchUserProfile = async (userId) => {
     try {
@@ -74,7 +131,6 @@ const SearchProviderView = () => {
       const providers = querySnapshot.docs.map((doc) => {
         const data = doc.data();
 
-        // Handle different formats of gpsLocation
         let gpsLocation = null;
         if (data.gpsLocation) {
           if (Array.isArray(data.gpsLocation) && data.gpsLocation.length === 2) {
@@ -101,7 +157,7 @@ const SearchProviderView = () => {
           console.warn(`Prestataire ${doc.id} ignoré à cause de coordonnées GPS manquantes`);
           return null;
         }
-      }).filter((provider) => provider !== null); // Filter out providers with missing data
+      }).filter((provider) => provider !== null);
 
       setServiceProviders(providers);
       setFilteredServiceProviders(providers);
@@ -112,19 +168,27 @@ const SearchProviderView = () => {
     }
   };
 
-  const fetchFavorites = async () => {
-    if (!currentUser) {
-      setFavoriteProviderIds(new Set());
-      return;
-    }
-
+  const fetchReviews = async (providerId) => {
     try {
-      const q = query(collection(db, 'favorites'), where('user_id', '==', currentUser.uid));
-      const querySnapshot = await getDocs(q);
-      const favoriteIds = querySnapshot.docs.map((doc) => doc.data().service_provider_id);
-      setFavoriteProviderIds(new Set(favoriteIds));
+      const reviewsQuery = query(
+        collection(db, 'reviews'),
+        where('service_provider_id', '==', providerId)
+      );
+      const reviewsSnapshot = await getDocs(reviewsQuery);
+      const reviewsData = reviewsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const totalRating = reviewsData.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = reviewsData.length > 0 ? totalRating / reviewsData.length : 0;
+
+      setReviews((prevReviews) => ({
+        ...prevReviews,
+        [providerId]: { reviews: reviewsData, averageRating },
+      }));
     } catch (error) {
-      console.error('Error fetching favorites:', error);
+      console.error('Error fetching reviews:', error);
     }
   };
 
@@ -157,13 +221,17 @@ const SearchProviderView = () => {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // Si le favori existe, le supprimer
+        // Si le provider est déjà dans les favoris, le retirer
         await deleteDoc(querySnapshot.docs[0].ref);
-        setFavoriteProviderIds((prev) => new Set([...prev].filter((id) => id !== providerId)));
+        setFavoriteProviderIds((prev) => {
+          const newFavorites = new Set(prev);
+          newFavorites.delete(providerId);
+          return newFavorites;
+        });
       } else {
-        // Si le favori n'existe pas, l'ajouter
+        // Sinon, l'ajouter aux favoris
         await addDoc(favoritesRef, { service_provider_id: providerId, user_id: currentUser.uid });
-        setFavoriteProviderIds((prev) => new Set([...prev, providerId]));
+        setFavoriteProviderIds((prev) => new Set(prev).add(providerId));
       }
     } catch (error) {
       console.error('Error toggling favorite status:', error);
@@ -199,44 +267,112 @@ const SearchProviderView = () => {
     return null;
   };
 
-  return (
-    <div className="search-provider-view">
-      <div className="search-bar">
-        <input
-          className="search-input"
-          placeholder="Rechercher un prestataire"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-      </div>
+  const handleProviderClick = (providerId) => {
+    navigate(`/provider/${providerId}`);
+  };
 
-      {isLoading ? (
-        <div className="loading-message">Chargement...</div>
-      ) : filteredServiceProviders.length === 0 ? (
-        <div className="no-results">Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.</div>
-      ) : (
-        <>
-          <div className="provider-list">
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[rgb(217,237,247)] to-[rgb(235,245,250)]">
+      <header className="bg-gradient-to-r from-[rgb(51,77,102)] to-[rgb(71,97,122)] text-white py-12 text-center shadow-lg">
+        <h1 className="text-4xl font-bold tracking-wide">FindMyPro</h1>
+        <p className="mt-2 text-lg text-[rgb(217,237,247)]">Découvrez nos prestataires de qualité</p>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-4 py-16">
+        <div className="flex gap-2 bg-white rounded-full shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
+          <input
+            type="text"
+            placeholder="Rechercher un prestataire..."
+            className="flex-1 px-6 py-3 text-lg outline-none"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button 
+            className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-full px-8 py-3 flex items-center transition-all duration-300 hover:shadow-md"
+          >
+            <Search className="w-5 h-5 mr-2" />
+            Rechercher
+          </button>
+        </div>
+
+        <div className="flex justify-center mb-8">
+          <button
+            className={`px-4 py-2 rounded-l-full ${viewMode === 'list' ? 'bg-[rgb(102,148,191)] text-white' : 'bg-white text-[rgb(102,148,191)]'}`}
+            onClick={() => setViewMode('list')}
+          >
+            <List className="w-5 h-5 inline-block mr-2" />
+            Liste
+          </button>
+          <button
+            className={`px-4 py-2 rounded-r-full ${viewMode === 'map' ? 'bg-[rgb(102,148,191)] text-white' : 'bg-white text-[rgb(102,148,191)]'}`}
+            onClick={() => setViewMode('map')}
+          >
+            <Map className="w-5 h-5 inline-block mr-2" />
+            Carte
+          </button>
+        </div>
+
+        {isLoading ? (
+          <div className="loading-message">Chargement...</div>
+        ) : filteredServiceProviders.length === 0 ? (
+          <div className="no-results">Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.</div>
+        ) : viewMode === 'list' ? (
+          <div className="space-y-8">
             {filteredServiceProviders.map((provider) => (
-              <div key={provider.id} className="provider-item">
-                <Link to={`/provider/${provider.id}`} className="provider-link">
-                  <h3>{provider.name}</h3>
-                  <p>{provider.serviceType}</p>
-                  {userLocation && (
-                    <p>Distance: {calculateDistance(
-                      userLocation[0], userLocation[1],
-                      provider.gpsLocation.latitude, provider.gpsLocation.longitude
-                    ).toFixed(2)} km</p>
-                  )}
-                </Link>
-                <button onClick={() => toggleFavoriteStatus(provider.id)} className="favorite-btn">
-                  {isFavorite(provider.id) ? 'Enlever des favoris' : 'Ajouter aux favoris'}
-                </button>
+              <div 
+                key={provider.id}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex items-center">
+                  <img
+                    src={provider.profileImageURL}
+                    alt={provider.name}
+                    className="w-32 h-32 rounded-full object-cover border-4 border-[rgb(51,77,102)] mr-8 shadow-md"
+                  />
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-[rgb(51,77,102)] mb-2">
+                      {provider.name}
+                    </h2>
+                    <p className="text-gray-600 mb-4 text-lg">{provider.serviceType}</p>
+                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                      <MapPin className="w-4 h-4 mr-1" />
+                      {provider.address}
+                      {userLocation && (
+                        <span className="ml-2">
+                          {calculateDistance(
+                            userLocation[0], userLocation[1],
+                            provider.gpsLocation.latitude, provider.gpsLocation.longitude
+                          ).toFixed(2)} km
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <RatingStars rating={reviews[provider.id]?.averageRating || 0} />
+                        <span className="ml-2 text-gray-600">({reviews[provider.id]?.averageRating?.toFixed(1) || 0})</span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <button 
+                          className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-full px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
+                          onClick={() => handleProviderClick(provider.id)}
+                        >
+                          Voir Profil
+                        </button>
+                        <button 
+                          onClick={() => toggleFavoriteStatus(provider.id)}
+                          className={`text-2xl ${isFavorite(provider.id) ? 'text-red-500' : 'text-gray-400'} transition-all duration-300 hover:text-red-600`}
+                        >
+                          <Heart />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-
-          <MapContainer center={center} zoom={13} style={{ height: '400px', width: '100%' }}>
+        ) : (
+          <MapContainer center={center} zoom={13} style={{ height: '600px', width: '100%' }}>
             <MapUpdater />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -252,6 +388,9 @@ const SearchProviderView = () => {
                 key={provider.id}
                 position={[provider.gpsLocation.latitude, provider.gpsLocation.longitude]}
                 icon={createCustomIcon(provider.profileImageURL)}
+                eventHandlers={{
+                  click: () => handleProviderClick(provider.id),
+                }}
               >
                 <Popup>
                   <strong>{provider.name}</strong>
@@ -269,8 +408,8 @@ const SearchProviderView = () => {
               </Marker>
             ))}
           </MapContainer>
-        </>
-      )}
+        )}
+      </main>
     </div>
   );
 };
