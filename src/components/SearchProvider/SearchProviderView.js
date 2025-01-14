@@ -272,14 +272,14 @@ const SearchProviderView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[rgb(217,237,247)] to-[rgb(235,245,250)]">
+    <div className="min-h-screen pt-12 bg-gradient-to-b from-[rgb(217,237,247)] to-[rgb(235,245,250)]">
       <header className="bg-gradient-to-r from-[rgb(51,77,102)] to-[rgb(71,97,122)] text-white py-12 text-center shadow-lg">
         <h1 className="text-4xl font-bold tracking-wide">FindMyPro</h1>
         <p className="mt-2 text-lg text-[rgb(217,237,247)]">Découvrez nos prestataires de qualité</p>
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-16">
-        <div className="flex gap-2 bg-white rounded-full shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
+        <div className="flex gap-2 bg-white rounded-xl shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
           <input
             type="text"
             placeholder="Rechercher un prestataire..."
@@ -287,8 +287,8 @@ const SearchProviderView = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <button 
-            className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-full px-8 py-3 flex items-center transition-all duration-300 hover:shadow-md"
+          <button
+            className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-xl px-8 py-3 flex items-center transition-all duration-300 hover:shadow-md"
           >
             <Search className="w-5 h-5 mr-2" />
             Rechercher
@@ -319,7 +319,7 @@ const SearchProviderView = () => {
         ) : viewMode === 'list' ? (
           <div className="space-y-8">
             {filteredServiceProviders.map((provider) => (
-              <div 
+              <div
                 key={provider.id}
                 className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
@@ -352,13 +352,13 @@ const SearchProviderView = () => {
                         <span className="ml-2 text-gray-600">({reviews[provider.id]?.averageRating?.toFixed(1) || 0})</span>
                       </div>
                       <div className="flex items-center gap-4">
-                        <button 
-                          className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-full px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
+                        <button
+                          className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-xl px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
                           onClick={() => handleProviderClick(provider.id)}
                         >
                           Voir Profil
                         </button>
-                        <button 
+                        <button
                           onClick={() => toggleFavoriteStatus(provider.id)}
                           className={`text-2xl ${isFavorite(provider.id) ? 'text-red-500' : 'text-gray-400'} transition-all duration-300 hover:text-red-600`}
                         >
