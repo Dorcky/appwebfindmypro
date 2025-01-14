@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { X, Menu } from "lucide-react";
-import './WelcomeScreen.css';
-import booking from '../../assets/images/booking.png';
-import mecanic from '../../assets/images/mecanic.png';
-import LoginScreen from '../loginscreen/LoginScreen';
-import SignupScreen from '../Signup/SignupScreen';
-import Modal from '../Modal/Modal'; // Importez le composant Modal
+import "./WelcomeScreen.css";
+import booking from "../../assets/images/booking.png";
+import mecanic from "../../assets/images/mecanic.png";
+import LoginScreen from "../loginscreen/LoginScreen";
+import SignupScreen from "../Signup/SignupScreen";
+import Modal from "../Modal/Modal";
+import ContactForm from "../ContactForm/ContactForm";
 
 const WelcomeScreen = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+  const [isContactModalOpen, setContactModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-light-blue">
@@ -20,21 +22,38 @@ const WelcomeScreen = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <a href="#" className="text-2xl font-bold text-dark-blue">FindMyPro</a>
+              <a href="#" className="text-2xl font-bold text-dark-blue">
+                FindMyPro
+              </a>
             </div>
-            
+
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray hover:text-dark-blue transition">Accueil</a>
-              <a href="#" className="text-gray hover:text-dark-blue transition">À propos</a>
-              <a href="#" className="text-gray hover:text-dark-blue transition">Services</a>
-              <a href="#" className="text-gray hover:text-dark-blue transition">Contact</a>
-              
+              <a href="#" className="text-gray hover:text-dark-blue transition">
+                Accueil
+              </a>
+              <a href="#" className="text-gray hover:text-dark-blue transition">
+                À propos
+              </a>
+              <a href="#" className="text-gray hover:text-dark-blue transition">
+                Services
+              </a>
               <button
-                onClick={() => setLoginModalOpen(true)}
-                className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
+                onClick={() => setContactModalOpen(true)}
+                className="text-gray hover:text-dark-blue transition"
               >
-                Connexion
+                Contact
               </button>
+
+              <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Empêche la fermeture du modal
+                      setLoginModalOpen(true);
+                    }}
+                    className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
+                  >
+                    Connexion
+                  </button>
+
               <button
                 onClick={() => setSignupModalOpen(true)}
                 className="px-4 py-2 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition"
@@ -43,7 +62,10 @@ const WelcomeScreen = () => {
               </button>
             </div>
 
-            <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden flex items-center"
+            >
               <Menu className="h-6 w-6 text-gray" />
             </button>
           </div>
@@ -53,10 +75,30 @@ const WelcomeScreen = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#" className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md">Accueil</a>
-              <a href="#" className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md">À propos</a>
-              <a href="#" className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md">Services</a>
-              <a href="#" className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md">Contact</a>
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
+                Accueil
+              </a>
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
+                À propos
+              </a>
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
+                Services
+              </a>
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
+                Contact
+              </button>
               <div className="flex flex-col space-y-2 px-3 py-2">
                 <button
                   onClick={() => setLoginModalOpen(true)}
@@ -78,12 +120,33 @@ const WelcomeScreen = () => {
 
       {/* Modales */}
       <Modal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)}>
-        <LoginScreen onClose={() => setLoginModalOpen(false)} />
+        <LoginScreen
+          onClose={() => setLoginModalOpen(false)}
+          onSignupClick={() => {
+            setLoginModalOpen(false);
+            setSignupModalOpen(true);
+          }}
+        />
       </Modal>
 
       <Modal isOpen={isSignupModalOpen} onClose={() => setSignupModalOpen(false)}>
         <SignupScreen onClose={() => setSignupModalOpen(false)} />
       </Modal>
+
+      <Modal isOpen={isContactModalOpen} onClose={() => setContactModalOpen(false)}>
+        <ContactForm onClose={() => setContactModalOpen(false)} />
+      </Modal>
+
+      <Modal isOpen={isSignupModalOpen} onClose={() => setSignupModalOpen(false)}>
+        <SignupScreen
+          onClose={() => setSignupModalOpen(false)}
+          onLoginClick={() => {
+            setSignupModalOpen(false);
+            setLoginModalOpen(true);
+          }}
+        />
+      </Modal>
+
 
       {/* Hero Section */}
       <section className="pt-32 pb-24">
@@ -94,7 +157,8 @@ const WelcomeScreen = () => {
                 Réservation Simplifiée
               </h1>
               <p className="text-xl text-gray mb-8">
-                Bienvenue sur FindMyPro, votre application de gestion de rendez-vous avec des prestataires de services.
+                Bienvenue sur FindMyPro, votre application de gestion de rendez-vous avec des
+                prestataires de services.
               </p>
               <button
                 onClick={() => setSignupModalOpen(true)}
@@ -105,8 +169,7 @@ const WelcomeScreen = () => {
             </div>
             <div className="relative">
               <div className="absolute -inset-4 bg-light-blue rounded-lg transform rotate-6"></div>
-              <img src={booking} alt="Réservation" 
-                className="relative rounded-lg shadow-xl" />
+              <img src={booking} alt="Réservation" className="relative rounded-lg shadow-xl" />
             </div>
           </div>
         </div>
@@ -118,14 +181,14 @@ const WelcomeScreen = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative order-2 md:order-1">
               <div className="absolute -inset-4 bg-light-blue rounded-lg transform -rotate-6"></div>
-              <img src={mecanic} alt="app interface" 
-                className="relative rounded-lg shadow-xl" />
+              <img src={mecanic} alt="app interface" className="relative rounded-lg shadow-xl" />
             </div>
             <div className="order-1 md:order-2">
               <h2 className="text-4xl font-bold text-dark-blue mb-6">À propos de FindMyPro</h2>
               <p className="text-xl text-gray mb-8">
-                FindMyPro est la solution ultime pour organiser vos rendez-vous avec des prestataires de services. 
-                Notre application est conçue pour simplifier votre processus de planification et améliorer votre expérience globale.
+                FindMyPro est la solution ultime pour organiser vos rendez-vous avec des
+                prestataires de services. Notre application est conçue pour simplifier votre
+                processus de planification et améliorer votre expérience globale.
               </p>
               <button className="px-6 py-3 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition shadow-lg">
                 En savoir plus
@@ -151,7 +214,8 @@ const WelcomeScreen = () => {
                 </div>
               </div>
               <p className="text-gray italic">
-                "Je recommande vivement FindMyPro ! C'est un véritable changement dans la façon dont je gère mes réservations de services."
+                "Je recommande vivement FindMyPro ! C'est un véritable changement dans la façon
+                dont je gère mes réservations de services."
               </p>
             </div>
             <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition">
@@ -165,7 +229,8 @@ const WelcomeScreen = () => {
                 </div>
               </div>
               <p className="text-gray italic">
-                "Une excellente plateforme qui a transformé ma façon de gérer les rendez-vous. Je ne pourrais pas être plus satisfait !"
+                "Une excellente plateforme qui a transformé ma façon de gérer les rendez-vous. Je
+                ne pourrais pas être plus satisfait !"
               </p>
             </div>
           </div>

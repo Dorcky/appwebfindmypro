@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebaseConfig';
-import logo from '../../assets/images/logo.png';
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
+import "./LoginScreen.css";
+import PropTypes from "prop-types";
 
-import './LoginScreen.css';
-
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
+const LoginScreen = ({ onClose, onSignupClick }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const login = async (e) => {
     e.preventDefault();
-    if (email === '' || password === '') {
-      setErrorMessage('Veuillez remplir tous les champs.');
+    if (email === "" || password === "") {
+      setErrorMessage("Veuillez remplir tous les champs.");
       return;
     }
 
@@ -25,37 +24,32 @@ const LoginScreen = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      const userRef = doc(db, 'users', user.uid);
+      const userRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userRef);
 
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
         const role = userData.role;
 
-        if (role === 'user') {
-          navigate('/user-profile');
-        } else if (role === 'provider') {
-          navigate('/my-provider-profile/' + user.uid);
+        if (role === "user") {
+          navigate("/user-profile"); // Redirection sans fermer le modal
+        } else if (role === "provider") {
+          navigate(`/my-provider-profile/${user.uid}`); // Redirection sans fermer le modal
         } else {
-          setErrorMessage('Rôle non reconnu.');
+          setErrorMessage("Rôle non reconnu.");
         }
       } else {
-        setErrorMessage('Utilisateur non trouvé.');
+        setErrorMessage("Utilisateur non trouvé.");
       }
     } catch (error) {
-       setErrorMessage(error.message || 'Une erreur inconnue est survenue.');
+      setErrorMessage(error.message || "Une erreur inconnue est survenue.");
     }
   };
 
-  const navigateToSignup = () => {
-    navigate('/signup');
-  };
-
- return (
+  return (
     <div className="container">
-      <div className='flex flex-col items-center align-center'>
-      <img src={logo} alt="Icon" className="icon" />
-
+      <div className="flex flex-col items-center align-center">
+        <img src={logo} alt="Icon" className="icon" />
         <h1 className="title">Se connecter</h1>
 
         <form onSubmit={login}>
@@ -81,12 +75,17 @@ const LoginScreen = () => {
           </button>
         </form>
 
-        <button onClick={navigateToSignup} className="sign-up-text py-3.5 px-5">
+        <button onClick={onSignupClick} className="sign-up-text py-3.5 px-5">
           Pas de compte ? S&lsquo;inscrire
         </button>
       </div>
     </div>
   );
+};
+
+LoginScreen.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onSignupClick: PropTypes.func.isRequired,
 };
 
 export default LoginScreen;
