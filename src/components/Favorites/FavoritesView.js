@@ -196,14 +196,14 @@ const FavoritesView = () => {
                   </div>
                   <div className="flex space-x-2">
                     <button
-                      className="flex-1 px-4 py-2 bg-[#669BC2] text-white rounded-full hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
+                      className="flex-1 px-4 py-2 bg-[#669BC2] text-white rounded-xl hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
                       onClick={() => navigate(`/service-provider-availability/${provider.id}`)}
                     >
                       <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
                       Réserver
                     </button>
                     <button
-                      className="flex-1 px-4 py-2 bg-red-100 text-red-500 rounded-full hover:bg-red-200 transition duration-300 ease-in-out"
+                      className="flex-1 px-4 py-2 bg-red-100 text-red-500 rounded-xl hover:bg-red-200 transition duration-300 ease-in-out"
                       onClick={() => handleDeleteFavorite(favorite.id)}
                     >
                       Retirer des favoris
