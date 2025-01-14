@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes pour la validation des props
+import PropTypes from 'prop-types';
 import { db, auth } from '../firebaseConfig';
 import { collection, query, where, getDocs, updateDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import './AppointmentBookingList.css';
@@ -167,39 +167,62 @@ const AppointmentBookingList = () => {
   const AppointmentCard = ({ appointment }) => {
     const formatDateTime = (date) => {
       return date.toLocaleString('fr-FR', {
+        weekday: 'long',
         day: 'numeric',
-        month: 'short',
+        month: 'long',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
       });
     };
 
+    const statusClass = appointment.status === "Réservé" ? "text-green-500" : "text-red-500";
+    const defaultAvatar = "https://via.placeholder.com/100/0000FF/FFFFFF/?text=Avatar";
+
     return (
-      <div className="appointment-card">
-        <div className="card-header">
-          <div className="appointment-profile-image">
-            {appointment.profileImageURL ? (
-              <img src={appointment.profileImageURL} alt="Profile" className="profile-img" />
-            ) : (
-              <div className="default-profile">
-                <span>👤</span>
-              </div>
-            )}
+      <div className="bg-white rounded-2xl shadow-lg mb-5 transition-transform duration-300 hover:-translate-y-1">
+        <div className="p-6 flex">
+          <img 
+            src={appointment.profileImageURL || defaultAvatar} 
+            alt={`${appointment.providerName}'s profile`} 
+            className="w-24 h-24 rounded-full mr-4" 
+          />
+          <div className="flex-grow">
+            <h5 className="text-lg font-medium">{appointment.providerName}</h5>
+            <h6 className="text-gray-500 text-sm mb-2">{appointment.service}</h6>
+            <p className={`text-sm ${statusClass} mb-2`}>
+              Statut : {appointment.status}
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                   className="inline-block w-4 h-4 mr-2" 
+                   fill="none" 
+                   viewBox="0 0 24 24" 
+                   stroke="currentColor">
+                <path strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth="2" 
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {formatDateTime(appointment.date)}
+            </p>
+            <div className="flex justify-end">
+              <button 
+                className="mr-2 px-3 py-1 text-sm text-white bg-[#DC3545] hover:bg-[#BF233D] rounded"
+                onClick={() => deleteAppointment(appointment.id, appointment.providerId, new Date(appointment.date).toISOString().split('T')[0])}
+              >
+                Supprimer
+              </button>
+              {appointment.status === "Réservé" && (
+                <button 
+                  className="px-3 py-1 text-sm text-[#DC3545] border border-[#DC3545] hover:bg-[#DC3545] hover:text-white rounded"
+                  onClick={() => cancelAppointment(appointment.id, appointment.providerId, new Date(appointment.date).toISOString().split('T')[0])}
+                >
+                  Annuler
+                </button>
+              )}
+            </div>
           </div>
-          <div className="user-info">
-            <h3>{appointment.providerName}</h3>
-            <p>{appointment.service}</p>
-          </div>
-          <div className="status-badge">
-            <span className={`status ${appointment.status.toLowerCase()}`}>
-              {appointment.status}
-            </span>
-          </div>
-        </div>
-        <div className="divider"></div>
-        <div className="card-footer">
-          <span>📅 {formatDateTime(appointment.date)}</span>
         </div>
       </div>
     );
@@ -217,40 +240,33 @@ const AppointmentBookingList = () => {
   };
 
   if (loading) {
-    return <div>Chargement des rendez-vous...</div>;
+    return <div className="loading-message">Chargement des rendez-vous...</div>;
   }
 
   if (errorMessage) {
-    return <div>Erreur: {errorMessage}</div>;
+    return <div className="error-message">Erreur: {errorMessage}</div>;
   }
 
   return (
-    <div className="appointments-container">
-      <h1>Mes rendez-vous</h1>
-      {appointments.length === 0 ? (
-        <p>Aucun rendez-vous trouvé.</p>
-      ) : (
-        <ul className="appointments-list">
-          {appointments.map((appointment) => {
-            const appointmentDate = new Date(appointment.date).toISOString().split('T')[0];
-            return (
-              <li key={appointment.id} className="appointment-item">
-                <AppointmentCard appointment={appointment} />
-                <div className="appointment-actions">
-                  {appointment.status !== 'Annulé' && (
-                    <button className="cancel-btn" onClick={() => cancelAppointment(appointment.id, appointment.providerId, appointmentDate)}>
-                      Annuler
-                    </button>
-                  )}
-                  <button className="delete-btn" onClick={() => deleteAppointment(appointment.id, appointment.providerId, appointmentDate)}>
-                    Supprimer
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+    <div className="min-h-screen bg-[#D9EBF8] py-12">
+      <div className="containerAppointment mx-auto px-4 mt-20">
+        <h1 className="text-center text-[#334C66] text-3xl font-bold mb-12">
+          Mes Rendez-vous
+        </h1>
+        
+        <div className="max-w-2xl mx-auto">
+          {appointments.length === 0 ? (
+            <p>Aucun rendez-vous trouvé.</p>
+          ) : (
+            appointments.map((appointment) => (
+              <AppointmentCard
+                key={appointment.id}
+                appointment={appointment}
+              />
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 };
