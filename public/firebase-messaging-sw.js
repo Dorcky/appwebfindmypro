@@ -3,8 +3,8 @@
 /* eslint-disable no-undef */
 /* global importScripts, firebase */
 // firebase-messaging-sw.js
-importScripts('https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/9.1.2/firebase-messaging.js');
+importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js");
 // Configuration Firebase
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
