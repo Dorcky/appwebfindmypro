@@ -162,7 +162,7 @@ const ServiceProviderAvailabilityView = () => {
         provider_id: serviceProviderId,
         provider_name: selectedSlot.provider_name,
         service: selectedSlot.service,
-        status: 'Reservé',
+        status: 'Réservé',
         user_id: userId,
         created_at: Timestamp.now(),        
       };
