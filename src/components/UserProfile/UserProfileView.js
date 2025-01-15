@@ -5,7 +5,7 @@ import { uploadProfileImage } from '../utils/imageUpload'; // Assurez-vous d'imp
 import { loadGoogleMapsScript } from '../utils/googleMaps'; // Fonction pour charger l'API Google Maps
 
 const UserProfileView = () => {
-  const [userData, setUserData] = useState(null);  // État pour les données de l'utilisateur
+  const [userData, setUserData] = useState(null); // État pour les données de l'utilisateur
   const [isEditing, setIsEditing] = useState(false); // Pour gérer le mode édition
   const [profileImage, setProfileImage] = useState(null); // Pour gérer l'image de profil sélectionnée
   const [formData, setFormData] = useState({
@@ -29,7 +29,7 @@ const UserProfileView = () => {
           setUserData(userSnap.data());
           setFormData(userSnap.data());
         } else {
-          console.log("Aucun document trouvé pour cet utilisateur");
+          console.log('Aucun document trouvé pour cet utilisateur');
         }
       }
     };
@@ -64,7 +64,7 @@ const UserProfileView = () => {
   // Fonction pour gérer les changements de formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -89,14 +89,14 @@ const UserProfileView = () => {
         } else {
           await updateDoc(userRef, formData);
         }
-        setUserData(prevData => ({
+        setUserData((prevData) => ({
           ...prevData,
           ...formData,
         }));
         setIsEditing(false);
       }
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du profil", error);
+      console.error('Erreur lors de la mise à jour du profil', error);
     }
   };
 
@@ -105,42 +105,48 @@ const UserProfileView = () => {
     setIsEditing(true);
   };
 
+  // Fonction pour annuler les modifications et revenir à la vue primaire
+  const handleCancel = () => {
+    setIsEditing(false);
+    setFormData(userData); // Réinitialiser les données du formulaire avec les données actuelles de l'utilisateur
+    setProfileImage(null); // Réinitialiser l'image de profil sélectionnée
+  };
+
   // Affichage pendant le chargement des données utilisateur
   if (!userData) return <div>Chargement...</div>;
 
   return (
-    <div className="bg-[rgb(217,237,247)] h-[40vh] p-12 pt-20 w-full">
-
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-20">
+    <div className="bg-[rgb(217,237,247)] min-h-screen p-4 md:p-12 pt-20 w-full">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Colonne de gauche : Photo et boutons */}
-          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
-            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-6 md:p-8 flex flex-col items-center justify-center space-y-4 md:space-y-6">
+            <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
               <img
                 src={userData.profileImageURL || '/default-profile.png'}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
-            <h1 className="text-3xl font-bold text-white text-center">{userData.fullName}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-white text-center">{userData.fullName}</h1>
             <button
-              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+              className="w-full py-2 md:py-3 px-4 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
               onClick={handleEdit}
             >
               Edit Profile
             </button>
-            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-lg font-semibold shadow-md">
+            <button className="w-full py-2 md:py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-base md:text-lg font-semibold shadow-md">
               Change Password
             </button>
           </div>
 
           {/* Colonne de droite : Informations */}
-          <div className="w-full md:w-2/3 p-8">
-            <h2 className="text-4xl font-bold text-[rgb(51,77,102)] mb-8">My Profile</h2>
+          <div className="w-full md:w-2/3 p-6 md:p-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-[rgb(51,77,102)] mb-6 md:mb-8">My Profile</h2>
             {isEditing ? (
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
                   <input
                     type="text"
                     name="fullName"
@@ -150,7 +156,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
                   <input
                     type="email"
                     name="email"
@@ -161,7 +167,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
                   <input
                     type="text"
                     name="phoneNumber"
@@ -171,7 +177,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
                   <input
                     type="text"
                     id="address-input"
@@ -182,7 +188,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
                   <input
                     type="text"
                     name="language"
@@ -192,7 +198,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Profile Image</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Profile Image</h3>
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -200,47 +206,69 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">
+                  <label className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">
                     <input
                       type="checkbox"
                       checked={formData.notificationsEnabled}
-                      onChange={() => setFormData({ ...formData, notificationsEnabled: !formData.notificationsEnabled })}
+                      onChange={() =>
+                        setFormData({ ...formData, notificationsEnabled: !formData.notificationsEnabled })
+                      }
                     />
                     <span className="ml-2">Notifications Enabled</span>
                   </label>
                 </div>
-                <button
-                  className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
-                  onClick={handleSaveChanges}
-                >
-                  Save Changes
-                </button>
+                <div className="flex space-x-4">
+                  <button
+                    className="w-1/2 py-2 md:py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-base md:text-lg font-semibold shadow-md"
+                    onClick={handleSaveChanges}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    className="w-1/2 py-2 md:py-3 px-4 md:px-6 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors text-base md:text-lg font-semibold shadow-md"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.fullName}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.fullName}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.email}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.email}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.phoneNumber}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.phoneNumber}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.address}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.address}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.language}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.language}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Notifications Enabled</h3>
-                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{userData.notificationsEnabled ? 'Yes' : 'No'}</p>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Notifications Enabled</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
+                    {userData.notificationsEnabled ? 'Yes' : 'No'}
+                  </p>
                 </div>
               </div>
             )}

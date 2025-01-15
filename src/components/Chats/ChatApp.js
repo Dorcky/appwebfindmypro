@@ -1,17 +1,17 @@
 import './ChatApp.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Box, Container, Paper, TextField, Button, List, ListItem, Typography, Avatar, IconButton, Popover, CircularProgress } from '@mui/material';
+import { Box, Container, Paper, TextField, Button, List, ListItem, Typography, Avatar, IconButton, Popover, CircularProgress, InputAdornment } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import SearchIcon from '@mui/icons-material/Search'; // Ajout de l'icône de recherche
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { db, storage } from '../firebaseConfig';
 import { collection, doc, getDocs, setDoc, query, onSnapshot, orderBy, Timestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { debounce } from 'lodash';
-
 
 const ChatApp = () => {
   const { currentUser, loading: authLoading } = useAuth();
@@ -23,8 +23,10 @@ const ChatApp = () => {
   const [allParticipants, setAllParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // État pour la recherche de contacts
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const contactsListRef = useRef(null); // Référence pour la liste des contacts
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -32,7 +34,7 @@ const ChatApp = () => {
   };
 
   const handleResize = debounce(() => {
-
+    // Gérer le redimensionnement de la fenêtre si nécessaire
   }, 250);
 
   window.addEventListener('resize', handleResize);
@@ -217,6 +219,14 @@ const ChatApp = () => {
     setAnchorEl(null);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  const filteredParticipants = allParticipants.filter((participant) =>
+    participant.name.toLowerCase().includes(searchQuery)
+  );
+
   const renderFilePreview = (msg) => {
     if (!msg.file) return null;
     if (msg.fileType?.startsWith('image/')) {
@@ -271,23 +281,36 @@ const ChatApp = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, pt: 16 }} className="chat-app-container">
- {/* Ajout de padding-top pour éviter que le contenu soit masqué par la navbar */}
       <Box
         display="flex"
         gap={2}
         height="80vh"
         sx={{
-          flexDirection: 'row', // default direction
-          '@media (max-width: 768px)': {
-            flexDirection: 'column', // stack items vertically on small screens
-          },
+          flexDirection: { xs: 'column', md: 'row' }, // Stack vertically on small screens, horizontally on medium and larger screens
         }}
       >
         {/* Contacts List */}
-        <Paper elevation={3} sx={{ width: 300, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px', flexShrink: 0 }} className="chat-app-sidebar">
+        <Paper elevation={3} sx={{ width: { xs: '100%', md: 300 }, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px', flexShrink: 0 }} className="chat-app-sidebar">
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
             Contacts
           </Typography>
+          {/* Search Bar */}
+          <TextField
+            fullWidth
+            placeholder="Search contacts..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            variant="outlined"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
           {loading ? (
             <Box display="flex" justifyContent="center" mt={2}>
               <CircularProgress />
@@ -296,31 +319,49 @@ const ChatApp = () => {
             <Typography color="error" align="center" mt={2}>
               {error}
             </Typography>
-          ) : allParticipants.length === 0 ? (
+          ) : filteredParticipants.length === 0 ? (
             <Typography color="textSecondary" align="center" mt={2}>
               No contacts found
             </Typography>
           ) : (
-            <List>
-              {allParticipants.map(participant => (
-                <ListItem button key={participant.id} onClick={() => setSelectedUser(participant)} selected={selectedUser?.id === participant.id} sx={{ borderRadius: '8px', mb: 1 }}>
-                  <Avatar src={participant.profileImage} sx={{ mr: 2 }}>
-                    {!participant.profileImage && participant.name[0].toUpperCase()}
-                  </Avatar>
-                  <Box>
-                    <Typography sx={{ fontWeight: 'bold' }}>{participant.name}</Typography>
-                    <Typography variant="caption" color="textSecondary">
-                      {participant.type === 'provider' ? 'Service Provider' : 'User'}
-                    </Typography>
-                  </Box>
-                </ListItem>
-              ))}
-            </List>
+            <Box
+              ref={contactsListRef}
+              sx={{
+                overflowY: 'auto',
+                maxHeight: 'calc(80vh - 200px)', // Ajustez la hauteur en fonction de la taille de l'écran
+                '&::-webkit-scrollbar': {
+                  width: '0.4em',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: '#f1f1f1',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: '#888',
+                },
+              }}
+            >
+              <List>
+                {filteredParticipants.map(participant => (
+                  <ListItem button key={participant.id} onClick={() => setSelectedUser(participant)} selected={selectedUser?.id === participant.id} sx={{ borderRadius: '8px', mb: 1 }}>
+                    <Avatar src={participant.profileImage} sx={{ mr: 2 }}>
+                      {!participant.profileImage && participant.name[0].toUpperCase()}
+                    </Avatar>
+                    <Box>
+                      <Typography sx={{ fontWeight: 'bold' }}>{participant.name}</Typography>
+                      <Typography variant="caption" color="textSecondary">
+                        {participant.type === 'provider' ? 'Service Provider' : 'User'}
+                      </Typography>
+                    </Box>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
           )}
         </Paper>
 
         {/* Chat Area */}
-        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px', flexShrink: 0 }} className="chat-app-window">          {selectedUser ? (
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px', flexShrink: 0, minHeight: '400px' }} className="chat-app-window">
+          {selectedUser ? (
             <>
               {/* Chat Header */}
               <Box display="flex" alignItems="center" mb={2} p={1} bgcolor="background.default" borderRadius={1}>
@@ -341,6 +382,7 @@ const ChatApp = () => {
                 overflow="auto"
                 mb={2}
                 sx={{
+                  maxHeight: 'calc(80vh - 300px)', // Ajustez la hauteur en fonction de la taille de l'écran
                   '&::-webkit-scrollbar': {
                     width: '0.4em',
                   },
@@ -378,7 +420,7 @@ const ChatApp = () => {
 
               {/* Message Input Area */}
               <Box display="flex" gap={1} alignItems="center" className="chat-app-input-area">
-              <TextField
+                <TextField
                   fullWidth
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -388,19 +430,19 @@ const ChatApp = () => {
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                   multiline
                   maxRows={4}
-                  sx={{ bgcolor: '#f5f5f5', borderRadius: '8px' }}    className="chat-app-textfield"
-
+                  sx={{ bgcolor: '#f5f5f5', borderRadius: '8px' }}
+                  className="chat-app-textfield"
                 />
                 <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} color="primary">
                   <EmojiEmotionsIcon />
                 </IconButton>
                 <input ref={fileInputRef} type="file" onChange={handleFileChange} style={{ display: 'none' }} id="file-upload" />
                 <label htmlFor="file-upload">
-                <IconButton component="span" color="primary" className="chat-app-file-button">                    <AttachFileIcon />
+                  <IconButton component="span" color="primary" className="chat-app-file-button">
+                    <AttachFileIcon />
                   </IconButton>
                 </label>
-                <IconButton color="primary" onClick={sendMessage} disabled={!message.trim() && !file}     className="chat-app-send-button"
->
+                <IconButton color="primary" onClick={sendMessage} disabled={!message.trim() && !file} className="chat-app-send-button">
                   <SendIcon />
                 </IconButton>
                 <Popover

@@ -23,13 +23,19 @@ const ContactForm = ({ onClose }) => {
     const userID = process.env.REACT_APP_EMAILJS_USER_ID;
 
     // Envoi de l'e-mail via EmailJS
-    emailjs.send(serviceID, templateID, {
-      from_name: name,
-      from_email: email,
-      phone, // Ajout du numéro de téléphone dans le courriel
-      message,
-    }, userID)
-      .then(response => {
+    emailjs
+      .send(
+        serviceID,
+        templateID,
+        {
+          from_name: name,
+          from_email: email,
+          phone, // Ajout du numéro de téléphone dans le courriel
+          message,
+        },
+        userID
+      )
+      .then((response) => {
         console.log('E-mail envoyé!', response);
         // Afficher le message de succès
         setIsSuccess(true);
@@ -43,16 +49,16 @@ const ContactForm = ({ onClose }) => {
           onClose();
         }, 3000);
       })
-      .catch(error => {
-        console.error('Erreur lors de l\'envoi de l\'email:', error);
+      .catch((error) => {
+        console.error("Erreur lors de l'envoi de l'email:", error);
       });
   };
 
   return (
-    <div className="bg-[rgb(217,237,247)] min-h-[800px] p-12 pt-20 w-full flex items-center justify-center">
+    <div className="bg-[rgb(217,237,247)] min-h-screen p-4 sm:p-8 md:p-12 pt-20 w-full flex items-center justify-center">
       <div className="max-w-xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-[rgb(51,77,102)] mb-6">Contact Us</h1>
+        <div className="p-6 sm:p-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[rgb(51,77,102)] mb-6">Contact Us</h1>
           {isSuccess && (
             <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
               Votre message a été envoyé avec succès !
@@ -60,52 +66,60 @@ const ContactForm = ({ onClose }) => {
           )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-lg font-medium text-[rgb(51,77,102)]">Name</label>
+              <label htmlFor="name" className="block text-lg font-medium text-[rgb(51,77,102)]">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50 p-2 sm:p-3"
                 required
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-lg font-medium text-[rgb(51,77,102)]">Email</label>
+              <label htmlFor="email" className="block text-lg font-medium text-[rgb(51,77,102)]">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50 p-2 sm:p-3"
                 required
               />
             </div>
             <div>
-              <label htmlFor="phone" className="block text-lg font-medium text-[rgb(51,77,102)]">Phone</label>
+              <label htmlFor="phone" className="block text-lg font-medium text-[rgb(51,77,102)]">
+                Phone
+              </label>
               <input
                 type="tel"
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50 p-2 sm:p-3"
                 required
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-lg font-medium text-[rgb(51,77,102)]">Message</label>
+              <label htmlFor="message" className="block text-lg font-medium text-[rgb(51,77,102)]">
+                Message
+              </label>
               <textarea
                 id="message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[rgb(102,148,191)] focus:ring focus:ring-[rgb(102,148,191)] focus:ring-opacity-50 p-2 sm:p-3"
                 rows="4"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full py-3 px-6 bg-[rgb(102,148,191)] text-white rounded-full hover:bg-[rgb(51,77,102)] transition-colors text-xl font-semibold shadow-md"
+              className="w-full py-3 px-6 bg-[rgb(102,148,191)] text-white rounded-full hover:bg-[rgb(51,77,102)] transition-colors text-lg sm:text-xl font-semibold shadow-md"
             >
               Submit
             </button>
@@ -118,7 +132,7 @@ const ContactForm = ({ onClose }) => {
 
 // Validation des props
 ContactForm.propTypes = {
-  onClose: PropTypes.func.isRequired,  // onClose est une fonction obligatoire
+  onClose: PropTypes.func.isRequired, // onClose est une fonction obligatoire
 };
 
 export default ContactForm;

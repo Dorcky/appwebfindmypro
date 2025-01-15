@@ -221,6 +221,7 @@ const ServiceProviderAvailabilityView = () => {
             {/* Calendar Section */}
             <div className="lg:w-3/5">
               <div className="bg-white rounded-xl shadow-sm p-4">
+                {/* Commentaire : Vous pouvez ajuster la taille du calendrier ici */}
                 <FullCalendar
                   plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                   initialView="dayGridMonth"
@@ -231,6 +232,12 @@ const ServiceProviderAvailabilityView = () => {
                   }}
                   dateClick={handleDateClick}
                   height="auto"
+                  // Commentaire : Réduire la taille du mois et de l'année dans l'en-tête
+                  titleFormat={{ year: 'numeric', month: 'short' }}
+                  // Commentaire : Donner une forme carrée au contenu du calendrier
+                  aspectRatio={1}
+                  // Commentaire : Réduire encore plus la taille du calendrier
+                  contentHeight="auto"
                   dayCellClassNames={(arg) => {
                     const dateStr = arg.date.toISOString().split('T')[0];
                     const today = new Date();
@@ -258,7 +265,7 @@ const ServiceProviderAvailabilityView = () => {
                 <h3 className="text-xl font-medium mb-4" style={{ color: '#334C66' }}>
                   Créneaux disponibles pour le {selectedDate?.toLocaleDateString()}
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {timeSlots.map((slot) => (
                     <button
                       key={slot.id}
@@ -309,6 +316,8 @@ const ServiceProviderAvailabilityView = () => {
           }
         `}
       </style>
+
+      
     </div>
   );
 };
