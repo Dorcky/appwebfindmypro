@@ -153,7 +153,7 @@ const FavoritesView = () => {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-[#334C66] text-center mb-12 mt-20" >Mes Prestataires Favoris</h1>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
           <div className="relative w-full sm:w-2/3 mb-4 sm:mb-0">
             <input
               type="text"
@@ -165,7 +165,7 @@ const FavoritesView = () => {
             <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-3 text-[#A0C3E8]" />
           </div>
           <button
-            className="w-full sm:w-auto px-6 py-2 bg-[#669BC2] text-white rounded-full hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
+            className="w-full sm:w-auto px-6 py-3 bg-[#669BC2] text-white rounded-full hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
             onClick={handleDeleteAllFavorites}
           >
             <FontAwesomeIcon icon={faTrash} className="mr-2" />
