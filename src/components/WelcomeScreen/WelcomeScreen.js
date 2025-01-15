@@ -45,14 +45,14 @@ const WelcomeScreen = () => {
               </button>
 
               <button
-                    onClick={(e) => {
-                      e.stopPropagation(); // Empêche la fermeture du modal
-                      setLoginModalOpen(true);
-                    }}
-                    className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
-                  >
-                    Connexion
-                  </button>
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLoginModalOpen(true);
+                }}
+                className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
+              >
+                Connexion
+              </button>
 
               <button
                 onClick={() => setSignupModalOpen(true)}
@@ -66,7 +66,11 @@ const WelcomeScreen = () => {
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden flex items-center"
             >
-              <Menu className="h-6 w-6 text-gray" />
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6 text-gray" />
+              ) : (
+                <Menu className="h-6 w-6 text-gray" />
+              )}
             </button>
           </div>
         </div>
@@ -147,22 +151,21 @@ const WelcomeScreen = () => {
         />
       </Modal>
 
-
       {/* Hero Section */}
       <section className="pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-5xl font-bold text-dark-blue mb-6">
+              <h1 className="text-4xl sm:text-5xl font-bold text-dark-blue mb-6">
                 Réservation Simplifiée
               </h1>
-              <p className="text-xl text-gray mb-8">
+              <p className="text-lg sm:text-xl text-gray mb-8">
                 Bienvenue sur FindMyPro, votre application de gestion de rendez-vous avec des
                 prestataires de services.
               </p>
               <button
                 onClick={() => setSignupModalOpen(true)}
-                className="px-8 py-4 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition shadow-lg"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition shadow-lg"
               >
                 Commencer
               </button>
@@ -184,8 +187,8 @@ const WelcomeScreen = () => {
               <img src={mecanic} alt="app interface" className="relative rounded-lg shadow-xl" />
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="text-4xl font-bold text-dark-blue mb-6">À propos de FindMyPro</h2>
-              <p className="text-xl text-gray mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold text-dark-blue mb-6">À propos de FindMyPro</h2>
+              <p className="text-lg sm:text-xl text-gray mb-8">
                 FindMyPro est la solution ultime pour organiser vos rendez-vous avec des
                 prestataires de services. Notre application est conçue pour simplifier votre
                 processus de planification et améliorer votre expérience globale.
@@ -201,9 +204,9 @@ const WelcomeScreen = () => {
       {/* Testimonials */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center text-dark-blue mb-12">Témoignages</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-dark-blue mb-12">Témoignages</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-light-blue rounded-full flex items-center justify-center">
                   <span className="text-xl font-bold text-dark-blue">SJ</span>
@@ -218,7 +221,7 @@ const WelcomeScreen = () => {
                 dont je gère mes réservations de services."
               </p>
             </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-light-blue rounded-full flex items-center justify-center">
                   <span className="text-xl font-bold text-dark-blue">JS</span>

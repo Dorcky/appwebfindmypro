@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { getMessaging } from 'firebase/messaging'; // Ajout de l'importation de messaging
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,6 +27,7 @@ if (getApps().length === 0) {
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+const messaging = getMessaging(app); // Initialisation de messaging
 
 // Export des services nécessaires
-export { auth, db, storage };
+export { auth, db, storage, messaging }; // Ajout de messaging dans les exports

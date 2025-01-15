@@ -5,12 +5,13 @@ import { Box, Container, Paper, TextField, Button, List, ListItem, Typography, A
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import SearchIcon from '@mui/icons-material/Search'; // Ajout de l'icône de recherche
+import SearchIcon from '@mui/icons-material/Search';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
-import { db, storage } from '../firebaseConfig';
+import { db, storage, messaging } from '../firebaseConfig';
 import { collection, doc, getDocs, setDoc, query, onSnapshot, orderBy, Timestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getToken, onMessage } from 'firebase/messaging';
 import { debounce } from 'lodash';
 
 const ChatApp = () => {
@@ -23,19 +24,16 @@ const ChatApp = () => {
   const [allParticipants, setAllParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(''); // État pour la recherche de contacts
+  const [searchQuery, setSearchQuery] = useState('');
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
-  const contactsListRef = useRef(null); // Référence pour la liste des contacts
+  const contactsListRef = useRef(null);
 
-  // Scroll to bottom of messages
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleResize = debounce(() => {
-    // Gérer le redimensionnement de la fenêtre si nécessaire
-  }, 250);
+  const handleResize = debounce(() => {}, 250);
 
   window.addEventListener('resize', handleResize);
 
@@ -43,7 +41,6 @@ const ChatApp = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Reset state when auth state changes
   useEffect(() => {
     if (!currentUser) {
       setSelectedUser(null);
@@ -52,7 +49,6 @@ const ChatApp = () => {
     }
   }, [currentUser]);
 
-  // Load participants when auth is ready
   useEffect(() => {
     const loadData = async () => {
       if (currentUser && !authLoading) {
@@ -71,7 +67,6 @@ const ChatApp = () => {
     loadData();
   }, [currentUser, authLoading]);
 
-  // Load messages when selected user changes
   useEffect(() => {
     let unsubscribe = null;
     const setupMessageListener = async () => {
@@ -100,7 +95,6 @@ const ChatApp = () => {
       throw new Error('User data is incomplete');
     }
     try {
-      // Charger tous les utilisateurs
       const usersRef = collection(db, 'normal_users');
       const usersSnapshot = await getDocs(usersRef);
       const usersList = usersSnapshot.docs.map(doc => ({
@@ -111,7 +105,6 @@ const ChatApp = () => {
         profileImage: doc.data().profileImageURL || null,
       }));
 
-      // Charger tous les providers
       const providersRef = collection(db, 'service_providers');
       const providersSnapshot = await getDocs(providersRef);
       const providersList = providersSnapshot.docs.map(doc => ({
@@ -122,9 +115,7 @@ const ChatApp = () => {
         profileImage: doc.data().profileImageURL || null,
       }));
 
-      // Filtrer les participants en fonction du rôle de l'utilisateur actuel
       if (currentUser.role === 'provider') {
-        // Pour les providers, ne montrer que les utilisateurs ayant déjà envoyé un message
         const filteredUsers = [];
         for (const user of usersList) {
           const chatId = getChatId(currentUser.id, user.id);
@@ -136,10 +127,9 @@ const ChatApp = () => {
         }
         setAllParticipants(filteredUsers);
       } else if (currentUser.role === 'user') {
-        // Pour les utilisateurs, ne montrer que les providers
         setAllParticipants(providersList);
       } else {
-        setAllParticipants([]); // Par défaut, aucun participant
+        setAllParticipants([]);
       }
     } catch (error) {
       console.error('Error in loadParticipants:', error);
@@ -164,21 +154,47 @@ const ChatApp = () => {
     }
   };
 
+  const registerFCMToken = async (userId) => {
+    try {
+      const permission = await Notification.requestPermission();
+      console.log('Notification permission:', permission);  // Log pour vérifier la permission
+      if (permission === 'granted') {
+        const token = await getToken(messaging, {
+          vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY
+        });
+        
+        await setDoc(doc(db, 'users', userId), {
+          fcmToken: token
+        }, { merge: true });
+        
+        console.log('Token FCM enregistré:', token);
+      } else {
+        console.log('Notification permission denied');  // Log si la permission est refusée
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement du token FCM:', error);
+    }
+  };
+
   const sendMessage = async () => {
     if ((!message.trim() && !file) || !selectedUser || !currentUser) {
       return;
     }
+
     try {
       let fileUrl = null;
       let fileName = null;
       let fileType = null;
+
       if (file) {
         fileUrl = await handleFileUpload(file);
         fileName = file.name;
         fileType = file.type;
       }
+
       const chatId = getChatId(currentUser.id, selectedUser.id);
       if (!chatId) return;
+
       const newMessage = {
         senderId: currentUser.id,
         receiverId: selectedUser.id,
@@ -189,14 +205,57 @@ const ChatApp = () => {
         timestamp: Timestamp.now(),
         status: { is_sent: true, is_delivered: false, is_read: false },
         participants: [currentUser.id, selectedUser.id],
+        senderName: currentUser.name || 'Unknown User',
+        notificationSent: false,
       };
+
       const messageRef = doc(collection(db, `chats/${chatId}/messages`));
       await setDoc(messageRef, newMessage);
+
+      // Show notification only if we have permission and the app isn't focused
+      if (Notification.permission === 'granted' && !document.hasFocus()) {
+        try {
+          // Get receiver's FCM token
+          const receiverDoc = await getDoc(doc(db, 'users', selectedUser.id));
+          const receiverData = receiverDoc.data();
+          
+          if (receiverData?.fcmToken) {
+            // Create notification content
+            const notificationContent = {
+              title: `New message from ${currentUser.name || 'Unknown User'}`,
+              body: message.trim() || 'New message received',
+              icon: currentUser.profileImage || '/default-avatar.png',
+              data: {
+                chatId,
+                senderId: currentUser.id,
+                type: 'chat_message'
+              }
+            };
+
+            // Show local notification
+            new Notification(notificationContent.title, {
+              body: notificationContent.body,
+              icon: notificationContent.icon,
+              tag: chatId, // Prevent duplicate notifications
+              requireInteraction: true // Keep notification until user interacts
+            });
+          }
+        } catch (error) {
+          console.error('Error sending notification:', error);
+          // Continue with message sending even if notification fails
+        }
+      }
+
+      // Update message status
+      await setDoc(messageRef, { ...newMessage, notificationSent: true }, { merge: true });
+
+      // Clear input fields
       setMessage('');
       setFile(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+
     } catch (error) {
       console.error('Error sending message:', error);
       setError('Failed to send message. Please try again.');
@@ -251,6 +310,51 @@ const ChatApp = () => {
     );
   };
 
+  useEffect(() => {
+    if (currentUser?.id) {
+      // Enregistrer le token FCM
+      registerFCMToken(currentUser.id);
+
+      // Gérer les notifications reçues lorsque l'application est au premier plan
+      const unsubscribe = onMessage(messaging, (payload) => {
+        console.log('Message reçu en premier plan:', payload);
+
+        if (Notification.permission === 'granted') {
+          // Créer une notification
+          const notification = new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: '/path/to/icon.png', // Remplacez par le chemin de votre icône
+            data: payload.data, // Inclure les données supplémentaires pour le clic
+          });
+
+          // Gérer le clic sur la notification
+          notification.onclick = (event) => {
+            event.preventDefault();
+            console.log('Notification cliquée:', payload);
+
+            if (payload.data?.chatId) {
+              window.location.href = `/chat/${payload.data.chatId}`;
+            } else {
+              window.focus(); // Ramener l'application au premier plan
+            }
+
+            // Fermer la notification
+            notification.close();
+          };
+        } else {
+          console.warn('Les notifications ne sont pas autorisées.');
+        }
+      });
+
+      // Nettoyer l'écouteur lors du démontage du composant
+      return () => {
+        if (unsubscribe) {
+          unsubscribe();
+        }
+      };
+    }
+  }, [currentUser]);
+
   if (authLoading) {
     return (
       <Container maxWidth="lg" sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -286,15 +390,13 @@ const ChatApp = () => {
         gap={2}
         height="80vh"
         sx={{
-          flexDirection: { xs: 'column', md: 'row' }, // Stack vertically on small screens, horizontally on medium and larger screens
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        {/* Contacts List */}
         <Paper elevation={3} sx={{ width: { xs: '100%', md: 300 }, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px', flexShrink: 0 }} className="chat-app-sidebar">
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
             Contacts
           </Typography>
-          {/* Search Bar */}
           <TextField
             fullWidth
             placeholder="Search contacts..."
@@ -328,7 +430,7 @@ const ChatApp = () => {
               ref={contactsListRef}
               sx={{
                 overflowY: 'auto',
-                maxHeight: 'calc(80vh - 200px)', // Ajustez la hauteur en fonction de la taille de l'écran
+                maxHeight: 'calc(80vh - 200px)',
                 '&::-webkit-scrollbar': {
                   width: '0.4em',
                 },
@@ -359,11 +461,9 @@ const ChatApp = () => {
           )}
         </Paper>
 
-        {/* Chat Area */}
         <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column', bgcolor: '#fff', borderRadius: '16px', flexShrink: 0, minHeight: '400px' }} className="chat-app-window">
           {selectedUser ? (
             <>
-              {/* Chat Header */}
               <Box display="flex" alignItems="center" mb={2} p={1} bgcolor="background.default" borderRadius={1}>
                 <Avatar src={selectedUser.profileImage} sx={{ mr: 2 }}>
                   {!selectedUser.profileImage && selectedUser.name[0].toUpperCase()}
@@ -376,13 +476,12 @@ const ChatApp = () => {
                 </Box>
               </Box>
 
-              {/* Messages Area */}
               <Box
                 flex={1}
                 overflow="auto"
                 mb={2}
                 sx={{
-                  maxHeight: 'calc(80vh - 300px)', // Ajustez la hauteur en fonction de la taille de l'écran
+                  maxHeight: 'calc(80vh - 300px)',
                   '&::-webkit-scrollbar': {
                     width: '0.4em',
                   },
@@ -418,7 +517,6 @@ const ChatApp = () => {
                 <div ref={messagesEndRef} />
               </Box>
 
-              {/* Message Input Area */}
               <Box display="flex" gap={1} alignItems="center" className="chat-app-input-area">
                 <TextField
                   fullWidth
