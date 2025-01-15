@@ -279,7 +279,7 @@ const SearchProviderView = () => {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-16">
-        <div className="flex gap-2 bg-white rounded-xl shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
+        <div className="flex flex-col md:flex-row gap-2 bg-white rounded-xl shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
           <input
             type="text"
             placeholder="Rechercher un prestataire..."
@@ -323,7 +323,7 @@ const SearchProviderView = () => {
                 key={provider.id}
                 className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <div className="flex items-center">
+                <div className="flex flex-col md:flex-row items-center">
                   <img
                     src={provider.profileImageURL}
                     alt={provider.name}
@@ -346,8 +346,8 @@ const SearchProviderView = () => {
                         </span>
                       )}
                     </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                      <div className="flex items-center mb-4 md:mb-0">
                         <RatingStars rating={reviews[provider.id]?.averageRating || 0} />
                         <span className="ml-2 text-gray-600">({reviews[provider.id]?.averageRating?.toFixed(1) || 0})</span>
                       </div>

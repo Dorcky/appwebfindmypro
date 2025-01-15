@@ -197,36 +197,35 @@ const MyProviderProfile = () => {
   }
 
   return (
-    <div className="bg-[rgb(217,237,247)] min-h-screen p-12">
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-20">
+    <div className="bg-[rgb(217,237,247)] min-h-screen p-4 sm:p-8 md:p-12">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-10 md:mt-20">
         <div className="flex flex-col md:flex-row">
           {/* Colonne de gauche : Photo et boutons */}
-          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-8 flex flex-col items-center justify-center space-y-6">
-            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-6 md:p-8 flex flex-col items-center justify-center space-y-4 md:space-y-6">
+            <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
               <img
                 src={profile.profileImageURL || "/api/placeholder/192/192"}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
-            <h1 className="text-3xl font-bold text-white text-center">{profile.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-white text-center">{profile.name}</h1>
             <button
               onClick={() => setIsEditing(true)}
-              className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+              className="w-full py-2 px-4 md:py-3 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
             >
               Edit Profile
             </button>
-            <button className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-lg font-semibold shadow-md">
+            <button className="w-full py-2 px-4 md:py-3 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-base md:text-lg font-semibold shadow-md">
               Change Password
             </button>
           </div>
 
           {/* Colonne de droite : Informations */}
-          <div className="w-full md:w-2/3 p-8">
-
-            <h2 className="text-4xl font-bold text-[rgb(51,77,102)] mb-8">My Profile</h2>
+          <div className="w-full md:w-2/3 p-6 md:p-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-[rgb(51,77,102)] mb-6 md:mb-8">My Profile</h2>
             {!isEditing ? (
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.name}</p>
@@ -255,7 +254,7 @@ const MyProviderProfile = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label htmlFor="name" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</label>
                   <input
@@ -355,14 +354,14 @@ const MyProviderProfile = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3 px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-lg font-semibold shadow-md"
+                    className="w-full py-2 px-4 md:py-3 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-base md:text-lg font-semibold shadow-md"
                   >
                     {isLoading ? 'Saving...' : 'Save'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="w-full py-3 px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-lg font-semibold shadow-md"
+                    className="w-full py-2 px-4 md:py-3 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
                   >
                     Cancel
                   </button>
