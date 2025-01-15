@@ -2,9 +2,10 @@
 .navbar-link {
   color: #4a5568; /* gray */
   transition: color 0.3s ease, background-color 0.3s ease;
-  padding: 8px 12px;
+  padding: 8px 7px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 0.85rem
 }
 
 .navbar-link:hover {

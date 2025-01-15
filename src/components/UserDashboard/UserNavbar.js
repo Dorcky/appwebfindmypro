@@ -47,7 +47,7 @@ function UserNavbar() {
           </div>
 
           {/* Menu pour les écrans larges */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-4">
             <span
               className={`navbar-link ${activeLink === 'profile' ? 'active' : ''}`}
               onClick={() => navigate('/user-profile')}
@@ -95,7 +95,7 @@ function UserNavbar() {
           {/* Bouton hamburger pour les écrans mobiles */}
           <button
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex items-center"
+            className="lg:hidden flex items-center"
           >
             {isMobileMenuOpen ? (
               <X className="h-6 w-6 text-gray hover:text-dark-blue transition" />
@@ -108,7 +108,7 @@ function UserNavbar() {
 
       {/* Menu mobile */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t">
+        <div className="lg:hidden bg-white border-t">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <span
               className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
