@@ -280,11 +280,11 @@ const ChatApp = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, pt: 16 }} className="chat-app-container">
+    <Container maxWidth="lg" sx={{ mt: 0, pt: 16 }} className="chat-app-container">
       <Box
         display="flex"
         gap={2}
-        height="80vh"
+        height="70vh"
         sx={{
           flexDirection: { xs: 'column', md: 'row' }, // Stack vertically on small screens, horizontally on medium and larger screens
         }}

@@ -116,8 +116,8 @@ const UserProfileView = () => {
   if (!userData) return <div>Chargement...</div>;
 
   return (
-    <div className="bg-[rgb(217,237,247)] min-h-screen p-4 md:p-12 pt-20 w-full">
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div className="bg-[rgb(217,237,247)] min-h-screen px-4 pt-28 w-full">
+      <div className="max-w-5xl mx-auto mb-8 bg-white rounded-xl shadow-2xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Colonne de gauche : Photo et boutons */}
           <div className="w-full md:w-1/3 bg-[rgb(102,148,191)] p-6 md:p-8 flex flex-col items-center justify-center space-y-4 md:space-y-6">
@@ -130,12 +130,12 @@ const UserProfileView = () => {
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-white text-center">{userData.fullName}</h1>
             <button
-              className="w-full py-2 md:py-3 px-4 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
+              className="w-full py-3 px-4 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
               onClick={handleEdit}
             >
               Edit Profile
             </button>
-            <button className="w-full py-2 md:py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-base md:text-lg font-semibold shadow-md">
+            <button className="w-full py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-base md:text-lg font-semibold shadow-md">
               Change Password
             </button>
           </div>
