@@ -117,6 +117,16 @@ const ServiceProviderAvailabilityView = () => {
     setConfirmedSlot('');
   };
 
+  const formatDateToFrench = (date) => {
+    if (!date) return '';
+    return date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'Europe/Paris'
+    });
+  };
+
   const isDateAvailable = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -261,9 +271,9 @@ const ServiceProviderAvailabilityView = () => {
 
             {/* Time Slots Section */}
             <div className={`lg:w-2/5 ${showSlots ? '' : 'hidden'}`}>
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-xl font-medium mb-4" style={{ color: '#334C66' }}>
-                  Créneaux disponibles pour le {selectedDate?.toLocaleDateString()}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <h3 className="text-xl font-medium mb-4" style={{ color: '#334C66' }}>
+                Créneaux disponibles pour le {formatDateToFrench(selectedDate)}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {timeSlots.map((slot) => (

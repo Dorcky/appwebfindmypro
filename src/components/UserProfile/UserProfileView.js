@@ -84,22 +84,37 @@ const UserProfileView = () => {
       const user = auth.currentUser;
       if (user) {
         const userRef = doc(db, 'normal_users', user.uid);
+        console.log("Données à sauvegarder :", formData);
+  
+        // Si une image de profil est sélectionnée, téléchargez-la et mettez à jour Firestore avec l'URL
+        let profileImageURL = userData.profileImageURL; // Conserver l'ancienne URL si l'image n'a pas été changée
+  
         if (profileImage) {
-          await uploadProfileImage(profileImage, storage, formData, userRef);
-        } else {
-          await updateDoc(userRef, formData);
+          // Téléchargement de l'image et récupération de l'URL
+          profileImageURL = await uploadProfileImage(profileImage, storage, formData, userRef);
         }
-        setUserData((prevData) => ({
+  
+        // Mise à jour des données utilisateur dans Firestore (y compris l'URL de l'image si l'image a été changée)
+        await updateDoc(userRef, {
+          ...formData,
+          profileImageURL, // Inclure l'URL de l'image si elle a été mise à jour
+        });
+  
+        // Mise à jour immédiate du state pour refléter les changements
+        setUserData(prevData => ({
           ...prevData,
           ...formData,
+          profileImageURL, // Inclure l'URL de l'image dans le state aussi
         }));
-        setIsEditing(false);
+  
+        setIsEditing(false); // Désactive le mode édition
+        console.log("Profil mis à jour avec succès.");
       }
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du profil', error);
+      console.error("Erreur lors de la mise à jour du profil", error);
     }
   };
-
+  
   // Fonction pour passer en mode édition
   const handleEdit = () => {
     setIsEditing(true);
@@ -211,6 +226,7 @@ const UserProfileView = () => {
                       type="checkbox"
                       checked={formData.notificationsEnabled}
                       onChange={() =>
+
                         setFormData({ ...formData, notificationsEnabled: !formData.notificationsEnabled })
                       }
                     />
