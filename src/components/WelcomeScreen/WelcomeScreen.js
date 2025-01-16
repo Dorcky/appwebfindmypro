@@ -31,7 +31,7 @@ const WelcomeScreen = () => {
               <a href="#" className="text-gray hover:text-dark-blue transition">
                 Accueil
               </a>
-              <a href="#" className="text-gray hover:text-dark-blue transition">
+              <a href="#about" className="text-gray hover:text-dark-blue transition">
                 À propos
               </a>
               <a href="#" className="text-gray hover:text-dark-blue transition">
@@ -179,7 +179,7 @@ const WelcomeScreen = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-24 bg-white">
+      <section id="about" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative order-2 md:order-1">
