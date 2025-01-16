@@ -70,7 +70,35 @@
       "signup": "Sign Up",
       "alreadyHaveAccount": "Already have an account?",
       "login": "Login"
+    },
+"signup_screen": {
+    "title": "Create an Account",
+    "account_type_selection": {
+      "title": "What type of account would you like to create?",
+      "user_button": "User looking for a service",
+      "provider_button": "Service provider"
+    },
+    "form": {
+      "full_name_placeholder": "Full Name",
+      "email_placeholder": "Email",
+      "password_placeholder": "Password",
+      "confirm_password_placeholder": "Confirm Password",
+      "address_placeholder": "Address",
+      "phone_number_placeholder": "Phone Number",
+      "service_description_placeholder": "Your service description",
+      "hourly_rate_placeholder": "Hourly Rate (€)",
+      "website_placeholder": "Website (optional)",
+      "submit_button": "Sign Up",
+      "already_account": "Already have an account?",
+      "login_link": "Log In"
+    },
+    "error_messages": {
+      "password_mismatch": "Passwords do not match.",
+      "signup_error": "An error occurred during signup.",
+      "email_verification": "Account created successfully! Please verify your email."
     }
+  }
+
   }
 
   

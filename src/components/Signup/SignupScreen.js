@@ -7,6 +7,7 @@ import { loadGoogleMapsScript } from "../utils/googleMaps";
 import "./SignupScreen.css";
 import logo from "../../assets/images/logo.png";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 const SignupScreen = ({ onClose, onLoginClick }) => {
   const [fullName, setFullName] = useState("");
@@ -26,6 +27,7 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
   const navigate = useNavigate();
   const autocompleteRef = useRef(null);
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadGoogleMapsScript(() => {
@@ -71,7 +73,7 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setErrorMessage("Les mots de passe ne correspondent pas.");
+      setErrorMessage(t('signup_screen.error_messages.password_mismatch'));
       return;
     }
 
@@ -130,11 +132,11 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
       }
 
       await sendEmailVerification(user);
-      alert("Compte créé avec succès ! Veuillez vérifier votre email.");
+      alert(t('signup_screen.error_messages.email_verification'));
       onClose(); // Ferme le modal après l'inscription
     } catch (error) {
       console.error("Signup error:", error);
-      setErrorMessage(error.message || "Une erreur est survenue lors de l'inscription.");
+      setErrorMessage(t('signup_screen.error_messages.signup_error'));
     }
   };
 
@@ -143,126 +145,57 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
       <div className="container">
         <div>
           <img src={logo} alt="Icon" className="icon" />
-          <h2 className="title">Quel type de compte souhaitez-vous créer ?</h2>
+          <h2 className="title">{t('signup_screen.account_type_selection.title')}</h2>
           <div className="account-type-container p-4 space-y-4">
             <button
               onClick={() => handleAccountTypeSelection(false)}
               className="py-3.5 px-5 bg-btn_primary text-white button"
             >
-              Utilisateur à la recherche de service
+              {t('signup_screen.account_type_selection.user_button')}
             </button>
             <button
               onClick={() => handleAccountTypeSelection(true)}
               className="py-3.5 px-5 bg-btn_primary text-white button"
             >
-              Prestataire de service
+              {t('signup_screen.account_type_selection.provider_button')}
             </button>
           </div>
         </div>
       </div>
     );
   }
-
+  
   return (
-    <div className="container">
+      <div className="container">
       <form className="signup-form" onSubmit={handleSignup}>
-        <h2 className="title">Créer un compte {isServiceProvider ? "Prestataire" : "Utilisateur"}</h2>
-        <input
-          type="text"
-          placeholder="Nom complet"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="input"
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="input"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="input"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirmer le mot de passe"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="input"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Adresse"
-          ref={inputRef}
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="input"
-          required
-        />
-        <input
-          type="tel"
-          placeholder="Numéro de téléphone"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          className="input"
-          required
-        />
+        <h2 className="title">{t('signup_screen.title')}</h2>
+        <input type="text" placeholder={t('signup_screen.form.full_name_placeholder')} value={fullName} onChange={(e) => setFullName(e.target.value)} className="input" required />
+        <input type="email" placeholder={t('signup_screen.form.email_placeholder')} value={email} onChange={(e) => setEmail(e.target.value)} className="input" required />
+        <input type="password" placeholder={t('signup_screen.form.password_placeholder')} value={password} onChange={(e) => setPassword(e.target.value)} className="input" required />
+        <input type="password" placeholder={t('signup_screen.form.confirm_password_placeholder')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input" required />
+        <input type="text" placeholder={t('signup_screen.form.address_placeholder')} value={address} onChange={(e) => setAddress(e.target.value)} className="input" required />
+        <input type="tel" placeholder={t('signup_screen.form.phone_number_placeholder')} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="input" required />
 
         {isServiceProvider && (
           <>
-            <textarea
-              placeholder="Description de vos services"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="input textarea"
-              required
-            />
-            <input
-              type="number"
-              placeholder="Tarif horaire (€)"
-              value={hourlyRate}
-              onChange={(e) => setHourlyRate(e.target.value)}
-              className="input"
-              required
-              min="0"
-              step="0.01"
-            />
-            <input
-              type="url"
-              placeholder="Site web (optionnel)"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              className="input"
-            />
+            <textarea placeholder={t('signup_screen.form.service_description_placeholder')} value={description} onChange={(e) => setDescription(e.target.value)} className="input textarea" required />
+            <input type="number" placeholder={t('signup_screen.form.hourly_rate_placeholder')} value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} className="input" required min="0" step="0.01" />
+            <input type="url" placeholder={t('signup_screen.form.website_placeholder')} value={website} onChange={(e) => setWebsite(e.target.value)} className="input" />
           </>
         )}
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <button type="submit" className="py-3.5 px-5 bg-btn_primary text-white mb-4 button">
-          S'inscrire
+          {t('signup_screen.form.submit_button')}
         </button>
 
         <div className="already-account">
-  <span>Déjà un compte ? </span>
-          <button
-            type="button"
-            className="login-link"
-            onClick={onLoginClick} // Appel de la fonction pour ouvrir le modal de connexion
-          >
-            Se connecter
+          <span>{t('signup_screen.form.already_account')} </span>
+          <button type="button" className="login-link" onClick={onLoginClick}>
+            {t('signup_screen.form.login_link')}
           </button>
         </div>
-
       </form>
     </div>
   );

@@ -71,7 +71,35 @@
       "signup": "Inscription",
       "alreadyHaveAccount": "Vous avez deja un compte?",
       "login": "Connexion"
+    },
+
+    "signup_screen": {
+    "title": "Créer un compte",
+    "account_type_selection": {
+      "title": "Quel type de compte souhaitez-vous créer ?",
+      "user_button": "Utilisateur à la recherche de service",
+      "provider_button": "Prestataire de service"
+    },
+    "form": {
+      "full_name_placeholder": "Nom complet",
+      "email_placeholder": "Email",
+      "password_placeholder": "Mot de passe",
+      "confirm_password_placeholder": "Confirmer le mot de passe",
+      "address_placeholder": "Adresse",
+      "phone_number_placeholder": "Numéro de téléphone",
+      "service_description_placeholder": "Description de vos services",
+      "hourly_rate_placeholder": "Tarif horaire (€)",
+      "website_placeholder": "Site web (optionnel)",
+      "submit_button": "S'inscrire",
+      "already_account": "Déjà un compte ?",
+      "login_link": "Se connecter"
+    },
+    "error_messages": {
+      "password_mismatch": "Les mots de passe ne correspondent pas.",
+      "signup_error": "Une erreur est survenue lors de l'inscription.",
+      "email_verification": "Compte créé avec succès ! Veuillez vérifier votre email."
     }
+  }
 
   }
   
