@@ -36,7 +36,7 @@ const ProfileHeaderView = React.memo(({ serviceProvider }) => {
       </div>
       <button
         onClick={handleMessageClick}
-        className="w-full md:w-auto bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] py-3 rounded-lg text-lg flex items-center justify-center"
+        className="w-full md:w-auto bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] px-4 py-3 rounded-lg text-lg flex items-center justify-center"
       >
         <MessageSquare className="w-4 h-4 mr-2" />
         Envoyer un Message
@@ -189,7 +189,7 @@ const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
   const navigate = useNavigate();
   return (
     <button
-      className="w-full md:w-auto bg-[rgb(102,148,191)] hover:bg-[rgb(81,118,153)] text-white py-3 rounded-lg text-lg flex items-center justify-center"
+      className="w-full md:w-auto bg-[rgb(102,148,191)] hover:bg-[rgb(81,118,153)] text-white px-4 py-3 rounded-lg text-lg flex items-center justify-center"
       onClick={() => navigate(`/service-provider-availability/${serviceProviderId}`)}
     >
       <Calendar className="w-4 h-4 mr-2" />
@@ -297,7 +297,7 @@ const MyProviderProfileView = () => {
           <div className="flex flex-col md:flex-row gap-4 pt-4">
             <AvailabilityButtonView serviceProviderId={serviceProviderId} />
             <button
-              className="w-full md:w-auto bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] py-3 rounded-lg text-lg flex items-center justify-center"
+              className="w-full md:w-auto bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)]  px-4 py-3 rounded-lg text-lg flex items-center justify-center"
               onClick={handleWriteReviewClick}
             >
               <Edit className="w-4 h-4 mr-2" />
