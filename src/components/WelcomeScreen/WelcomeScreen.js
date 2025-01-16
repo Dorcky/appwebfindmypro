@@ -8,12 +8,15 @@ import LoginScreen from "../loginscreen/LoginScreen";
 import SignupScreen from "../Signup/SignupScreen";
 import Modal from "../Modal/Modal";
 import ContactForm from "../ContactForm/ContactForm";
+import LanguageSwitcher from '../../locales/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const WelcomeScreen = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const [isContactModalOpen, setContactModalOpen] = useState(false);
+  const { t } = useTranslation(); // Initialisation de useTranslation
 
   return (
     <div className="min-h-screen bg-light-blue">
@@ -28,21 +31,21 @@ const WelcomeScreen = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray hover:text-dark-blue transition">
-                Accueil
-              </a>
-              <a href="#about" className="text-gray hover:text-dark-blue transition">
-                À propos
+            <a href="#about" className="text-gray hover:text-dark-blue transition">
+                {t('navbar.about')}
               </a>
               <a href="#" className="text-gray hover:text-dark-blue transition">
-                Services
+                {t('navbar.services')}
               </a>
               <button
                 onClick={() => setContactModalOpen(true)}
                 className="text-gray hover:text-dark-blue transition"
               >
-                Contact
+                {t('navbar.contact')}
               </button>
+
+              {/* Ajoutez le sélecteur de langue ici */}
+              <LanguageSwitcher />
 
               <button
                 onClick={(e) => {
@@ -51,14 +54,14 @@ const WelcomeScreen = () => {
                 }}
                 className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
               >
-                Connexion
+                {t('navbar.login')}
               </button>
 
               <button
                 onClick={() => setSignupModalOpen(true)}
                 className="px-4 py-2 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition"
               >
-                Inscription
+                {t('navbar.signup')}
               </button>
             </div>
 
@@ -83,38 +86,44 @@ const WelcomeScreen = () => {
                 href="#"
                 className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
               >
-                Accueil
+                {t('navbar.home')}
+              </a>
+              <a
+                href="#about"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
+                {t('navbar.about')}
               </a>
               <a
                 href="#"
                 className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
               >
-                À propos
-              </a>
-              <a
-                href="#"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
-              >
-                Services
+                {t('navbar.services')}
               </a>
               <button
                 onClick={() => setContactModalOpen(true)}
                 className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
               >
-                Contact
+                {t('navbar.contact')}
               </button>
+
+              {/* Ajoutez le sélecteur de langue ici */}
+              <div className="px-3 py-2">
+                <LanguageSwitcher />
+              </div>
+
               <div className="flex flex-col space-y-2 px-3 py-2">
                 <button
                   onClick={() => setLoginModalOpen(true)}
                   className="w-full px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue"
                 >
-                  Connexion
+                  {t('navbar.login')}
                 </button>
                 <button
                   onClick={() => setSignupModalOpen(true)}
                   className="w-full px-4 py-2 bg-medium-blue text-white rounded-lg hover:bg-dark-blue"
                 >
-                  Inscription
+                  {t('navbar.signup')}
                 </button>
               </div>
             </div>
@@ -134,14 +143,6 @@ const WelcomeScreen = () => {
       </Modal>
 
       <Modal isOpen={isSignupModalOpen} onClose={() => setSignupModalOpen(false)}>
-        <SignupScreen onClose={() => setSignupModalOpen(false)} />
-      </Modal>
-
-      <Modal isOpen={isContactModalOpen} onClose={() => setContactModalOpen(false)}>
-        <ContactForm onClose={() => setContactModalOpen(false)} />
-      </Modal>
-
-      <Modal isOpen={isSignupModalOpen} onClose={() => setSignupModalOpen(false)}>
         <SignupScreen
           onClose={() => setSignupModalOpen(false)}
           onLoginClick={() => {
@@ -151,23 +152,26 @@ const WelcomeScreen = () => {
         />
       </Modal>
 
+      <Modal isOpen={isContactModalOpen} onClose={() => setContactModalOpen(false)}>
+        <ContactForm onClose={() => setContactModalOpen(false)} />
+      </Modal>
+
       {/* Hero Section */}
       <section className="pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl sm:text-5xl font-bold text-dark-blue mb-6">
-                Réservation Simplifiée
+                {t('hero.title')}
               </h1>
               <p className="text-lg sm:text-xl text-gray mb-8">
-                Bienvenue sur FindMyPro, votre application de gestion de rendez-vous avec des
-                prestataires de services.
+                {t('hero.description')}
               </p>
               <button
                 onClick={() => setSignupModalOpen(true)}
                 className="px-6 sm:px-8 py-3 sm:py-4 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition shadow-lg"
               >
-                Commencer
+                {t('hero.cta')}
               </button>
             </div>
             <div className="relative">
@@ -187,14 +191,14 @@ const WelcomeScreen = () => {
               <img src={mecanic} alt="app interface" className="relative rounded-lg shadow-xl" />
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="text-3xl sm:text-4xl font-bold text-dark-blue mb-6">À propos de FindMyPro</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold text-dark-blue mb-6">
+                {t('about.title')}
+              </h2>
               <p className="text-lg sm:text-xl text-gray mb-8">
-                FindMyPro est la solution ultime pour organiser vos rendez-vous avec des
-                prestataires de services. Notre application est conçue pour simplifier votre
-                processus de planification et améliorer votre expérience globale.
+                {t('about.description')}
               </p>
               <button className="px-6 py-3 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition shadow-lg">
-                En savoir plus
+                {t('about.cta')}
               </button>
             </div>
           </div>
@@ -204,7 +208,9 @@ const WelcomeScreen = () => {
       {/* Testimonials */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center text-dark-blue mb-12">Témoignages</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-dark-blue mb-12">
+            {t('testimonials.title')}
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition">
               <div className="flex items-center mb-4">
@@ -212,13 +218,16 @@ const WelcomeScreen = () => {
                   <span className="text-xl font-bold text-dark-blue">SJ</span>
                 </div>
                 <div className="ml-4">
-                  <h5 className="text-xl font-semibold">Sarah Johnson</h5>
-                  <p className="text-gray">Cliente satisfaite</p>
+                  <h5 className="text-xl font-semibold">
+                    {t('testimonials.testimonial1.name')}
+                  </h5>
+                  <p className="text-gray">
+                    {t('testimonials.testimonial1.role')}
+                  </p>
                 </div>
               </div>
               <p className="text-gray italic">
-                "Je recommande vivement FindMyPro ! C'est un véritable changement dans la façon
-                dont je gère mes réservations de services."
+                {t('testimonials.testimonial1.quote')}
               </p>
             </div>
             <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition">
@@ -227,13 +236,16 @@ const WelcomeScreen = () => {
                   <span className="text-xl font-bold text-dark-blue">JS</span>
                 </div>
                 <div className="ml-4">
-                  <h5 className="text-xl font-semibold">John Smith</h5>
-                  <p className="text-gray">Client fidèle</p>
+                  <h5 className="text-xl font-semibold">
+                    {t('testimonials.testimonial2.name')}
+                  </h5>
+                  <p className="text-gray">
+                    {t('testimonials.testimonial2.role')}
+                  </p>
                 </div>
               </div>
               <p className="text-gray italic">
-                "Une excellente plateforme qui a transformé ma façon de gérer les rendez-vous. Je
-                ne pourrais pas être plus satisfait !"
+                {t('testimonials.testimonial2.quote')}
               </p>
             </div>
           </div>
@@ -245,20 +257,30 @@ const WelcomeScreen = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-2xl font-bold mb-4">FindMyPro</h3>
+              <h3 className="text-2xl font-bold mb-4">
+                {t('footer.company')}
+              </h3>
               <p className="text-gray-400">
-                Votre solution de gestion de rendez-vous professionnels
+                {t('footer.description')}
               </p>
             </div>
             <div>
-              <h5 className="text-gray-400 font-bold mb-4">Contact</h5>
-              <p className="text-gray-400 mb-2">123-456-7890</p>
-              <p className="text-gray-400">info@findmypro.com</p>
+              <h5 className="text-gray-400 font-bold mb-4">
+                {t('footer.contact')}
+              </h5>
+              <p className="text-gray-400 mb-2">
+                {t('footer.phone')}
+              </p>
+              <p className="text-gray-400">
+                {t('footer.email')}
+              </p>
             </div>
             <div>
-              <h5 className="text-gray-400 font-bold mb-4">Restez connecté</h5>
+              <h5 className="text-gray-400 font-bold mb-4">
+                {t('footer.subscribe')}
+              </h5>
               <button className="px-6 py-3 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition">
-                S'abonner
+                {t('footer.subscribe')}
               </button>
             </div>
           </div>

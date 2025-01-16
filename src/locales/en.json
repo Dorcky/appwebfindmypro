@@ -1,0 +1,47 @@
+{
+    "navbar": {
+      "home": "Home",
+      "about": "About",
+      "services": "Services",
+      "contact": "Contact",
+      "login": "Login",
+      "signup": "Sign Up"
+    },
+    "hero": {
+      "title": "Simplified Booking",
+      "description": "Welcome to FindMyPro, your app for managing appointments with service providers.",
+      "cta": "Get Started"
+    },
+    "about": {
+      "title": "About FindMyPro",
+      "description": "FindMyPro is the ultimate solution for organizing your appointments with service providers. Our app is designed to streamline your scheduling process and improve your overall experience.",
+      "cta": "Learn More"
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "Satisfied Customer",
+        "quote": "I highly recommend FindMyPro! It’s a real game-changer for how I manage my service bookings."
+      },
+      "testimonial2": {
+        "name": "John Smith",
+        "role": "Loyal Customer",
+        "quote": "An excellent platform that has transformed the way I manage appointments. I couldn’t be happier!"
+      }
+    },
+    "footer": {
+      "company": "FindMyPro",
+      "description": "Your professional appointment management solution",
+      "contact": "Contact",
+      "phone": "123-456-7890",
+      "email": "info@findmypro.com",
+      "subscribe": "Subscribe"
+    },
+    "modal": {
+      "login": "Login",
+      "signup": "Sign Up",
+      "close": "Close"
+    }
+  }
+  

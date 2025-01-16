@@ -1,0 +1,47 @@
+{
+    "navbar": {
+      "home": "Accueil",
+      "about": "À propos",
+      "services": "Services",
+      "contact": "Contact",
+      "login": "Connexion",
+      "signup": "Inscription"
+    },
+    "hero": {
+      "title": "Réservation Simplifiée",
+      "description": "Bienvenue sur FindMyPro, votre application de gestion de rendez-vous avec des prestataires de services.",
+      "cta": "Commencer"
+    },
+    "about": {
+      "title": "À propos de FindMyPro",
+      "description": "FindMyPro est la solution ultime pour organiser vos rendez-vous avec des prestataires de services. Notre application est conçue pour simplifier votre processus de planification et améliorer votre expérience globale.",
+      "cta": "En savoir plus"
+    },
+    "testimonials": {
+      "title": "Témoignages",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "Cliente satisfaite",
+        "quote": "Je recommande vivement FindMyPro ! C'est un véritable changement dans la façon dont je gère mes réservations de services."
+      },
+      "testimonial2": {
+        "name": "John Smith",
+        "role": "Client fidèle",
+        "quote": "Une excellente plateforme qui a transformé ma façon de gérer les rendez-vous. Je ne pourrais pas être plus satisfait !"
+      }
+    },
+    "footer": {
+      "company": "FindMyPro",
+      "description": "Votre solution de gestion de rendez-vous professionnels",
+      "contact": "Contact",
+      "phone": "123-456-7890",
+      "email": "info@findmypro.com",
+      "subscribe": "S'abonner"
+    },
+    "modal": {
+      "login": "Connexion",
+      "signup": "Inscription",
+      "close": "Fermer"
+    }
+  }
+  
