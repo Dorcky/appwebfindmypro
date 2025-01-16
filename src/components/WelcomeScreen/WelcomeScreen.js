@@ -16,7 +16,26 @@ const WelcomeScreen = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const [isContactModalOpen, setContactModalOpen] = useState(false);
-  const { t } = useTranslation(); // Initialisation de useTranslation
+  const [activeSection, setActiveSection] = useState("home");
+  const { t } = useTranslation();
+
+  const handleSectionClick = (section) => {
+    setActiveSection(section);
+    if (isMobileMenuOpen) setMobileMenuOpen(false); // Fermer le menu mobile après un clic
+  };
+
+  const navLinkStyles = (section) => `
+    cursor-pointer
+    block px-3 py-2 
+    text-gray 
+    hover:text-dark-blue 
+    hover:bg-light-blue 
+    rounded-md 
+    transition-all
+    ${activeSection === section ? "bg-light-blue text-dark-blue font-medium" : ""}
+  `;
+
+  const buttonStyles = "px-4 py-2 rounded-lg transition cursor-pointer";
 
   return (
     <div className="min-h-screen bg-light-blue">
@@ -31,44 +50,56 @@ const WelcomeScreen = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray hover:text-dark-blue transition">
-              {t('navbar.home')}
+              <a
+                href="#"
+                onClick={() => handleSectionClick("home")}
+                className={navLinkStyles("home")}
+              >
+                {t('navbar.home')}
               </a>
               <a
                 href="#about"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                onClick={() => handleSectionClick("about")}
+                className={navLinkStyles("about")}
               >
                 {t('navbar.about')}
               </a>
               <a
-                href="#"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                href="#services"
+                onClick={() => handleSectionClick("services")}
+                className={navLinkStyles("services")}
               >
                 {t('navbar.services')}
               </a>
               <button
-                onClick={() => setContactModalOpen(true)}
-                className="text-gray hover:text-dark-blue transition"
+                onClick={() => {
+                  setContactModalOpen(true);
+                  handleSectionClick("contact");
+                }}
+                className={`${buttonStyles} text-dark-blue border border-dark-blue hover:bg-light-blue`}
               >
                 {t('navbar.contact')}
               </button>
 
-              {/* Ajoutez le sélecteur de langue ici */}
               <LanguageSwitcher />
 
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setLoginModalOpen(true);
+                  handleSectionClick("login");
                 }}
-                className="px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue transition"
+                className={`${buttonStyles} text-dark-blue border border-dark-blue hover:bg-light-blue`}
               >
                 {t('navbar.login')}
               </button>
 
               <button
-                onClick={() => setSignupModalOpen(true)}
-                className="px-4 py-2 bg-medium-blue text-white rounded-lg hover:bg-dark-blue transition"
+                onClick={() => {
+                  setSignupModalOpen(true);
+                  handleSectionClick("signup");
+                }}
+                className={`${buttonStyles} bg-medium-blue text-white hover:bg-dark-blue`}
               >
                 {t('navbar.signup')}
               </button>
@@ -93,44 +124,55 @@ const WelcomeScreen = () => {
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a
                 href="#"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                onClick={() => handleSectionClick("home")}
+                className={navLinkStyles("home")}
               >
                 {t('navbar.home')}
               </a>
               <a
                 href="#about"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                onClick={() => handleSectionClick("about")}
+                className={navLinkStyles("about")}
               >
                 {t('navbar.about')}
               </a>
               <a
-                href="#"
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                href="#services"
+                onClick={() => handleSectionClick("services")}
+                className={navLinkStyles("services")}
               >
                 {t('navbar.services')}
               </a>
               <button
-                onClick={() => setContactModalOpen(true)}
-                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+                onClick={() => {
+                  setContactModalOpen(true);
+                  handleSectionClick("contact");
+                }}
+                className={navLinkStyles("contact")}
               >
                 {t('navbar.contact')}
               </button>
 
-              {/* Ajoutez le sélecteur de langue ici */}
               <div className="px-3 py-2">
                 <LanguageSwitcher />
               </div>
 
               <div className="flex flex-col space-y-2 px-3 py-2">
                 <button
-                  onClick={() => setLoginModalOpen(true)}
-                  className="w-full px-4 py-2 text-dark-blue border border-dark-blue rounded-lg hover:bg-light-blue"
+                  onClick={() => {
+                    setLoginModalOpen(true);
+                    handleSectionClick("login");
+                  }}
+                  className={`w-full ${buttonStyles} text-dark-blue border border-dark-blue hover:bg-light-blue`}
                 >
                   {t('navbar.login')}
                 </button>
                 <button
-                  onClick={() => setSignupModalOpen(true)}
-                  className="w-full px-4 py-2 bg-medium-blue text-white rounded-lg hover:bg-dark-blue"
+                  onClick={() => {
+                    setSignupModalOpen(true);
+                    handleSectionClick("signup");
+                  }}
+                  className={`w-full ${buttonStyles} bg-medium-blue text-white hover:bg-dark-blue`}
                 >
                   {t('navbar.signup')}
                 </button>
