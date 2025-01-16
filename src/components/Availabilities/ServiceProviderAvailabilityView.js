@@ -20,6 +20,32 @@ const ServiceProviderAvailabilityView = () => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [showSlots, setShowSlots] = useState(false);
   const [confirmedSlot, setConfirmedSlot] = useState('');
+  
+  
+  const isDateAvailableForProvider = (date, currentAvailabilities = availabilities) => {
+  const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' }).toUpperCase();
+
+  const hasSlots = currentAvailabilities.some(
+    availability => availability.day_of_week === dayOfWeek
+  );
+
+  // Vérifier si les créneaux ne sont pas tous réservés
+  if (hasSlots) {
+    const slotsForDay = currentAvailabilities.filter(
+      availability => availability.day_of_week === dayOfWeek
+    );
+    
+    // Vérifier si au moins un créneau n'est pas réservé
+    const dateStr = date.toISOString().split('T')[0];
+    return slotsForDay.some(slot => 
+      !slot.booked_dates?.some(bookedDate => 
+        bookedDate.date === dateStr && bookedDate.isBooked
+      )
+    );
+  }
+
+  return false;
+};
 
   const getAuthenticatedUserId = () => {
     const auth = getAuth();
@@ -254,19 +280,21 @@ const ServiceProviderAvailabilityView = () => {
                     contentHeight={350}
                     aspectRatio={1}
                     dayCellClassNames={(arg) => {
-                      const dateStr = arg.date.toISOString().split('T')[0];
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0);
-                      const cellDate = new Date(dateStr);
-                      cellDate.setHours(0, 0, 0, 0);
+                    const dateStr = arg.date.toISOString().split('T')[0];
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const cellDate = new Date(dateStr);
+                    cellDate.setHours(0, 0, 0, 0);
+                    const classes = [];
 
                       if (cellDate < today) {
                         return 'disabled-day';
                       }
-                      if (dateStr === selectedDate?.toISOString().split('T')[0]) {
-                        return 'selected-day';
+                        else if (isDateAvailableForProvider(cellDate)) {
+                        classes.push('available-day');
                       }
-                      return '';
+
+                      return classes;
                     }}
                   />
 
@@ -328,6 +356,40 @@ const ServiceProviderAvailabilityView = () => {
             background-color: #669BC2 !important;
             color: #ffffff !important;
           }
+          
+                  .disabled-day {
+            background-color: #e9ecef !important;
+            color: #6c757d !important;
+            pointer-events: none;
+          }
+
+          .selected-day {
+            background-color: #669BC2 !important;
+            color: #ffffff !important;
+          }
+
+          .available-day {
+            background-color: #E3F2FD !important;
+            position: relative;
+          }
+
+          .available-day:hover {
+            background-color: #BBDEFB !important;
+            cursor: pointer;
+          }
+
+          /* Petit indicateur visuel pour les jours disponibles */
+          .available-day::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #669BC2;
+            }            
           
         `}
       </style>

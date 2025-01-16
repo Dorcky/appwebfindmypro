@@ -190,4 +190,38 @@ h2, h3 {
   .fc .fc-daygrid-day {
     height: 2rem !important;
   }
+
+  .disabled-day {
+    background-color: #e9ecef !important;
+    color: #6c757d !important;
+    pointer-events: none;
+  }
+
+  .selected-day {
+    background-color: #669BC2 !important;
+    color: #ffffff !important;
+  }
+
+  .available-day {
+    background-color: #E3F2FD !important;
+    position: relative;
+  }
+
+  .available-day:hover {
+    background-color: #BBDEFB !important;
+    cursor: pointer;
+  }
+
+  /* Petit indicateur visuel pour les jours disponibles */
+  .available-day::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #669BC2;
+  }
 }
