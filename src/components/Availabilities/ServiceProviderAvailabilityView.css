@@ -135,3 +135,59 @@ h2, h3 {
 .error {
   color: #dc3545;
 }
+/* Styles pour un calendrier plus compact */
+.fc {
+  font-size: 0.875rem;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 0.5rem;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1rem;
+}
+
+.fc .fc-button {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.875rem;
+}
+
+.fc .fc-daygrid-day {
+  height: 2.5rem !important;
+}
+
+.fc .fc-daygrid-day-number {
+  padding: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.fc th {
+  padding: 0.25rem !important;
+}
+
+.disabled-day {
+  background-color: #e9ecef !important;
+  color: #6c757d !important;
+  pointer-events: none;
+}
+
+.selected-day {
+  background-color: #669BC2 !important;
+  color: #ffffff !important;
+}
+
+/* Ajuster la taille sur mobile */
+@media (max-width: 640px) {
+  .fc {
+    font-size: 0.75rem;
+  }
+  
+  .fc .fc-toolbar-title {
+    font-size: 0.875rem;
+  }
+  
+  .fc .fc-daygrid-day {
+    height: 2rem !important;
+  }
+}

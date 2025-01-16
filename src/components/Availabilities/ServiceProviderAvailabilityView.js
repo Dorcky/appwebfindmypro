@@ -233,39 +233,43 @@ const ServiceProviderAvailabilityView = () => {
               <div className="bg-white rounded-xl shadow-sm p-4">
                 {/* Commentaire : Vous pouvez ajuster la taille du calendrier ici */}
                 <FullCalendar
-                  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                  initialView="dayGridMonth"
-                  headerToolbar={{
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                  }}
-                  dateClick={handleDateClick}
-                  height="auto"
-                  // Commentaire : Réduire la taille du mois et de l'année dans l'en-tête
-                  titleFormat={{ year: 'numeric', month: 'short' }}
-                  // Commentaire : Donner une forme carrée au contenu du calendrier
-                  aspectRatio={1}
-                  // Commentaire : Réduire encore plus la taille du calendrier
-                  contentHeight="auto"
-                  dayCellClassNames={(arg) => {
-                    const dateStr = arg.date.toISOString().split('T')[0];
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    const cellDate = new Date(dateStr);
-                    cellDate.setHours(0, 0, 0, 0);
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                    initialView="dayGridMonth"
+                    headerToolbar={{
+                      left: 'prev',
+                      center: 'title',
+                      right: 'next'
+                    }}
+                    dateClick={handleDateClick}
+                    height={400}
+                    titleFormat={{ year: 'numeric', month: 'long' }}
+                    dayHeaderFormat={{ weekday: 'narrow' }}
+                    views={{
+                      dayGridMonth: {
+                        titleFormat: { year: 'numeric', month: 'long' },
+                        dayHeaderFormat: { weekday: 'narrow' },
+                        fixedWeekCount: false
+                      }
+                    }}
+                    contentHeight={350}
+                    aspectRatio={1}
+                    dayCellClassNames={(arg) => {
+                      const dateStr = arg.date.toISOString().split('T')[0];
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      const cellDate = new Date(dateStr);
+                      cellDate.setHours(0, 0, 0, 0);
 
-                    // Désactive les cellules du passé
-                    if (cellDate < today) {
-                      return 'disabled-day'; // Classe CSS pour les jours passés
-                    }
-                    // Met en évidence la date sélectionnée
-                    if (dateStr === selectedDate?.toISOString().split('T')[0]) {
-                      return 'selected-day'; // Classe CSS pour la date sélectionnée
-                    }
-                    return '';
-                  }}
-                />
+                      if (cellDate < today) {
+                        return 'disabled-day';
+                      }
+                      if (dateStr === selectedDate?.toISOString().split('T')[0]) {
+                        return 'selected-day';
+                      }
+                      return '';
+                    }}
+                  />
+
               </div>
             </div>
 
@@ -324,6 +328,7 @@ const ServiceProviderAvailabilityView = () => {
             background-color: #669BC2 !important;
             color: #ffffff !important;
           }
+          
         `}
       </style>
 
