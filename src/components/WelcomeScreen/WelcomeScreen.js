@@ -32,9 +32,18 @@ const WelcomeScreen = () => {
 
             <div className="hidden md:flex items-center space-x-8">
             <a href="#about" className="text-gray hover:text-dark-blue transition">
+              {t('navbar.home')}
+              </a>
+              <a
+                href="#about"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
                 {t('navbar.about')}
               </a>
-              <a href="#" className="text-gray hover:text-dark-blue transition">
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md"
+              >
                 {t('navbar.services')}
               </a>
               <button
