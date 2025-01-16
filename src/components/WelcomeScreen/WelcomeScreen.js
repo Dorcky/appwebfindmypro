@@ -31,7 +31,7 @@ const WelcomeScreen = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-            <a href="#about" className="text-gray hover:text-dark-blue transition">
+            <a href="#" className="text-gray hover:text-dark-blue transition">
               {t('navbar.home')}
               </a>
               <a
