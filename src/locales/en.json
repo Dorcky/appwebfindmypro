@@ -42,6 +42,35 @@
       "login": "Login",
       "signup": "Sign Up",
       "close": "Close"
+    },
+
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "login": "Login",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign Up",       
+      "errors": {
+      "emptyFields": "Please fill in all fields.",
+      "unknownRole": "Role not recognized.",
+      "userNotFound": "User not found.",
+      "unknownError": "An unknown error occurred."
+    }
+    },
+
+    "signup": {
+      "title": "Sign Up",
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "signup": "Sign Up",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login"
     }
   }
+
   

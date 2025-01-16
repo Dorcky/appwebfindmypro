@@ -42,6 +42,36 @@
       "login": "Connexion",
       "signup": "Inscription",
       "close": "Fermer"
+    },
+
+    "login": {
+    "title": "Connexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "login": "Se connecter",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signup": "S'inscrire",
+    "errors": {
+        "emptyFields": "Veuillez remplir tous les champs.",
+        "unknownRole": "Rôle non reconnu.",
+        "userNotFound": "Utilisateur introuvable.",
+        "unknownError": "Une erreur inconnue s'est produite."
     }
+    },
+
+
+    "signup": {
+      "title": "Inscription",
+      "fullName": "Nom complet",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "signup": "Inscription",
+      "alreadyHaveAccount": "Vous avez deja un compte?",
+      "login": "Connexion"
+    }
+
   }
   
