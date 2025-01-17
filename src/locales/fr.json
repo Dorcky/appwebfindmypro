@@ -177,7 +177,7 @@
     "header": "Profil du Prestataire",
     "writeReview": "Écrire un commentaire"
   },
-  
+
 "ReviewScreen": {
     "Customer Reviews": "Avis des clients",
     "Edit your review": "Modifier votre avis",
@@ -195,6 +195,25 @@
     "Error submitting your review.": "Erreur lors de la soumission de votre avis.",
     "Unauthenticated user.": "Utilisateur non authentifié.",
     "Missing service provider ID.": "ID du prestataire manquant."
+  },
+
+  "AvailabilityView": {
+    "Utilisateur non authentifié": "Utilisateur non authentifié",
+    "No provider ID provided": "Aucun ID de fournisseur fourni",
+    "Provider Name Not Found": "Nom du fournisseur non trouvé",
+    "Service Not Found": "Service non trouvé",
+    "Please select a valid slot before confirming the booking.": "Veuillez sélectionner un créneau valide avant de confirmer la réservation.",
+    "You cannot book an appointment in the past.": "Vous ne pouvez pas réserver un rendez-vous dans le passé.",
+    "Vous devez être connecté pour réserver un rendez-vous.": "Vous devez être connecté pour réserver un rendez-vous.",
+    "Réservé": "Réservé",
+    "Appointment booked successfully!": "Rendez-vous réservé avec succès !",
+    "Error booking the appointment: ": "Erreur lors de la réservation du rendez-vous : ",
+    "Loading...": "Chargement...",
+    "Error: ": "Erreur : ",
+    "Prendre un Rendez-vous": "Prendre un Rendez-vous",
+    "Sélectionnez une date et un horaire qui vous convient": "Sélectionnez une date et un horaire qui vous convient",
+    "Créneaux disponibles pour le ": "Créneaux disponibles pour le ",
+    "Confirmer le rendez-vous": "Confirmer le rendez-vous"
   }
 
 

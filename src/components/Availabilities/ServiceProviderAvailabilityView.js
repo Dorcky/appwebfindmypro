@@ -7,9 +7,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { getAuth } from 'firebase/auth';
+import { useTranslation } from 'react-i18next'; // Importez useTranslation
 import './ServiceProviderAvailabilityView.css';
 
 const ServiceProviderAvailabilityView = () => {
+  const { t } = useTranslation(); // Utilisez useTranslation pour accéder aux traductions
   const { serviceProviderId } = useParams();
   const [availabilities, setAvailabilities] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -20,32 +22,29 @@ const ServiceProviderAvailabilityView = () => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [showSlots, setShowSlots] = useState(false);
   const [confirmedSlot, setConfirmedSlot] = useState('');
-  
-  
+
   const isDateAvailableForProvider = (date, currentAvailabilities = availabilities) => {
-  const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' }).toUpperCase();
+    const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' }).toUpperCase();
 
-  const hasSlots = currentAvailabilities.some(
-    availability => availability.day_of_week === dayOfWeek
-  );
-
-  // Vérifier si les créneaux ne sont pas tous réservés
-  if (hasSlots) {
-    const slotsForDay = currentAvailabilities.filter(
+    const hasSlots = currentAvailabilities.some(
       availability => availability.day_of_week === dayOfWeek
     );
-    
-    // Vérifier si au moins un créneau n'est pas réservé
-    const dateStr = date.toISOString().split('T')[0];
-    return slotsForDay.some(slot => 
-      !slot.booked_dates?.some(bookedDate => 
-        bookedDate.date === dateStr && bookedDate.isBooked
-      )
-    );
-  }
 
-  return false;
-};
+    if (hasSlots) {
+      const slotsForDay = currentAvailabilities.filter(
+        availability => availability.day_of_week === dayOfWeek
+      );
+      
+      const dateStr = date.toISOString().split('T')[0];
+      return slotsForDay.some(slot => 
+        !slot.booked_dates?.some(bookedDate => 
+          bookedDate.date === dateStr && bookedDate.isBooked
+        )
+      );
+    }
+
+    return false;
+  };
 
   const getAuthenticatedUserId = () => {
     const auth = getAuth();
@@ -53,7 +52,7 @@ const ServiceProviderAvailabilityView = () => {
     if (user) {
       return user.uid;
     } else {
-      setError('Utilisateur non authentifié');
+      setError(t('AvailabilityView.Utilisateur non authentifié')); // Utilisez la traduction
       return null;
     }
   };
@@ -74,7 +73,6 @@ const ServiceProviderAvailabilityView = () => {
 
       setAvailabilities(availabilitiesData);
 
-      // Si une date est sélectionnée, mettre à jour les créneaux
       if (selectedDate) {
         const updatedSlots = getAvailableSlotsForDate(selectedDate, availabilitiesData);
         setTimeSlots(updatedSlots);
@@ -87,7 +85,7 @@ const ServiceProviderAvailabilityView = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!serviceProviderId) {
-        setError('No provider ID provided');
+        setError(t('AvailabilityView.No provider ID provided')); // Utilisez la traduction
         setIsLoading(false);
         return;
       }
@@ -121,8 +119,8 @@ const ServiceProviderAvailabilityView = () => {
       .filter((availability) => availability.day_of_week === selectedDayOfWeek)
       .map(slot => ({
         ...slot,
-        provider_name: providerDetails?.name || 'Provider Name Not Found',
-        service: providerDetails?.service || 'Service Not Found',
+        provider_name: providerDetails?.name || t('AvailabilityView.Provider Name Not Found'), // Utilisez la traduction
+        service: providerDetails?.service || t('AvailabilityView.Service Not Found'), // Utilisez la traduction
         is_booked: slot.booked_dates?.some(bookedDate => 
           bookedDate.date === date.toISOString().split('T')[0] && bookedDate.isBooked
         ) || false
@@ -138,7 +136,6 @@ const ServiceProviderAvailabilityView = () => {
     const slots = getAvailableSlotsForDate(date);
     setTimeSlots(slots);
     setShowSlots(slots.length > 0);
-    // Réinitialiser la sélection
     setSelectedSlot(null);
     setConfirmedSlot('');
   };
@@ -159,7 +156,6 @@ const ServiceProviderAvailabilityView = () => {
     const selectedDate = new Date(date);
     selectedDate.setHours(0, 0, 0, 0);
 
-    // Désactive les dates passées
     return selectedDate >= today;
   };
 
@@ -173,19 +169,19 @@ const ServiceProviderAvailabilityView = () => {
 
   const handleConfirmBooking = async () => {
     if (!selectedSlot || !serviceProviderId) {
-      alert("Please select a valid slot before confirming the booking.");
+      alert(t('AvailabilityView.Please select a valid slot before confirming the booking.')); // Utilisez la traduction
       return;
     }
 
     const currentDate = new Date();
     if (selectedDate < currentDate) {
-      alert("You cannot book an appointment in the past.");
+      alert(t('AvailabilityView.You cannot book an appointment in the past.')); // Utilisez la traduction
       return;
     }
 
     const userId = getAuthenticatedUserId();
     if (!userId) {
-      alert("Vous devez être connecté pour réserver un rendez-vous.");
+      alert(t('AvailabilityView.Vous devez être connecté pour réserver un rendez-vous.')); // Utilisez la traduction
       return;
     }
 
@@ -198,7 +194,7 @@ const ServiceProviderAvailabilityView = () => {
         provider_id: serviceProviderId,
         provider_name: selectedSlot.provider_name,
         service: selectedSlot.service,
-        status: 'Réservé',
+        status: t('AvailabilityView.Réservé'), // Utilisez la traduction
         user_id: userId,
         created_at: Timestamp.now(),        
       };
@@ -215,10 +211,8 @@ const ServiceProviderAvailabilityView = () => {
         booked_dates: arrayUnion(newBookedDate)
       });
 
-      // Rafraîchir les disponibilités et mettre à jour l'interface
       await fetchAvailabilities();
       
-      // Mise à jour immédiate de l'état local
       setTimeSlots(prevSlots => 
         prevSlots.map(slot => 
           slot.id === selectedSlot.id 
@@ -227,16 +221,16 @@ const ServiceProviderAvailabilityView = () => {
         )
       );
 
-      alert('Appointment booked successfully!');
+      alert(t('AvailabilityView.Appointment booked successfully!')); // Utilisez la traduction
       setSelectedSlot(null);
       setConfirmedSlot('');
     } catch (err) {
-      alert('Error booking the appointment: ' + err.message);
+      alert(t('AvailabilityView.Error booking the appointment: ') + err.message); // Utilisez la traduction
     }
   };
 
-  if (isLoading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">Error: {error}</div>;
+  if (isLoading) return <div className="loading">{t('AvailabilityView.Loading...')}</div>; // Utilisez la traduction
+  if (error) return <div className="error">{t('AvailabilityView.Error: ')}{error}</div>; // Utilisez la traduction
 
   return (
     <div className="min-h-screen bg-[#D9E7F5] py-12 px-4 sm:px-6 lg:px-8">
@@ -245,10 +239,10 @@ const ServiceProviderAvailabilityView = () => {
           {/* Header */}
           <div className="bg-gradient-to-r from-[#669BC2] to-[#5A8DA0] p-6 ">
             <h2 className="text-2xl font-semibold text-white">
-              Prendre un Rendez-vous
+              {t('AvailabilityView.Prendre un Rendez-vous')} {/* Utilisez la traduction */}
             </h2>
             <p className="text-blue-100 mt-2">
-              Sélectionnez une date et un horaire qui vous convient
+              {t('AvailabilityView.Sélectionnez une date et un horaire qui vous convient')} {/* Utilisez la traduction */}
             </p>
           </div>
 
@@ -257,7 +251,6 @@ const ServiceProviderAvailabilityView = () => {
             {/* Calendar Section */}
             <div className="lg:w-3/5">
               <div className="bg-white rounded-xl shadow-sm p-4">
-                {/* Commentaire : Vous pouvez ajuster la taille du calendrier ici */}
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     initialView="dayGridMonth"
@@ -297,7 +290,6 @@ const ServiceProviderAvailabilityView = () => {
                       return classes;
                     }}
                   />
-
               </div>
             </div>
 
@@ -305,7 +297,7 @@ const ServiceProviderAvailabilityView = () => {
             <div className={`lg:w-2/5 ${showSlots ? '' : 'hidden'}`}>
             <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-xl font-medium mb-4" style={{ color: '#334C66' }}>
-                Créneaux disponibles pour le {formatDateToFrench(selectedDate)}
+                {t('AvailabilityView.Créneaux disponibles pour le ')}{formatDateToFrench(selectedDate)} {/* Utilisez la traduction */}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {timeSlots.map((slot) => (
@@ -334,7 +326,7 @@ const ServiceProviderAvailabilityView = () => {
                         shadow-lg hover:bg-[#5A8DA0] transition-all duration-200 transform hover:scale-102"
                       onClick={handleConfirmBooking}
                     >
-                      Confirmer le rendez-vous
+                      {t('AvailabilityView.Confirmer le rendez-vous')} {/* Utilisez la traduction */}
                     </button>
                   </div>
                 )}
@@ -357,7 +349,7 @@ const ServiceProviderAvailabilityView = () => {
             color: #ffffff !important;
           }
           
-                  .disabled-day {
+          .disabled-day {
             background-color: #e9ecef !important;
             color: #6c757d !important;
             pointer-events: none;
@@ -378,7 +370,6 @@ const ServiceProviderAvailabilityView = () => {
             cursor: pointer;
           }
 
-          /* Petit indicateur visuel pour les jours disponibles */
           .available-day::after {
             content: '';
             position: absolute;
@@ -390,11 +381,8 @@ const ServiceProviderAvailabilityView = () => {
             border-radius: 50%;
             background-color: #669BC2;
             }            
-          
         `}
       </style>
-
-      
     </div>
   );
 };
