@@ -13,8 +13,10 @@ import { collection, doc, getDocs, setDoc, query, onSnapshot, orderBy, Timestamp
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getToken, onMessage } from 'firebase/messaging';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next'; 
 
 const ChatApp = () => {
+  const { t } = useTranslation();
   const { currentUser, loading: authLoading } = useAuth();
   const [selectedUser, setSelectedUser] = useState(null);
   const [message, setMessage] = useState('');
@@ -58,7 +60,7 @@ const ChatApp = () => {
           await loadParticipants();
         } catch (err) {
           console.error('Error loading participants:', err);
-          setError('Failed to load contacts. Please try again.');
+          setError(t('Chat.Failed to load contacts. Please try again.')); 
         } finally {
           setLoading(false);
         }
@@ -100,7 +102,7 @@ const ChatApp = () => {
       const usersList = usersSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        name: doc.data().fullName || 'Unknown User',
+       name: doc.data().fullName || t('Chat.User'), 
         type: 'user',
         profileImage: doc.data().profileImageURL || null,
       }));
@@ -205,7 +207,7 @@ const ChatApp = () => {
         timestamp: Timestamp.now(),
         status: { is_sent: true, is_delivered: false, is_read: false },
         participants: [currentUser.id, selectedUser.id],
-        senderName: currentUser.name || 'Unknown User',
+        senderName: currentUser.name || t('Chat.User'), 
         notificationSent: false,
       };
 
@@ -223,7 +225,7 @@ const ChatApp = () => {
             // Create notification content
             const notificationContent = {
               title: `New message from ${currentUser.name || 'Unknown User'}`,
-              body: message.trim() || 'New message received',
+              body: message.trim() || t('Chat.New message received'),
               icon: currentUser.profileImage || '/default-avatar.png',
               data: {
                 chatId,
@@ -258,7 +260,7 @@ const ChatApp = () => {
 
     } catch (error) {
       console.error('Error sending message:', error);
-      setError('Failed to send message. Please try again.');
+      setError(t('Chat.Failed to send message. Please try again.'));
     }
   };
 
@@ -266,7 +268,7 @@ const ChatApp = () => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       if (selectedFile.size > 5 * 1024 * 1024) {
-        alert('File size must be less than 5MB');
+        alert(t('Chat.File size must be less than 5MB'));
         return;
       }
       setFile(selectedFile);
@@ -292,7 +294,7 @@ const ChatApp = () => {
       return (
         <img
           src={msg.file}
-          alt="Shared content"
+          alt={t('Chat.Shared content')}
           style={{ maxWidth: '200px', borderRadius: '8px' }}
         />
       );
@@ -305,7 +307,7 @@ const ChatApp = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {msg.fileName || 'Download file'}
+        {msg.fileName || t('Chat.Download file')} 
       </Button>
     );
   };
@@ -342,7 +344,7 @@ const ChatApp = () => {
             notification.close();
           };
         } else {
-          console.warn('Les notifications ne sont pas autorisées.');
+          console.warn(t('Chat.Notifications are not allowed.'));
         }
       });
 
@@ -367,7 +369,7 @@ const ChatApp = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Typography variant="h6" color="error">
-          Please log in to access the chat.
+        {t('Chat.Please log in to access the chat.')}
         </Typography>
       </Container>
     );
@@ -377,7 +379,7 @@ const ChatApp = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Typography variant="h6" color="error">
-          Error: User information is incomplete. Please contact support.
+        {t('Chat.Error: User information is incomplete. Please contact support.')} 
         </Typography>
       </Container>
     );
@@ -395,11 +397,11 @@ const ChatApp = () => {
       >
         <Paper elevation={3} sx={{ width: { xs: '100%', md: 300 }, p: 2, bgcolor: '#f5f5f5', borderRadius: '16px', flexShrink: 0 }} className="chat-app-sidebar">
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
-            Contacts
+          {t('Chat.Contacts')}
           </Typography>
           <TextField
             fullWidth
-            placeholder="Search contacts..."
+            placeholder={t('Chat.Search contacts...')}
             value={searchQuery}
             onChange={handleSearchChange}
             variant="outlined"
@@ -423,7 +425,7 @@ const ChatApp = () => {
             </Typography>
           ) : filteredParticipants.length === 0 ? (
             <Typography color="textSecondary" align="center" mt={2}>
-              No contacts found
+            {t('Chat.No contacts found')} 
             </Typography>
           ) : (
             <Box
@@ -451,7 +453,7 @@ const ChatApp = () => {
                     <Box>
                       <Typography sx={{ fontWeight: 'bold' }}>{participant.name}</Typography>
                       <Typography variant="caption" color="textSecondary">
-                        {participant.type === 'provider' ? 'Service Provider' : 'User'}
+                      {participant.type === 'provider' ? t('Chat.Service Provider') : t('Chat.User')}
                       </Typography>
                     </Box>
                   </ListItem>
@@ -471,7 +473,7 @@ const ChatApp = () => {
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{selectedUser.name}</Typography>
                   <Typography variant="caption" color="textSecondary">
-                    {selectedUser.type === 'provider' ? 'Service Provider' : 'User'}
+                  {selectedUser.type === 'provider' ? t('Chat.Service Provider') : t('Chat.User')} 
                   </Typography>
                 </Box>
               </Box>
@@ -495,7 +497,7 @@ const ChatApp = () => {
               >
                 {messages.length === 0 ? (
                   <Typography variant="body2" color="textSecondary" align="center" mt={2}>
-                    No messages yet. Start the conversation!
+                  {t('Chat.No messages yet. Start the conversation!')}
                   </Typography>
                 ) : (
                   messages.map((msg) => (
@@ -522,7 +524,7 @@ const ChatApp = () => {
                   fullWidth
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type a message..."
+                  placeholder={t('Chat.Type a message...')} 
                   variant="outlined"
                   size="small"
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
@@ -556,7 +558,7 @@ const ChatApp = () => {
             </>
           ) : (
             <Typography variant="h6" align="center" sx={{ mt: 4 }}>
-              Select a contact to start chatting
+            {t('Chat.Select a contact to start chatting')} 
             </Typography>
           )}
         </Paper>

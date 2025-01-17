@@ -282,5 +282,27 @@
     "Erreur lors de la récupération des disponibilités": "Error retrieving availabilities",
     "Chargement...": "Loading...",
     "Erreur:": "Error:"
+  },
+   
+    "Chat": {
+    "Contacts": "Contacts",
+    "Search contacts...": "Search contacts...",
+    "No contacts found": "No contacts found",
+    "Select a contact to start chatting": "Select a contact to start chatting",
+    "Please log in to access the chat.": "Please log in to access the chat.",
+    "Error: User information is incomplete. Please contact support.": "Error: User information is incomplete. Please contact support.",
+    "Service Provider": "Service Provider",
+    "User": "User",
+    "Type a message...": "Type a message...",
+    "Download file": "Download file",
+    "New message from ": "New message from ",
+    "New message received": "New message received",
+    "Failed to load contacts. Please try again.": "Failed to load contacts. Please try again.",
+    "Failed to send message. Please try again.": "Failed to send message. Please try again.",
+    "File size must be less than 5MB": "File size must be less than 5MB",
+    "No messages yet. Start the conversation!": "No messages yet. Start the conversation!",
+    "Shared content": "Shared content"
   }
-}
+
+  }
+

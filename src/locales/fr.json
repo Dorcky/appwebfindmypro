@@ -146,6 +146,7 @@
   "searchPlaceholder": "Rechercher un prestataire...",
   "noResultsFound": "Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.",
   "loading": "Chargement...",
+  "distance": "km de distance",
   "viewMode": {
     "list": "Liste",
     "map": "Carte"
@@ -284,5 +285,30 @@
     "Error retrieving availabilities": "Erreur lors de la récupération des disponibilités",
     "Loading...": "Chargement...",
     "Error:": "Erreur :"
+  },
+
+  "Chat": {
+    "Contacts": "Contacts",
+    "Search contacts...": "Rechercher des contacts...",
+    "No contacts found": "Aucun contact trouvé",
+    "Select a contact to start chatting": "Sélectionnez un contact pour commencer la conversation",
+    "Please log in to access the chat.": "Veuillez vous connecter pour accéder à la discussion.",
+    "Error: User information is incomplete. Please contact support.": "Erreur : les informations utilisateur sont incomplètes. Veuillez contacter l’assistance.",
+    "Service Provider": "Fournisseur de services",
+    "User": "Utilisateur",
+    "Type a message...": "Tapez un message...",
+    "Download file": "Télécharger le fichier",
+    "New message from ": "Nouveau message de ",
+    "New message received": "Nouveau message reçu",
+    "Failed to load contacts. Please try again.": "Échec du chargement des contacts. Veuillez réessayer.",
+    "Failed to send message. Please try again.": "Échec de l'envoi du message. Veuillez réessayer.",
+    "File size must be less than 5MB": "La taille du fichier doit être inférieure à 5 Mo",
+    "No messages yet. Start the conversation!": "Pas encore de messages. Commencez la conversation !",
+    "Shared content": "Contenu partagé"
   }
-}
+
+  
+
+
+  }
+  
