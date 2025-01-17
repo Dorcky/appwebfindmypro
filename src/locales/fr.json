@@ -98,7 +98,7 @@
       "password_mismatch": "Les mots de passe ne correspondent pas.",
       "signup_error": "Une erreur est survenue lors de l'inscription.",
       "email_verification": "Compte créé avec succès ! Veuillez vérifier votre email."
-    }
+    }    
   }
 
   }
