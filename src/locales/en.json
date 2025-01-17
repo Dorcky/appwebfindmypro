@@ -117,6 +117,26 @@
     "Mes rendez-vous": "My appointments",
     "Déconnexion": "Log out",
     "Utilisateur non connecté": "User not connected"
+  },
+  
+  "UserProfile": {
+    "loading": "Loading...",
+    "profileHeader": "My Profile",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "language": "Language",
+    "profileImage": "Profile Image",
+    "notificationsEnabled": "Notifications Enabled",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "notifications": {
+      "enabled": "Yes",
+      "disabled": "No"
+    }
   }
 
 

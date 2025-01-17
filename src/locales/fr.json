@@ -119,6 +119,25 @@
     "Mes rendez-vous": "Mes rendez-vous",
     "Déconnexion": "Déconnexion",
     "Utilisateur non connecté": "Utilisateur non connecté"
+  },
+  "UserProfile": {
+    "loading": "Chargement...",
+    "profileHeader": "Mon Profil",
+    "editProfile": "Modifier le Profil",
+    "changePassword": "Changer le Mot de Passe",
+    "fullName": "Nom Complet",
+    "email": "Adresse Email",
+    "phoneNumber": "Numéro de Téléphone",
+    "address": "Adresse",
+    "language": "Langue",
+    "profileImage": "Image de Profil",
+    "notificationsEnabled": "Notifications Activées",
+    "saveChanges": "Enregistrer les Modifications",
+    "cancel": "Annuler",
+    "notifications": {
+      "enabled": "Oui",
+      "disabled": "Non"
+    }
   }
 
   }

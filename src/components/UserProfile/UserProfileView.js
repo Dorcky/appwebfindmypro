@@ -3,6 +3,7 @@ import { db, auth, storage } from '../firebaseConfig'; // Assurez-vous d'importe
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { uploadProfileImage } from '../utils/imageUpload'; // Assurez-vous d'importer la fonction utilitaire pour télécharger l'image
 import { loadGoogleMapsScript } from '../utils/googleMaps'; // Fonction pour charger l'API Google Maps
+import { useTranslation } from 'react-i18next';
 
 const UserProfileView = () => {
   const [userData, setUserData] = useState(null); // État pour les données de l'utilisateur
@@ -17,6 +18,8 @@ const UserProfileView = () => {
     notificationsEnabled: false,
   });
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false); // Indicateur pour savoir si Google Maps est chargé
+
+  const { t } = useTranslation();
 
   // Charge les informations de l'utilisateur depuis Firebase
   useEffect(() => {
@@ -137,7 +140,7 @@ const UserProfileView = () => {
   };
 
   // Affichage pendant le chargement des données utilisateur
-  if (!userData) return <div>Chargement...</div>;
+  if (!userData) return <div>{t('UserProfile.loading')}</div>;
 
   return (
     <div className="bg-[rgb(217,237,247)] min-h-screen px-4 pt-28 w-full">
@@ -157,20 +160,20 @@ const UserProfileView = () => {
               className="w-full py-3 px-4 md:px-6 bg-white text-[rgb(51,77,102)] rounded-xl hover:bg-[rgb(217,237,247)] transition-colors text-base md:text-lg font-semibold shadow-md"
               onClick={handleEdit}
             >
-              Edit Profile
+             {t('UserProfile.editProfile')}
             </button>
             <button className="w-full py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(73,104,133)] transition-colors text-base md:text-lg font-semibold shadow-md">
-              Change Password
+            {t('UserProfile.changePassword')}
             </button>
           </div>
 
           {/* Colonne de droite : Informations */}
           <div className="w-full md:w-2/3 p-6 md:p-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-[rgb(51,77,102)] mb-6 md:mb-8">My Profile</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[rgb(51,77,102)] mb-6 md:mb-8">{t('UserProfile.profileHeader')}</h2> 
             {isEditing ? (
               <div className="space-y-4 md:space-y-6">
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.fullName')}</h3>
                   <input
                     type="text"
                     name="fullName"
@@ -180,7 +183,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.email')}</h3>
                   <input
                     type="email"
                     name="email"
@@ -191,7 +194,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.phoneNumber')}</h3>
                   <input
                     type="text"
                     name="phoneNumber"
@@ -201,7 +204,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.address')}</h3>
                   <input
                     type="text"
                     id="address-input"
@@ -212,7 +215,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.language')}</h3>
                   <input
                     type="text"
                     name="language"
@@ -222,7 +225,7 @@ const UserProfileView = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Profile Image</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.profileImage')}</h3>
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -239,7 +242,7 @@ const UserProfileView = () => {
                         setFormData({ ...formData, notificationsEnabled: !formData.notificationsEnabled })
                       }
                     />
-                    <span className="ml-2">Notifications Enabled</span>
+                    <span className="ml-2">{t('UserProfile.notificationsEnabled')}</span>
                   </label>
                 </div>
                 <div className="flex space-x-4">
@@ -247,52 +250,52 @@ const UserProfileView = () => {
                     className="w-1/2 py-2 md:py-3 px-4 md:px-6 bg-[rgb(51,77,102)] text-white rounded-xl hover:bg-[rgb(102,148,191)] transition-colors text-base md:text-lg font-semibold shadow-md"
                     onClick={handleSaveChanges}
                   >
-                    Save Changes
+                    {t('UserProfile.saveChanges')}
                   </button>
                   <button
                     className="w-1/2 py-2 md:py-3 px-4 md:px-6 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors text-base md:text-lg font-semibold shadow-md"
                     onClick={handleCancel}
                   >
-                    Cancel
+                  {t('UserProfile.cancel')}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="space-y-4 md:space-y-6">
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Full Name</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.fullName')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {userData.fullName}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Email Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.email')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {userData.email}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Phone Number</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.fullName')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {userData.phoneNumber}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Address</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.address')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {userData.address}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Language</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.language')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
                     {userData.language}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">Notifications Enabled</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[rgb(51,77,102)] mb-2">{t('UserProfile.language')}</h3>
                   <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">
-                    {userData.notificationsEnabled ? 'Yes' : 'No'}
+                  {userData.notificationsEnabled ? t('UserProfile.notifications.enabled') : t('UserProfile.notifications.disabled')}
                   </p>
                 </div>
               </div>
