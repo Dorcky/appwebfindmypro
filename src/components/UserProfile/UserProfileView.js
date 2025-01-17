@@ -20,25 +20,28 @@ const UserProfileView = () => {
 
   // Charge les informations de l'utilisateur depuis Firebase
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, 'normal_users', user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          setUserData(userSnap.data());
-          setFormData(userSnap.data());
-        } else {
-          console.log('Aucun document trouvé pour cet utilisateur');
-        }
+  const fetchUserData = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, 'normal_users', user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        setUserData(userSnap.data());
+        setFormData(userSnap.data());
+      } else {
+        console.log('Aucun document trouvé pour cet utilisateur');
       }
-    };
+    } else {
+      console.log('Utilisateur non authentifié');
+    }
+  };
 
-    fetchUserData();
+  fetchUserData();
 
-    // Charger Google Maps API uniquement si elle n'est pas déjà chargée
-    loadGoogleMapsScript(() => setGoogleMapsLoaded(true));
-  }, []);
+  // Charger Google Maps API uniquement si elle n'est pas déjà chargée
+  loadGoogleMapsScript(() => setGoogleMapsLoaded(true));
+}, []);
+
 
   // Initialiser l'auto-complétion de l'adresse quand Google Maps est chargé
   useEffect(() => {
