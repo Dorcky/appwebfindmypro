@@ -157,7 +157,7 @@ const ServiceProviderAvailabilityPlanning = () => {
   if (error) return <div className="p-4 text-red-500">Erreur: {error}</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-4 ">
+    <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6 mt-20">Planifier une disponibilité</h2>
 
       <div className="mb-8 p-4 bg-white rounded shadow">
@@ -205,8 +205,8 @@ const ServiceProviderAvailabilityPlanning = () => {
               dateFormat="HH:mm"
               timeFormat="HH:mm"
               className="w-full p-2 border rounded"
-              minTime={startDate || new Date()}  // minTime dépend de l'heure de début
-              maxTime={new Date().setHours(23, 59)} // maxTime à 23:59
+              minTime={startDate || new Date()}
+              maxTime={new Date().setHours(23, 59)}
             />
           </div>
 
@@ -227,14 +227,14 @@ const ServiceProviderAvailabilityPlanning = () => {
             <p className="p-4 text-gray-500">Aucune disponibilité enregistrée</p>
           ) : (
             availabilities.map((availability, index) => (
-              <div key={index} className="p-4 flex justify-between items-center">
-                <div>
+              <div key={index} className="p-4 flex flex-col sm:flex-row justify-between items-center">
+                <div className="mb-2 sm:mb-0">
                   <p className="font-medium">{formatDayOfWeek(availability.day_of_week)}</p>
                   <p className="text-gray-600">
                     {availability.start_time} - {availability.end_time}
                   </p>
                 </div>
-                <span className={`px-2 py-1 rounded ${availability.is_booked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                <span className={`px-2 py-1 rounded ${availability.is_booked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} mb-2 sm:mb-0`}>
                   {availability.is_booked ? 'Réservé' : 'Disponible'}
                 </span>
                 <div className="flex space-x-2">
