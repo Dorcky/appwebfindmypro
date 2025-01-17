@@ -97,7 +97,18 @@
       "signup_error": "An error occurred during signup.",
       "email_verification": "Account created successfully! Please verify your email."
     }
+  },
+
+  "ProviderNavbar": {
+    "FindMyPro": "FindMyPro",
+    "Mon profil": "My profile",
+    "Mes messages": "My messages",
+    "Mes disponibilités": "My availability",
+    "Mes rendez-vous": "My appointments",
+    "Déconnexion": "Log out",
+    "Utilisateur non connecté": "User not connected"
   }
+
 
   }
 

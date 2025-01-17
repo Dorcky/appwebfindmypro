@@ -99,7 +99,17 @@
       "signup_error": "Une erreur est survenue lors de l'inscription.",
       "email_verification": "Compte créé avec succès ! Veuillez vérifier votre email."
     }    
+  },
+  "ProviderNavbar": {
+    "FindMyPro": "FindMyPro",
+    "Mon profil": "Mon profil",
+    "Mes messages": "Mes messages",
+    "Mes disponibilités": "Mes disponibilités",
+    "Mes rendez-vous": "Mes rendez-vous",
+    "Déconnexion": "Déconnexion",
+    "Utilisateur non connecté": "Utilisateur non connecté"
   }
+
 
   }
   

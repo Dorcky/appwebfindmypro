@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Menu, X } from 'lucide-react'; // Import des icônes de menu et de fermeture
 import './ProviderNavBar.css';
+import { useTranslation } from 'react-i18next';
 
 function ProviderNavbar() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function ProviderNavbar() {
   const { currentUser, logout } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(''); // Pour gérer l'état actif du lien
+  const { t } = useTranslation();
 
   // Mettre à jour l'état actif du lien en fonction de l'URL
   useEffect(() => {
@@ -56,7 +58,7 @@ function ProviderNavbar() {
               className={`navbar-link ${activeLink === 'profile' ? 'active' : ''}`}
               onClick={() => navigate(`/my-provider-profile/${currentUser?.id}`)}
             >
-              <FontAwesomeIcon icon={faUser} className="mr-2" /> Mon profil
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> {t('ProviderNavbar.Mon profil')}
             </span>
             {currentUser ? (
               <>
@@ -64,29 +66,29 @@ function ProviderNavbar() {
                   className={`navbar-link ${activeLink === 'messages' ? 'active' : ''}`}
                   onClick={() => navigate('/provider-chat-list')}
                 >
-                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> Mes messages
+                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> {t('ProviderNavbar.Mes messages')}
                 </span>
                 <span
                   className={`navbar-link ${activeLink === 'availability' ? 'active' : ''}`}
                   onClick={() => navigate('/availability-list')}
                 >
-                  <FontAwesomeIcon icon={faClock} className="mr-2" /> Mes disponibilités
+                  <FontAwesomeIcon icon={faClock} className="mr-2" />{t('ProviderNavbar.Mes disponibilités')}
                 </span>
                 <span
                   className={`navbar-link ${activeLink === 'appointments' ? 'active' : ''}`}
                   onClick={() => navigate('/appointments')}
                 >
-                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" /> Mes rendez-vous
+                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />{t('ProviderNavbar.Mes rendez-vous')}
                 </span>
                 <span
                   className="navbar-link logout-link"
                   onClick={handleLogout}
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Déconnexion
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> {t('ProviderNavbar.Déconnexion')}
                 </span>
               </>
             ) : (
-              <p className="text-gray">Utilisateur non connecté</p>
+              <p className="text-gray">{t('ProviderNavbar.Utilisateur non connecté')}</p>
             )}
           </div>
 
@@ -117,7 +119,7 @@ function ProviderNavbar() {
                 setMobileMenuOpen(false);
               }}
             >
-              <FontAwesomeIcon icon={faUser} className="mr-2" /> Mon profil
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> {t('ProviderNavbar.Mon profil')}
             </span>
             {currentUser ? (
               <>
@@ -130,7 +132,7 @@ function ProviderNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> Mes messages
+                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> {t('ProviderNavbar.Mes messages')}
                 </span>
                 <span
                   className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
@@ -141,7 +143,7 @@ function ProviderNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faClock} className="mr-2" /> Mes disponibilités
+                  <FontAwesomeIcon icon={faClock} className="mr-2" />{t('ProviderNavbar.Mes disponibilités')}
                 </span>
                 <span
                   className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
@@ -152,7 +154,7 @@ function ProviderNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" /> Mes rendez-vous
+                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />{t('ProviderNavbar.Mes rendez-vous')}
                 </span>
                 <span
                   className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer logout-link"
@@ -161,11 +163,11 @@ function ProviderNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Déconnexion
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> {t('ProviderNavbar.Déconnexion')}
                 </span>
               </>
             ) : (
-              <p className="block px-3 py-2 text-gray">Utilisateur non connecté</p>
+              <p className="block px-3 py-2 text-gray">{t('ProviderNavbar.Utilisateur non connecté')}</p> 
             )}
           </div>
         </div>
