@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { db, auth } from '../firebaseConfig';
 import { collection, query, where, getDocs, updateDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import './AppointmentBookingList.css';
+import { useTranslation } from 'react-i18next';
+
 
 const AppointmentBookingList = () => {
+  const { t } = useTranslation();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -182,43 +185,43 @@ const AppointmentBookingList = () => {
     return (
       <div className="bg-white rounded-2xl shadow-lg mb-5 transition-transform duration-300 hover:-translate-y-1">
         <div className="p-6 flex">
-          <img 
-            src={appointment.profileImageURL || defaultAvatar} 
-            alt={`${appointment.providerName}'s profile`} 
-            className="w-24 h-24 rounded-full mr-4" 
+          <img
+            src={appointment.profileImageURL || defaultAvatar}
+            alt={`${appointment.providerName}'s profile`}
+            className="w-24 h-24 rounded-full mr-4"
           />
           <div className="flex-grow">
             <h5 className="text-lg font-medium">{appointment.providerName}</h5>
             <h6 className="text-gray-500 text-sm mb-2">{appointment.service}</h6>
             <p className={`text-sm ${statusClass} mb-2`}>
-              Statut : {appointment.status}
+             Statut: {appointment.status}
             </p>
             <p className="text-sm text-gray-500 mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" 
-                   className="inline-block w-4 h-4 mr-2" 
-                   fill="none" 
-                   viewBox="0 0 24 24" 
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   className="inline-block w-4 h-4 mr-2"
+                   fill="none"
+                   viewBox="0 0 24 24"
                    stroke="currentColor">
-                <path strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
+                <path strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               {formatDateTime(appointment.date)}
             </p>
             <div className="flex justify-end">
-              <button 
+              <button
                 className="mr-2 px-3 py-1 text-sm text-white bg-[#DC3545] hover:bg-[#BF233D] rounded"
                 onClick={() => deleteAppointment(appointment.id, appointment.providerId, new Date(appointment.date).toISOString().split('T')[0])}
               >
-                Supprimer
+                {t('Appointment.Supprimer')}
               </button>
               {appointment.status === "Réservé" && (
-                <button 
+                <button
                   className="px-3 py-1 text-sm text-[#DC3545] border border-[#DC3545] hover:bg-[#DC3545] hover:text-white rounded"
                   onClick={() => cancelAppointment(appointment.id, appointment.providerId, new Date(appointment.date).toISOString().split('T')[0])}
                 >
-                  Annuler
+                  {t('Appointment.Annuler')}
                 </button>
               )}
             </div>
@@ -240,23 +243,23 @@ const AppointmentBookingList = () => {
   };
 
   if (loading) {
-    return <div className="loading-message">Chargement des rendez-vous...</div>;
+    return <div className="loading-message">{t('Appointment.Chargement des rendez-vous...')}</div>;
   }
 
   if (errorMessage) {
-    return <div className="error-message">Erreur: {errorMessage}</div>;
+    return <div className="error-message">{t('Appointment.Erreur')}: {errorMessage}</div>;
   }
 
   return (
     <div className="min-h-screen bg-[#D9EBF8] py-12">
       <div className="containerAppointment mx-auto px-4 mt-20">
         <h1 className="text-center text-[#334C66] text-3xl font-bold mb-12">
-          Mes Rendez-vous
+          {t('Appointment.Mes Rendez-vous')}
         </h1>
-        
+
         <div className="max-w-2xl mx-auto">
           {appointments.length === 0 ? (
-            <p>Aucun rendez-vous trouvé.</p>
+            <p>{t('Appointment.Aucun rendez-vous trouvé')}.</p>
           ) : (
             appointments.map((appointment) => (
               <AppointmentCard

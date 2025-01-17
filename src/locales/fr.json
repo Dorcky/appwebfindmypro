@@ -231,5 +231,24 @@
     "Error fetching service providers:": "Erreur lors de la récupération des prestataires :",
     "Error deleting favorite:": "Erreur lors de la suppression du favori :",
     "Error deleting all favorites:": "Erreur lors de la suppression de tous les favoris :"
+  },
+  "Appointment": {
+    "Rôle utilisateur non trouvé": "Rôle utilisateur non trouvé",
+    "Rôle de l'utilisateur:": "Rôle de l'utilisateur :",
+    "Inconnu": "Inconnu",
+    "Utilisateur Inconnu": "Utilisateur Inconnu",
+    "Annulé": "Annulé",
+    "Rendez-vous annulé": "Rendez-vous annulé",
+    "Erreur lors de l'annulation du rendez-vous:": "Erreur lors de l'annulation du rendez-vous :",
+    "Rendez-vous supprimé": "Rendez-vous supprimé",
+    "Erreur lors de la suppression du rendez-vous:": "Erreur lors de la suppression du rendez-vous :",
+    "Supprimer": "Supprimer",
+    "Annuler": "Annuler",
+    "Statut :": "Statut :",
+    "Réservé": "Réservé",
+    "Chargement des rendez-vous...": "Chargement des rendez-vous...",
+    "Erreur:": "Erreur :",
+    "Mes Rendez-vous": "Mes Rendez-vous",
+    "Aucun rendez-vous trouvé.": "Aucun rendez-vous trouvé."
   }
 }

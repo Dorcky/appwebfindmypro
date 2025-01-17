@@ -1,82 +1,82 @@
 {
-    "navbar": {
-      "home": "Home",
-      "about": "About",
-      "services": "Services",
-      "contact": "Contact",
-      "login": "Login",
-      "signup": "Sign Up"
-    },
-    "hero": {
-      "title": "Simplified Booking",
-      "description": "Welcome to FindMyPro, your app for managing appointments with service providers.",
-      "cta": "Get Started"
-    },
-    "about": {
-      "title": "About FindMyPro",
-      "description": "FindMyPro is the ultimate solution for organizing your appointments with service providers. Our app is designed to streamline your scheduling process and improve your overall experience.",
-      "cta": "Learn More"
-    },
-    "testimonials": {
-      "title": "Testimonials",
-      "testimonial1": {
-        "name": "Sarah Johnson",
-        "role": "Satisfied Customer",
-        "quote": "I highly recommend FindMyPro! It’s a real game-changer for how I manage my service bookings."
-      },
-      "testimonial2": {
-        "name": "John Smith",
-        "role": "Loyal Customer",
-        "quote": "An excellent platform that has transformed the way I manage appointments. I couldn’t be happier!"
-      }
-    },
-    "footer": {
-      "company": "FindMyPro",
-      "description": "Your professional appointment management solution",
-      "contact": "Contact",
-      "phone": "123-456-7890",
-      "email": "info@findmypro.com",
-      "subscribe": "Subscribe"
-    },
-    "modal": {
-      "login": "Login",
-      "signup": "Sign Up",
-      "close": "Close"
-    },
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "hero": {
+    "title": "Simplified Booking",
+    "description": "Welcome to FindMyPro, your app for managing appointments with service providers.",
+    "cta": "Get Started"
+  },
+  "about": {
+    "title": "About FindMyPro",
+    "description": "FindMyPro is the ultimate solution for organizing your appointments with service providers. Our app is designed to streamline your scheduling process and improve your overall experience.",
+    "cta": "Learn More"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "testimonial1": {
+    "name": "Sarah Johnson",
+    "role": "Satisfied Customer",
+    "quote": "I highly recommend FindMyPro! It’s a real game-changer for how I manage my service bookings."
+  },
+  "testimonial2": {
+    "name": "John Smith",
+    "role": "Loyal Customer",
+    "quote": "An excellent platform that has transformed the way I manage appointments. I couldn’t be happier!"
+  }
+  },
+  "footer": {
+    "company": "FindMyPro",
+    "description": "Your professional appointment management solution",
+    "contact": "Contact",
+    "phone": "123-456-7890",
+    "email": "info@findmypro.com",
+    "subscribe": "Subscribe"
+  },
+  "modal": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "close": "Close"
+  },
 
-    "login": {
-      "title": "Login",
-      "email": "Email",
-      "password": "Password",
-      "rememberMe": "Remember me",
-      "forgotPassword": "Forgot password?",
-      "login": "Login",
-      "noAccount": "Don't have an account?",
-      "signup": "Sign Up",
-      "errors": {
-      "emptyFields": "Please fill in all fields.",
-      "unknownRole": "Role not recognized.",
-      "userNotFound": "User not found.",
-      "unknownError": "An unknown error occurred."
-    }
-    },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "login": "Login",
+    "noAccount": "Don't have an account?",
+    "signup": "Sign Up",
+    "errors": {
+    "emptyFields": "Please fill in all fields.",
+    "unknownRole": "Role not recognized.",
+    "userNotFound": "User not found.",
+    "unknownError": "An unknown error occurred."
+  }
+  },
 
-    "signup": {
-      "title": "Sign Up",
-      "fullName": "Full Name",
-      "email": "Email",
-      "password": "Password",
-      "confirmPassword": "Confirm Password",
-      "signup": "Sign Up",
-      "alreadyHaveAccount": "Already have an account?",
-      "login": "Login"
-    },
-"signup_screen": {
+  "signup": {
+    "title": "Sign Up",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signup": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "signup_screen": {
     "title": "Create an Account",
     "account_type_selection": {
-      "title": "What type of account would you like to create?",
-      "user_button": "User looking for a service",
-      "provider_button": "Service provider"
+    "title": "What type of account would you like to create?",
+    "user_button": "User looking for a service",
+    "provider_button": "Service provider"
     },
     "form": {
       "full_name_placeholder": "Full Name",
@@ -140,25 +140,25 @@
   },
 
   "SearchProviderView": {
-  "discoverProviders": "Discover service providers near you",
-  "search": "Search",
-  "searchPlaceholder": "Search for a service provider...",
-  "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
-  "loading": "Loading...",
-  "viewMode": {
-    "list": "List",
-    "map": "Map"
+    "discoverProviders": "Discover service providers near you",
+    "search": "Search",
+    "searchPlaceholder": "Search for a service provider...",
+    "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
+    "loading": "Loading...",
+    "viewMode": {
+      "list": "List",
+      "map": "Map"
+    },
+    "providerDetails": {
+      "viewProfile": "View Profile"
+    },
+    "favorites": {
+      "add": "Add to Favorites",
+      "remove": "Remove from Favorites"
+    }
   },
-  "providerDetails": {
-    "viewProfile": "View Profile"
-  },
-  "favorites": {
-    "add": "Add to Favorites",
-    "remove": "Remove from Favorites"
-  }
-},
 
-"providerProfileView": {
+  "providerProfileView": {
     "sendMessage": "Send Message",
     "averageRating": "Average Rating",
     "service": "Service",
@@ -179,7 +179,7 @@
     "writeReview": "Write a Review"
   },
 
-"ReviewScreen": {
+  "ReviewScreen": {
     "Customer Reviews": "Customer Reviews",
     "Edit your review": "Edit your review",
     "Leave a comment": "Leave a comment",
@@ -197,25 +197,25 @@
     "Unauthenticated user.": "Unauthenticated user.",
     "Missing service provider ID.": "Missing service provider ID."
   },
-    "AvailabilityView": {
-      "Utilisateur non authentifié": "Unauthenticated user",
-      "No provider ID provided": "No provider ID provided",
-      "Provider Name Not Found": "Provider Name Not Found",
-      "Service Not Found": "Service Not Found",
-      "Please select a valid slot before confirming the booking.": "Please select a valid slot before confirming the booking.",
-      "You cannot book an appointment in the past.": "You cannot book an appointment in the past.",
-      "Vous devez être connecté pour réserver un rendez-vous.": "You must be logged in to book an appointment.",
-      "Réservé": "Booked",
-      "Appointment booked successfully!": "Appointment booked successfully!",
-      "Error booking the appointment: ": "Error booking the appointment: ",
-      "Loading...": "Loading...",
-      "Error: ": "Error: ",
-      "Prendre un Rendez-vous": "Book an Appointment",
-      "Sélectionnez une date et un horaire qui vous convient": "Select a date and time that suits you",
-      "Créneaux disponibles pour le ": "Time slots available for ",
-      "Confirmer le rendez-vous": "Confirm Appointment"
-    },
-    "Favorites": {
+  "AvailabilityView": {
+    "Utilisateur non authentifié": "Unauthenticated user",
+    "No provider ID provided": "No provider ID provided",
+    "Provider Name Not Found": "Provider Name Not Found",
+    "Service Not Found": "Service Not Found",
+    "Please select a valid slot before confirming the booking.": "Please select a valid slot before confirming the booking.",
+    "You cannot book an appointment in the past.": "You cannot book an appointment in the past.",
+    "Vous devez être connecté pour réserver un rendez-vous.": "You must be logged in to book an appointment.",
+    "Réservé": "Booked",
+    "Appointment booked successfully!": "Appointment booked successfully!",
+    "Error booking the appointment: ": "Error booking the appointment: ",
+    "Loading...": "Loading...",
+    "Error: ": "Error: ",
+    "Prendre un Rendez-vous": "Book an Appointment",
+    "Sélectionnez une date et un horaire qui vous convient": "Select a date and time that suits you",
+    "Créneaux disponibles pour le ": "Time slots available for ",
+    "Confirmer le rendez-vous": "Confirm Appointment"
+  },
+  "Favorites": {
     "Mes Prestataires Favoris": "My Favorite Service Providers",
     "Rechercher un prestataire...": "Search for a service provider...",
     "Supprimer tous les favoris": "Delete all favorites",
@@ -229,6 +229,24 @@
     "Error fetching service providers:": "Error fetching service providers:",
     "Error deleting favorite:": "Error deleting favorite:",
     "Error deleting all favorites:": "Error deleting all favorites:"
+  },
+  "Appointment": {
+    "Rôle utilisateur non trouvé": "User role not found",
+    "Rôle de l'utilisateur:": "User role:",
+    "Inconnu": "Unknown",
+    "Utilisateur Inconnu": "Unknown User",
+    "Annulé": "Cancelled",
+    "Rendez-vous annulé": "Appointment cancelled",
+    "Erreur lors de l'annulation du rendez-vous:": "Error cancelling appointment:",
+    "Rendez-vous supprimé": "Appointment deleted",
+    "Erreur lors de la suppression du rendez-vous:": "Error deleting appointment:",
+    "Supprimer": "Delete",
+    "Annuler": "Cancel",
+    "Statut :": "Status :",
+    "Réservé": "Booked",
+    "Chargement des rendez-vous...": "Loading appointments...",
+    "Erreur:": "Error:",
+    "Mes Rendez-vous": "My Appointments",
+    "Aucun rendez-vous trouvé.": "No appointments found."
   }
-
-  }
+}
