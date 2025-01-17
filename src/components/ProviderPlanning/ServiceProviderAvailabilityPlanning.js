@@ -4,8 +4,10 @@ import { collection, getDocs, query, where, addDoc, deleteDoc, updateDoc, doc, T
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from 'react-i18next';
 
 const ServiceProviderAvailabilityPlanning = () => {
+  const { t } = useTranslation();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [dayOfWeek, setDayOfWeek] = useState('');
@@ -153,30 +155,30 @@ const ServiceProviderAvailabilityPlanning = () => {
     return days[day] || day;
   };
 
-  if (isLoading) return <div className="p-4">Chargement...</div>;
+  if (isLoading) return <div className="p-4">{t('ServiceProviderAvailabilityPlanning.Chargement...')}</div>;
   if (error) return <div className="p-4 text-red-500">Erreur: {error}</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6 mt-20">Planifier une disponibilité</h2>
+      <h2 className="text-2xl font-bold mb-6 mt-20">{t('ServiceProviderAvailabilityPlanning.Planifier une disponibilité')}</h2>
 
       <div className="mb-8 p-4 bg-white rounded shadow">
         <div className="grid gap-4 mb-4">
           <div>
-            <label className="block mb-2">Jour de la semaine :</label>
+            <label className="block mb-2">{t('ServiceProviderAvailabilityPlanning.Jour de la semaine')}</label>
             <select
               value={dayOfWeek}
               onChange={(e) => setDayOfWeek(e.target.value)}
               className="w-full p-2 border rounded"
             >
-              <option value="">Sélectionner un jour</option>
-              <option value="MONDAY">Lundi</option>
-              <option value="TUESDAY">Mardi</option>
-              <option value="WEDNESDAY">Mercredi</option>
-              <option value="THURSDAY">Jeudi</option>
-              <option value="FRIDAY">Vendredi</option>
-              <option value="SATURDAY">Samedi</option>
-              <option value="SUNDAY">Dimanche</option>
+              <option value="">{t('ServiceProviderAvailabilityPlanning.Sélectionner un jour')}</option>
+              <option value="MONDAY">{t('ServiceProviderAvailabilityPlanning.Lundi')}</option>
+              <option value="TUESDAY">{t('ServiceProviderAvailabilityPlanning.Mardi')}</option>
+              <option value="WEDNESDAY">{t('ServiceProviderAvailabilityPlanning.Mercredi')}</option>
+              <option value="THURSDAY">{t('ServiceProviderAvailabilityPlanning.Jeudi')}</option>
+              <option value="FRIDAY">{t('ServiceProviderAvailabilityPlanning.Vendredi')}</option>
+              <option value="SATURDAY">{t('ServiceProviderAvailabilityPlanning.Samedi')}</option>
+              <option value="SUNDAY">{t('ServiceProviderAvailabilityPlanning.Dimanche')}</option>
             </select>
           </div>
 
@@ -195,7 +197,7 @@ const ServiceProviderAvailabilityPlanning = () => {
           </div>
 
           <div>
-            <label className="block mb-2">Heure de fin :</label>
+            <label className="block mb-2"><span>Heure de fin :</span></label>
             <DatePicker
               selected={endDate}
               onChange={setEndDate}
@@ -215,16 +217,16 @@ const ServiceProviderAvailabilityPlanning = () => {
             disabled={isBooking}
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
           >
-            {isBooking ? "Enregistrement..." : "Enregistrer la disponibilité"}
+            {isBooking ? t('ServiceProviderAvailabilityPlanning.Enregistrement...') : t('ServiceProviderAvailabilityPlanning.Enregistrer la disponibilité')}
           </button>
         </div>
       </div>
 
       <div className="bg-white rounded shadow">
-        <h3 className="text-xl font-semibold p-4 border-b">Disponibilités existantes</h3>
+        <h3 className="text-xl font-semibold p-4 border-b">{t('ServiceProviderAvailabilityPlanning.Disponibilités existantes')}</h3>
         <div className="divide-y">
           {availabilities.length === 0 ? (
-            <p className="p-4 text-gray-500">Aucune disponibilité enregistrée</p>
+            <p className="p-4 text-gray-500">{t('ServiceProviderAvailabilityPlanning.Aucune disponibilité enregistrée')}</p>
           ) : (
             availabilities.map((availability, index) => (
               <div key={index} className="p-4 flex flex-col sm:flex-row justify-between items-center">
@@ -235,7 +237,7 @@ const ServiceProviderAvailabilityPlanning = () => {
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded ${availability.is_booked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} mb-2 sm:mb-0`}>
-                  {availability.is_booked ? 'Réservé' : 'Disponible'}
+                  {availability.is_booked ? t('ServiceProviderAvailabilityPlanning.Réservé') : t('ServiceProviderAvailabilityPlanning.Disponible')}
                 </span>
                 <div className="flex space-x-2">
                   <button
@@ -243,13 +245,13 @@ const ServiceProviderAvailabilityPlanning = () => {
                     className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     disabled={availability.is_booked === false}
                   >
-                    Annuler
+                    {t('ServiceProviderAvailabilityPlanning.Annuler')}
                   </button>
                   <button
                     onClick={() => deleteAvailability(availability.id)}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                   >
-                    Supprimer
+                    {t('ServiceProviderAvailabilityPlanning.Supprimer')}
                   </button>
                 </div>
               </div>
