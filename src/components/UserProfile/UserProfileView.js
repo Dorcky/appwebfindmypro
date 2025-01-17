@@ -20,25 +20,34 @@ const UserProfileView = () => {
 
   // Charge les informations de l'utilisateur depuis Firebase
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        const userRef = doc(db, 'normal_users', user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          setUserData(userSnap.data());
-          setFormData(userSnap.data());
-        } else {
-          console.log('Aucun document trouvé pour cet utilisateur');
-        }
+        console.log("Utilisateur authentifié :", user); // Log pour vérifier l'utilisateur authentifié
+        const fetchUserData = async () => {
+          const userRef = doc(db, 'normal_users', user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            console.log("Données de l'utilisateur :", userSnap.data()); // Log pour vérifier les données récupérées
+            setUserData(userSnap.data());
+            setFormData(userSnap.data());
+          } else {
+            console.log('Aucun document trouvé pour cet utilisateur');
+          }
+        };
+  
+        fetchUserData();
+      } else {
+        console.log('Aucun utilisateur authentifié');
       }
-    };
-
-    fetchUserData();
-
-    // Charger Google Maps API uniquement si elle n'est pas déjà chargée
-    loadGoogleMapsScript(() => setGoogleMapsLoaded(true));
+    });
+  
+    return () => unsubscribe(); // Nettoyer l'abonnement lors du démontage du composant
   }, []);
+
+    useEffect(() => {
+      // Charger Google Maps API uniquement si elle n'est pas déjà chargée
+      loadGoogleMapsScript(() => setGoogleMapsLoaded(true));
+    }, [googleMapsLoaded]); // Add googleMapsLoaded as a dependency
 
   // Initialiser l'auto-complétion de l'adresse quand Google Maps est chargé
   useEffect(() => {
