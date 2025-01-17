@@ -98,7 +98,7 @@
       "password_mismatch": "Les mots de passe ne correspondent pas.",
       "signup_error": "Une erreur est survenue lors de l'inscription.",
       "email_verification": "Compte créé avec succès ! Veuillez vérifier votre email."
-    }    
+    }
   },
   "ProviderNavbar": {
     "FindMyPro": "FindMyPro",
@@ -216,8 +216,20 @@
     "Sélectionnez une date et un horaire qui vous convient": "Sélectionnez une date et un horaire qui vous convient",
     "Créneaux disponibles pour le ": "Créneaux disponibles pour le ",
     "Confirmer le rendez-vous": "Confirmer le rendez-vous"
+  },
+  "Favorites": {
+    "Mes Prestataires Favoris": "Mes Prestataires Favoris",
+    "Rechercher un prestataire...": "Rechercher un prestataire...",
+    "Supprimer tous les favoris": "Supprimer tous les favoris",
+    "Réserver": "Réserver",
+    "Retirer des favoris": "Retirer des favoris",
+    "Chargement des favoris...": "Chargement des favoris...",
+    "Utilisateur authentifié :": "Utilisateur authentifié :",
+    "Aucun utilisateur authentifié": "Aucun utilisateur authentifié",
+    "Error fetching reviews:": "Erreur lors de la récupération des avis :",
+    "Error fetching favorites:": "Erreur lors de la récupération des favoris :",
+    "Error fetching service providers:": "Erreur lors de la récupération des prestataires :",
+    "Error deleting favorite:": "Erreur lors de la suppression du favori :",
+    "Error deleting all favorites:": "Erreur lors de la suppression de tous les favoris :"
   }
-
-
-  }
-  
+}

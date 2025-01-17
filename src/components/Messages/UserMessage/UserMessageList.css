@@ -90,7 +90,7 @@
 
 input[type="text"] {
   flex-grow: 1;
-  padding: 10px;
+  padding: 10px 30px;
   border: 1px solid #ccc;
   font-size: 1rem;
 }

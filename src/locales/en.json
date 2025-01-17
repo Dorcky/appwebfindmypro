@@ -52,7 +52,7 @@
       "forgotPassword": "Forgot password?",
       "login": "Login",
       "noAccount": "Don't have an account?",
-      "signup": "Sign Up",       
+      "signup": "Sign Up",
       "errors": {
       "emptyFields": "Please fill in all fields.",
       "unknownRole": "Role not recognized.",
@@ -152,12 +152,16 @@
   "providerDetails": {
     "viewProfile": "View Profile"
   },
+<<<<<<< HEAD
   "favorites": {
     "add": "Add to Favorites",
     "remove": "Remove from Favorites"
   }
 },
   
+=======
+
+>>>>>>> Translation page Favorites
 "providerProfileView": {
     "sendMessage": "Send Message",
     "averageRating": "Average Rating",
@@ -197,25 +201,38 @@
     "Unauthenticated user.": "Unauthenticated user.",
     "Missing service provider ID.": "Missing service provider ID."
   },
-    "AvailabilityView": {
-      "Utilisateur non authentifié": "Unauthenticated user",
-      "No provider ID provided": "No provider ID provided",
-      "Provider Name Not Found": "Provider Name Not Found",
-      "Service Not Found": "Service Not Found",
-      "Please select a valid slot before confirming the booking.": "Please select a valid slot before confirming the booking.",
-      "You cannot book an appointment in the past.": "You cannot book an appointment in the past.",
-      "Vous devez être connecté pour réserver un rendez-vous.": "You must be logged in to book an appointment.",
-      "Réservé": "Booked",
-      "Appointment booked successfully!": "Appointment booked successfully!",
-      "Error booking the appointment: ": "Error booking the appointment: ",
-      "Loading...": "Loading...",
-      "Error: ": "Error: ",
-      "Prendre un Rendez-vous": "Book an Appointment",
-      "Sélectionnez une date et un horaire qui vous convient": "Select a date and time that suits you",
-      "Créneaux disponibles pour le ": "Time slots available for ",
-      "Confirmer le rendez-vous": "Confirm Appointment"
-    }
-
+  "AvailabilityView": {
+    "Utilisateur non authentifié": "Unauthenticated user",
+    "No provider ID provided": "No provider ID provided",
+    "Provider Name Not Found": "Provider Name Not Found",
+    "Service Not Found": "Service Not Found",
+    "Please select a valid slot before confirming the booking.": "Please select a valid slot before confirming the booking.",
+    "You cannot book an appointment in the past.": "You cannot book an appointment in the past.",
+    "Vous devez être connecté pour réserver un rendez-vous.": "You must be logged in to book an appointment.",
+    "Réservé": "Booked",
+    "Appointment booked successfully!": "Appointment booked successfully!",
+    "Error booking the appointment: ": "Error booking the appointment: ",
+    "Loading...": "Loading...",
+    "Error: ": "Error: ",
+    "Prendre un Rendez-vous": "Book an Appointment",
+    "Sélectionnez une date et un horaire qui vous convient": "Select a date and time that suits you",
+    "Créneaux disponibles pour le ": "Time slots available for ",
+    "Confirmer le rendez-vous": "Confirm Appointment"
+},
+"Favorites": {
+    "Mes Prestataires Favoris": "My Favorite Service Providers",
+    "Rechercher un prestataire...": "Search for a service provider...",
+    "Supprimer tous les favoris": "Delete all favorites",
+    "Réserver": "Book",
+    "Retirer des favoris": "Remove from favorites",
+    "Chargement des favoris...": "Loading favorites...",
+    "Utilisateur authentifié :": "User authenticated :",
+    "Aucun utilisateur authentifié": "No user authenticated",
+    "Error fetching reviews:": "Error fetching reviews:",
+    "Error fetching favorites:": "Error fetching favorites:",
+    "Error fetching service providers:": "Error fetching service providers:",
+    "Error deleting favorite:": "Error deleting favorite:",
+    "Error deleting all favorites:": "Error deleting all favorites:"
   }
 
-  
+}

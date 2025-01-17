@@ -6,8 +6,10 @@ import { faStar, faSearch, faTrash, faCalendarAlt } from '@fortawesome/free-soli
 import { useNavigate } from 'react-router-dom';
 import './FavoritesView.css';
 import { onAuthStateChanged } from 'firebase/auth'; // Importez onAuthStateChanged
+import { useTranslation } from 'react-i18next';
 
 const FavoritesView = () => {
+  const { t } = useTranslation();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [serviceProviders, setServiceProviders] = useState({});
@@ -153,31 +155,31 @@ const FavoritesView = () => {
   });
 
   if (loading) {
-    return <div className="loading-message">Chargement des favoris...</div>;
+    return <div className="loading-message">{t('Favorites.Chargement des favoris...')}</div>;
   }
 
   return (
     <div className="min-h-screen bg-[#D9E7F5] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-[#334C66] text-center mb-12 mt-20" >Mes Prestataires Favoris</h1>
+        <h1 className="text-4xl font-bold text-[#334C66] text-center mb-12 mt-20" >{t('Favorites.Mes Prestataires Favoris')}</h1>
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
           <div className="relative w-full sm:w-2/3 mb-4 sm:mb-0">
             <input
               type="text"
               className="w-full pl-10 pr-4 py-2 rounded-full border border-[#A0C3E8] focus:outline-none focus:ring-2 focus:ring-[#A0C3E8]"
-              placeholder="Rechercher un prestataire..."
+              placeholder={t('Favorites.Rechercher un prestataire...')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-3 text-[#A0C3E8]" />
+            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-3 mt-1 text-[#A0C3E8]" />
           </div>
           <button
             className="w-full sm:w-auto px-6 py-3 bg-[#669BC2] text-white rounded-full hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
             onClick={handleDeleteAllFavorites}
           >
             <FontAwesomeIcon icon={faTrash} className="mr-2" />
-            Supprimer tous les favoris
+            {t('Favorites.Supprimer tous les favoris')}
           </button>
         </div>
 
@@ -208,13 +210,13 @@ const FavoritesView = () => {
                       onClick={() => navigate(`/service-provider-availability/${provider.id}`)}
                     >
                       <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-                      Réserver
+                      {t('Favorites.Réserver')}
                     </button>
                     <button
                       className="flex-1 px-4 py-2 bg-red-100 text-red-500 rounded-xl hover:bg-red-200 transition duration-300 ease-in-out"
                       onClick={() => handleDeleteFavorite(favorite.id)}
                     >
-                      Retirer des favoris
+                      {t('Favorites.Retirer des favoris')}
                     </button>
                   </div>
                 </div>
