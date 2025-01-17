@@ -141,21 +141,23 @@
   },
 
   "SearchProviderView": {
-    "searchPlaceholder": "Rechercher un prestataire...",
-    "noResultsFound": "Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.",
-    "loading": "Chargement...",
-    "viewMode": {
-      "list": "Liste",
-      "map": "Carte"
-    },
-    "providerDetails": {
-      "viewProfile": "Voir Profil"
-    },
-    "favorites": {
-      "add": "Ajouter aux favoris",
-      "remove": "Retirer des favoris"
-    }
+  "discoverProviders": "Découvrez les prestataires de services près de chez vous",
+  "search": "Rechercher",
+  "searchPlaceholder": "Rechercher un prestataire...",
+  "noResultsFound": "Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.",
+  "loading": "Chargement...",
+  "viewMode": {
+    "list": "Liste",
+    "map": "Carte"
   },
+  "providerDetails": {
+    "viewProfile": "Voir Profil"
+  },
+  "favorites": {
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris"
+  }
+},
 
   "providerProfileView": {
     "sendMessage": "Envoyer un Message",

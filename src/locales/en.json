@@ -140,21 +140,23 @@
   },
 
   "SearchProviderView": {
-    "searchPlaceholder": "Search for a service provider...",
-    "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
-    "loading": "Loading...",
-    "viewMode": {
-      "list": "List",
-      "map": "Map"
-    },
-    "providerDetails": {
-      "viewProfile": "View Profile"
-    },
-    "favorites": {
-      "add": "Add to Favorites",
-      "remove": "Remove from Favorites"
-    }
+  "discoverProviders": "Discover service providers near you",
+  "search": "Search",
+  "searchPlaceholder": "Search for a service provider...",
+  "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
+  "loading": "Loading...",
+  "viewMode": {
+    "list": "List",
+    "map": "Map"
   },
+  "providerDetails": {
+    "viewProfile": "View Profile"
+  },
+  "favorites": {
+    "add": "Add to Favorites",
+    "remove": "Remove from Favorites"
+  }
+},
   
 "providerProfileView": {
     "sendMessage": "Send Message",
