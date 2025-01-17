@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { loadGoogleMapsScript } from '../utils/googleMaps';
 import './MyProviderProfile.css';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -26,17 +26,34 @@ const MyProviderProfile = () => {
   const [geocoder, setGeocoder] = useState(null);
   const [autocompleteInstance, setAutocompleteInstance] = useState(null);
   const storage = getStorage();
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);  
+
+  const [user, setUser] = useState(null); // Ajoutez un état pour l'utilisateur
 
   const auth = getAuth();
 
   useEffect(() => {
-    fetchProfileData();
+    // Écoutez les changements d'état d'authentification
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Utilisateur authentifié :", user);
+        setUser(user); // Mettez à jour l'état de l'utilisateur
+        fetchProfileData(user.uid); // Récupérez les données de l'utilisateur
+      } else {
+        console.log('Aucun utilisateur authentifié');
+        setUser(null); // Réinitialisez l'état de l'utilisateur
+      }
+    });
+
+    // Chargez Google Maps
     loadGoogleMapsScript(() => {
       setGeocoder(new window.google.maps.Geocoder());
       initAutocomplete();
     });
-  }, []);
+
+    // Nettoyez l'écouteur lors du démontage du composant
+    return () => unsubscribe();
+  }, [auth]);
 
   const initAutocomplete = () => {
     const input = document.getElementById('address-input');
@@ -80,19 +97,18 @@ const MyProviderProfile = () => {
     }
   };
 
-  const fetchProfileData = async () => {
+  const fetchProfileData = async (userId) => {
     try {
-      const userId = auth.currentUser?.uid;
-      if (!userId) return;
-
       const docRef = doc(db, 'service_providers', userId);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setProfile(docSnap.data());
+      } else {
+        console.log('Aucun document trouvé pour cet utilisateur');
       }
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('Erreur lors de la récupération du profil :', error);
     }
   };
 

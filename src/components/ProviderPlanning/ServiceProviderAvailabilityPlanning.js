@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, query, where, addDoc, deleteDoc, updateDoc, doc, Timestamp } from 'firebase/firestore';  // Ajout de Timestamp
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -13,37 +13,50 @@ const ServiceProviderAvailabilityPlanning = () => {
   const [availabilities, setAvailabilities] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null); // Ajoutez un état pour l'utilisateur
+  const auth = getAuth();
+
 
   const userId = getAuth().currentUser?.uid;
 
   useEffect(() => {
-    const fetchAvailabilities = async () => {
-      if (!userId) {
+    // Écoutez les changements d'état d'authentification
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Utilisateur authentifié :", user);
+        setUser(user); // Mettez à jour l'état de l'utilisateur
+        fetchAvailabilities(user.uid); // Récupérez les disponibilités de l'utilisateur
+      } else {
+        console.log('Aucun utilisateur authentifié');
+        setUser(null); // Réinitialisez l'état de l'utilisateur
         setError("Utilisateur non authentifié");
         setIsLoading(false);
-        return;
       }
+    });
 
-      try {
-        const availabilityQuery = query(
-          collection(db, 'service_provider_availabilities'),
-          where('service_provider_id', '==', userId)
-        );
-        const snapshot = await getDocs(availabilityQuery);
-        const availabilityData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setAvailabilities(availabilityData);
-      } catch (err) {
-        setError('Erreur lors de la récupération des disponibilités');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Nettoyez l'écouteur lors du démontage du composant
+    return () => unsubscribe();
+  }, [auth]);
 
-    fetchAvailabilities();
-  }, [userId]);
+  const fetchAvailabilities = async (userId) => {
+    try {
+      const availabilityQuery = query(
+        collection(db, 'service_provider_availabilities'),
+        where('service_provider_id', '==', userId)
+      );
+      const snapshot = await getDocs(availabilityQuery);
+      const availabilityData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setAvailabilities(availabilityData);
+    } catch (err) {
+      setError('Erreur lors de la récupération des disponibilités');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   // Fonction pour annuler une disponibilité
   const cancelAvailability = async (availabilityId) => {
