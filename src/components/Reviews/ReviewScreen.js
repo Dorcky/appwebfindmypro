@@ -5,6 +5,7 @@ import { db, auth } from '../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { onAuthStateChanged } from 'firebase/auth'; // Importez onAuthStateChanged
 
 const Rating = ({ rating, onRatingChange }) => {
   return (
@@ -41,63 +42,77 @@ const ReviewScreen = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null); // Ajoutez un état pour l'utilisateur
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      if (!serviceProviderId) {
-        setError('ID du prestataire manquant.');
-        setLoading(false);
-        return;
-      }
-
-      if (!auth.currentUser) {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Utilisateur authentifié :", user);
+        setUser(user); // Mettez à jour l'état de l'utilisateur
+        fetchReviews(user.uid); // Récupérez les avis de l'utilisateur
+      } else {
+        console.log('Aucun utilisateur authentifié');
+        setUser(null); // Réinitialisez l'état de l'utilisateur
         setError("Utilisateur non authentifié.");
         setLoading(false);
-        return;
       }
+    });
 
-      try {
-        const reviewsQuery = query(
-          collection(db, 'reviews'),
-          where('service_provider_id', '==', serviceProviderId)
-        );
+    // Nettoyez l'écouteur lors du démontage du composant
+    return () => unsubscribe();
+  }, [auth]);
 
-        const querySnapshot = await getDocs(reviewsQuery);
-        const reviewsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+  const fetchReviews = async (userId) => {
+    if (!serviceProviderId) {
+      setError('ID du prestataire manquant.');
+      setLoading(false);
+      return;
+    }
 
-        setReviews(reviewsData);
+    try {
+      const reviewsQuery = query(
+        collection(db, 'reviews'),
+        where('service_provider_id', '==', serviceProviderId)
+      );
 
-        const userReview = reviewsData.find(review => review.user_id === auth.currentUser.uid);
-        if (userReview) {
-          setUserReview(userReview);
-          setRating(userReview.rating);
-          setComment(userReview.comment);
-          setReviewerName(userReview.reviewer_name);
-        }
-      } catch (err) {
-        setError("Erreur lors de la récupération des avis.");
-        console.error(err);
-      } finally {
-        setLoading(false);
+      const querySnapshot = await getDocs(reviewsQuery);
+      const reviewsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setReviews(reviewsData);
+
+      const userReview = reviewsData.find(review => review.user_id === userId);
+      if (userReview) {
+        setUserReview(userReview);
+        setRating(userReview.rating);
+        setComment(userReview.comment);
+        setReviewerName(userReview.reviewer_name);
       }
-    };
-
-    fetchReviews();
-  }, [serviceProviderId]);
+    } catch (err) {
+      setError("Erreur lors de la récupération des avis.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setError("Utilisateur non authentifié.");
+      return;
+    }
 
     const reviewData = {
       comment,
       created_at: new Date(),
       rating,
-      reviewer_name: reviewerName || auth.currentUser.displayName,
+      reviewer_name: reviewerName || user.displayName,
       service_provider_id: serviceProviderId,
-      user_id: auth.currentUser.uid,
+      user_id: user.uid,
     };
 
     try {
@@ -178,7 +193,6 @@ const ReviewScreen = () => {
       </div>
     </div>
   );
-  
 };
 
 export default ReviewScreen;

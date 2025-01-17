@@ -175,8 +175,26 @@
     "noProviderFound": "No provider found.",
     "header": "Provider Profile",
     "writeReview": "Write a Review"
-  }
+  },
 
+"ReviewScreen": {
+    "Customer Reviews": "Customer Reviews",
+    "Edit your review": "Edit your review",
+    "Leave a comment": "Leave a comment",
+    "Name": "Name",
+    "Rating": "Rating",
+    "Comment": "Comment",
+    "Update": "Update",
+    "Submit": "Submit",
+    "Loading...": "Loading...",
+    "FindMyPro": "FindMyPro",
+    "Find and book trusted local service providers for all your needs.": "Find and book trusted local service providers for all your needs.",
+    "No reviews have been left for this provider.": "No reviews have been left for this provider.",
+    "Error retrieving reviews.": "Error retrieving reviews.",
+    "Error submitting your review.": "Error submitting your review.",
+    "Unauthenticated user.": "Unauthenticated user.",
+    "Missing service provider ID.": "Missing service provider ID."
+  }
   }
 
   

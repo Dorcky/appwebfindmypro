@@ -176,7 +176,27 @@
     "noProviderFound": "Aucun prestataire trouvé.",
     "header": "Profil du Prestataire",
     "writeReview": "Écrire un commentaire"
+  },
+  
+"ReviewScreen": {
+    "Customer Reviews": "Avis des clients",
+    "Edit your review": "Modifier votre avis",
+    "Leave a comment": "Laisser un commentaire",
+    "Name": "Nom",
+    "Rating": "Note",
+    "Comment": "Commentaire",
+    "Update": "Mettre à jour",
+    "Submit": "Soumettre",
+    "Loading...": "Chargement...",
+    "FindMyPro": "TrouvezMonPro",
+    "Find and book trusted local service providers for all your needs.": "Trouvez et réservez des prestataires de services locaux de confiance pour tous vos besoins.",
+    "No reviews have been left for this provider.": "Aucun avis n'a été laissé pour ce prestataire.",
+    "Error retrieving reviews.": "Erreur lors de la récupération des avis.",
+    "Error submitting your review.": "Erreur lors de la soumission de votre avis.",
+    "Unauthenticated user.": "Utilisateur non authentifié.",
+    "Missing service provider ID.": "ID du prestataire manquant."
   }
+
 
   }
   
