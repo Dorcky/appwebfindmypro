@@ -138,6 +138,44 @@
       "enabled": "Oui",
       "disabled": "Non"
     }
+  },
+
+  "SearchProviderView": {
+    "searchPlaceholder": "Rechercher un prestataire...",
+    "noResultsFound": "Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.",
+    "loading": "Chargement...",
+    "viewMode": {
+      "list": "Liste",
+      "map": "Carte"
+    },
+    "providerDetails": {
+      "viewProfile": "Voir Profil"
+    },
+    "favorites": {
+      "add": "Ajouter aux favoris",
+      "remove": "Retirer des favoris"
+    }
+  },
+
+  "providerProfileView": {
+    "sendMessage": "Envoyer un Message",
+    "averageRating": "Note moyenne",
+    "service": "Service",
+    "email": "Email",
+    "phoneNumber": "Téléphone",
+    "address": "Adresse",
+    "hourlyRate": "Tarif horaire",
+    "website": "Site web",
+    "description": "Description",
+    "noReviews": "Aucun avis pour le moment",
+    "viewAllReviews": "Voir tous les avis",
+    "reviews": "Avis",
+    "viewAvailability": "Voir les disponibilités",
+    "loading": "Chargement...",
+    "error": "Erreur: {error}",
+    "noProviderFound": "Aucun prestataire trouvé.",
+    "header": "Profil du Prestataire",
+    "writeReview": "Écrire un commentaire"
   }
 
   }

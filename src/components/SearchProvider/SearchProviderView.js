@@ -10,6 +10,7 @@ import { Search, Star, StarHalf, MapPin, List, Map, Heart } from "lucide-react";
 import './SearchProviderView.css';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const RatingStars = ({ rating }) => {
   const stars = [];
@@ -45,6 +46,7 @@ const SearchProviderView = () => {
   const [reviews, setReviews] = useState({}); // Store reviews for each provider
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -275,14 +277,14 @@ const SearchProviderView = () => {
     <div className="min-h-screen pt-12 bg-gradient-to-b from-[rgb(217,237,247)] to-[rgb(235,245,250)]">
       <header className="bg-gradient-to-r from-[rgb(51,77,102)] to-[rgb(71,97,122)] text-white py-12 text-center shadow-lg">
         <h1 className="text-4xl font-bold tracking-wide">FindMyPro</h1>
-        <p className="mt-2 text-lg text-[rgb(217,237,247)]">Découvrez nos prestataires de qualité</p>
+        <p className="mt-2 text-lg text-[rgb(217,237,247)]">{t('SearchProviderView.discoverProviders')}</p>
       </header>
-
+  
       <main className="max-w-5xl mx-auto px-4 py-16">
         <div className="flex flex-col md:flex-row gap-2 bg-white rounded-xl shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
           <input
             type="text"
-            placeholder="Rechercher un prestataire..."
+            placeholder={t('SearchProviderView.searchPlaceholder')}
             className="flex-1 px-6 py-3 text-lg outline-none"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -291,31 +293,31 @@ const SearchProviderView = () => {
             className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-xl px-8 py-3 flex items-center transition-all duration-300 hover:shadow-md"
           >
             <Search className="w-5 h-5 mr-2" />
-            Rechercher
+            {t('SearchProviderView.search')}
           </button>
         </div>
-
+  
         <div className="flex justify-center mb-8">
           <button
             className={`px-4 py-2 rounded-l-full ${viewMode === 'list' ? 'bg-[rgb(102,148,191)] text-white' : 'bg-white text-[rgb(102,148,191)]'}`}
             onClick={() => setViewMode('list')}
           >
             <List className="w-5 h-5 inline-block mr-2" />
-            Liste
+            {t('SearchProviderView.viewMode.list')}
           </button>
           <button
             className={`px-4 py-2 rounded-r-full ${viewMode === 'map' ? 'bg-[rgb(102,148,191)] text-white' : 'bg-white text-[rgb(102,148,191)]'}`}
             onClick={() => setViewMode('map')}
           >
             <Map className="w-5 h-5 inline-block mr-2" />
-            Carte
+            {t('SearchProviderView.viewMode.map')}
           </button>
         </div>
-
+  
         {isLoading ? (
-          <div className="loading-message">Chargement...</div>
+          <div className="loading-message">{t('SearchProviderView.loading')}</div>
         ) : filteredServiceProviders.length === 0 ? (
-          <div className="no-results">Aucun prestataire trouvé ou un prestataire a été ignoré à cause de coordonnées GPS manquantes.</div>
+          <div className="no-results">{t('SearchProviderView.noResultsFound')}</div>
         ) : viewMode === 'list' ? (
           <div className="space-y-8">
             {filteredServiceProviders.map((provider) => (
@@ -342,7 +344,7 @@ const SearchProviderView = () => {
                           {calculateDistance(
                             userLocation[0], userLocation[1],
                             provider.gpsLocation.latitude, provider.gpsLocation.longitude
-                          ).toFixed(2)} km
+                          ).toFixed(2)} {t('SearchProviderView.distance')}
                         </span>
                       )}
                     </div>
@@ -356,7 +358,7 @@ const SearchProviderView = () => {
                           className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-xl px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
                           onClick={() => handleProviderClick(provider.id)}
                         >
-                          Voir Profil
+                          {t('SearchProviderView.providerDetails.viewProfile')}
                         </button>
                         <button
                           onClick={() => toggleFavoriteStatus(provider.id)}
@@ -380,7 +382,7 @@ const SearchProviderView = () => {
             />
             {userLocation && (
               <Marker position={userLocation} icon={createCustomIcon(userProfileImageURL)}>
-                <Popup>Vous êtes ici</Popup>
+                <Popup>{t('SearchProviderView.youAreHere')}</Popup>
               </Marker>
             )}
             {filteredServiceProviders.map((provider) => (
@@ -399,7 +401,7 @@ const SearchProviderView = () => {
                   <br />
                   <img src={provider.profileImageURL || 'https://via.placeholder.com/100'} alt={provider.name} className="rounded-image" />
                   {userLocation && (
-                    <p>Distance: {calculateDistance(
+                    <p>{t('SearchProviderView.distance')}: {calculateDistance(
                       userLocation[0], userLocation[1],
                       provider.gpsLocation.latitude, provider.gpsLocation.longitude
                     ).toFixed(2)} km</p>
@@ -412,6 +414,7 @@ const SearchProviderView = () => {
       </main>
     </div>
   );
+  
 };
 
 export default SearchProviderView;

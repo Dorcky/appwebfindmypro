@@ -5,8 +5,10 @@ import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from '
 import { db } from '../firebaseConfig.js';
 import { Star, StarHalf, Calendar, MessageSquare, Edit } from 'lucide-react';
 import './MyProviderProfileView.css';
+import { useTranslation } from 'react-i18next';
 
 const ProfileHeaderView = React.memo(({ serviceProvider }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleMessageClick = () => {
@@ -39,7 +41,7 @@ const ProfileHeaderView = React.memo(({ serviceProvider }) => {
         className="w-full md:w-auto bg-[rgb(217,237,247)] hover:bg-[rgb(194,219,233)] text-[rgb(51,77,102)] px-4 py-3 rounded-lg text-lg flex items-center justify-center"
       >
         <MessageSquare className="w-4 h-4 mr-2" />
-        Envoyer un Message
+        {t('providerProfileView.sendMessage')}
       </button>
     </div>
   );
@@ -57,6 +59,8 @@ ProfileHeaderView.propTypes = {
 ProfileHeaderView.displayName = 'ProfileHeaderView';
 
 const RatingView = React.memo(({ averageRating }) => {
+  const { t } = useTranslation();
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -74,7 +78,7 @@ const RatingView = React.memo(({ averageRating }) => {
   return (
     <div className="mt-3">
       <div className="flex gap-1">{renderStars(averageRating)}</div>
-      <p className="text-gray-500 mt-1">Note moyenne: {averageRating.toFixed(1)}/5</p>
+      <p className="text-gray-500 mt-1">{t('providerProfileView.averageRating')}: {averageRating.toFixed(1)}/5</p>
     </div>
   );
 });
@@ -85,17 +89,20 @@ RatingView.propTypes = {
 
 RatingView.displayName = 'RatingView';
 
-const ProviderInfoView = React.memo(({ serviceProvider }) => (
-  <div className="mt-4">
-    <p className="text-gray-700"><strong>Service:</strong> {serviceProvider.serviceType}</p>
-    <p className="text-gray-700"><strong>Email:</strong> {serviceProvider.email}</p>
-    <p className="text-gray-700"><strong>Téléphone:</strong> {serviceProvider.phoneNumber}</p>
-    <p className="text-gray-700"><strong>Adresse:</strong> {serviceProvider.address}</p>
-    <p className="text-gray-700"><strong>Tarif horaire:</strong> {serviceProvider.hourlyRate} €/h</p>
-    <p className="text-gray-700"><strong>Site web:</strong> {serviceProvider.website || 'N/A'}</p>
-    <p className="text-gray-700"><strong>Description:</strong> {serviceProvider.description}</p>
-  </div>
-));
+const ProviderInfoView = React.memo(({ serviceProvider }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="mt-4">
+      <p className="text-gray-700"><strong>{t('providerProfileView.service')}:</strong> {serviceProvider.serviceType}</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.email')}:</strong> {serviceProvider.email}</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.phoneNumber')}:</strong> {serviceProvider.phoneNumber}</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.address')}:</strong> {serviceProvider.address}</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.hourlyRate')}:</strong> {serviceProvider.hourlyRate} €/h</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.website')}:</strong> {serviceProvider.website || 'N/A'}</p>
+      <p className="text-gray-700"><strong>{t('providerProfileView.description')}:</strong> {serviceProvider.description}</p>
+    </div>
+  );
+});
 
 ProviderInfoView.propTypes = {
   serviceProvider: PropTypes.shape({
@@ -112,6 +119,7 @@ ProviderInfoView.propTypes = {
 ProviderInfoView.displayName = 'ProviderInfoView';
 
 const ReviewsViewSection = React.memo(({ reviews, serviceProviderId }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const renderStars = (rating) => {
@@ -135,7 +143,7 @@ const ReviewsViewSection = React.memo(({ reviews, serviceProviderId }) => {
   return (
     <section className="mt-8">
       <h2 className="text-xl font-semibold text-[rgb(51,77,102)] border-b-2 border-[rgb(102,148,191)] pb-2 mb-4">
-        Avis
+        {t('providerProfileView.reviews')}
       </h2>
       <div className="space-y-4">
         {reviews.length > 0 ? (
@@ -150,21 +158,21 @@ const ReviewsViewSection = React.memo(({ reviews, serviceProviderId }) => {
               </div>
               {item.response && (
                 <div className="mt-2">
-                  <p className="text-sm font-semibold text-[rgb(51,77,102)]">Réponse du prestataire:</p>
+                  <p className="text-sm font-semibold text-[rgb(51,77,102)]">{t('providerProfileView.writeReview')}:</p>
                   <p className="text-gray-600">{item.response}</p>
                 </div>
               )}
             </div>
           ))
         ) : (
-          <p className="text-gray-600">Aucun avis pour le moment</p>
+          <p className="text-gray-600">{t('providerProfileView.noReviews')}</p>
         )}
       </div>
       <button
         onClick={handleViewAllReviews}
         className="mt-4 w-full bg-[rgb(102,148,191)] hover:bg-[rgb(81,118,153)] text-white py-3 rounded-lg text-lg flex items-center justify-center"
       >
-        Voir tous les avis
+        {t('providerProfileView.viewAllReviews')}
       </button>
     </section>
   );
@@ -186,6 +194,7 @@ ReviewsViewSection.propTypes = {
 ReviewsViewSection.displayName = 'ReviewsViewSection';
 
 const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <button
@@ -193,7 +202,7 @@ const AvailabilityButtonView = React.memo(({ serviceProviderId }) => {
       onClick={() => navigate(`/service-provider-availability/${serviceProviderId}`)}
     >
       <Calendar className="w-4 h-4 mr-2" />
-      Voir les disponibilités
+      {t('providerProfileView.viewAvailability')}
     </button>
   );
 });
@@ -205,6 +214,7 @@ AvailabilityButtonView.propTypes = {
 AvailabilityButtonView.displayName = 'AvailabilityButtonView';
 
 const MyProviderProfileView = () => {
+  const { t } = useTranslation();
   const { serviceProviderId } = useParams();
   const navigate = useNavigate();
   const [serviceProvider, setServiceProvider] = useState(null);
@@ -261,7 +271,7 @@ const MyProviderProfileView = () => {
           });
           await fetchReviews();
         } else {
-          setError('Provider not found');
+          setError(t('providerProfileView.noProviderFound'));
         }
       } catch (err) {
         console.error('Error fetching provider data:', err);
@@ -278,14 +288,14 @@ const MyProviderProfileView = () => {
     navigate(`/review/${serviceProviderId}`);
   };
 
-  if (isLoading) return <div className="loading">Chargement...</div>;
-  if (error) return <div className="error">Erreur: {error}</div>;
-  if (!serviceProvider) return <div>Aucun prestataire trouvé.</div>;
+  if (isLoading) return <div className="loading">{t('providerProfileView.loading')}</div>;
+  if (error) return <div className="error">{t('providerProfileView.error', { error })}</div>;
+  if (!serviceProvider) return <div>{t('providerProfileView.noProviderFound')}</div>;
 
   return (
     <div className="min-h-screen bg-[rgb(217,237,247)]">
       <header className="w-full bg-[rgb(102,148,191)] text-white p-4 text-center text-2xl">
-        Profil du Prestataire
+        {t('providerProfileView.header')}
       </header>
 
       <main className="max-w-4xl mx-auto p-4">
@@ -301,7 +311,7 @@ const MyProviderProfileView = () => {
               onClick={handleWriteReviewClick}
             >
               <Edit className="w-4 h-4 mr-2" />
-              Écrire un commentaire
+              {t('providerProfileView.writeReview')}
             </button>
           </div>
         </div>

@@ -118,7 +118,7 @@
     "Déconnexion": "Log out",
     "Utilisateur non connecté": "User not connected"
   },
-  
+
   "UserProfile": {
     "loading": "Loading...",
     "profileHeader": "My Profile",
@@ -137,8 +137,45 @@
       "enabled": "Yes",
       "disabled": "No"
     }
-  }
+  },
 
+  "SearchProviderView": {
+    "searchPlaceholder": "Search for a service provider...",
+    "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
+    "loading": "Loading...",
+    "viewMode": {
+      "list": "List",
+      "map": "Map"
+    },
+    "providerDetails": {
+      "viewProfile": "View Profile"
+    },
+    "favorites": {
+      "add": "Add to Favorites",
+      "remove": "Remove from Favorites"
+    }
+  },
+  
+"providerProfileView": {
+    "sendMessage": "Send Message",
+    "averageRating": "Average Rating",
+    "service": "Service",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "hourlyRate": "Hourly Rate",
+    "website": "Website",
+    "description": "Description",
+    "noReviews": "No reviews yet",
+    "viewAllReviews": "View all reviews",
+    "reviews": "Reviews",
+    "viewAvailability": "View Availability",
+    "loading": "Loading...",
+    "error": "Error: {error}",
+    "noProviderFound": "No provider found.",
+    "header": "Provider Profile",
+    "writeReview": "Write a Review"
+  }
 
   }
 
