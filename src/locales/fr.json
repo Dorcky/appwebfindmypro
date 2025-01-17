@@ -108,8 +108,18 @@
     "Mes rendez-vous": "Mes rendez-vous",
     "Déconnexion": "Déconnexion",
     "Utilisateur non connecté": "Utilisateur non connecté"
-  }
+  },
 
+  "UserNavbar": {
+    "FindMyPro": "FindMyPro",
+    "Mon profil": "Mon profil",
+    "Rechercher un prestataire": "Rechercher un prestataire",
+    "Mes favoris": "Mes favoris",
+    "Mes messages": "Mes messages",
+    "Mes rendez-vous": "Mes rendez-vous",
+    "Déconnexion": "Déconnexion",
+    "Utilisateur non connecté": "Utilisateur non connecté"
+  }
 
   }
   

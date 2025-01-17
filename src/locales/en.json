@@ -107,6 +107,16 @@
     "Mes rendez-vous": "My appointments",
     "Déconnexion": "Log out",
     "Utilisateur non connecté": "User not connected"
+  },
+  "UserNavbar":{
+    "FindMyPro": "FindMyPro",
+    "Mon profil": "My profile",
+    "Rechercher un prestataire": "Search a provider",
+    "Mes favoris": "My favorites",
+    "Mes messages": "My messages",
+    "Mes rendez-vous": "My appointments",
+    "Déconnexion": "Log out",
+    "Utilisateur non connecté": "User not connected"
   }
 
 

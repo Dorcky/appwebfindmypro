@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSearch, faStar, faEnvelope, faCalendar, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Menu, X } from 'lucide-react'; // Import des icônes de menu et de fermeture
 import './UserNavBar.css';
+import { useTranslation } from 'react-i18next';
 
 function UserNavbar() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function UserNavbar() {
   const { currentUser, logout } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(''); // Pour gérer l'état actif du lien
+  const { t } = useTranslation();
 
   // Mettre à jour l'état actif du lien en fonction de l'URL
   useEffect(() => {
@@ -42,7 +44,7 @@ function UserNavbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <a href="#" className="text-2xl font-bold text-dark-blue">
-              FindMyPro
+            {t('UserNavbar.FindMyPro')}
             </a>
           </div>
 
@@ -52,13 +54,13 @@ function UserNavbar() {
               className={`navbar-link ${activeLink === 'profile' ? 'active' : ''}`}
               onClick={() => navigate('/user-profile')}
             >
-              <FontAwesomeIcon icon={faUser} className="mr-2" /> Mon profil
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> {t('UserNavbar.Mon profil')}
             </span>
             <span
               className={`navbar-link ${activeLink === 'search' ? 'active' : ''}`}
               onClick={() => navigate('/search-provider')}
             >
-              <FontAwesomeIcon icon={faSearch} className="mr-2" /> Rechercher un prestataire
+              <FontAwesomeIcon icon={faSearch} className="mr-2" /> {t('UserNavbar.Rechercher un prestataire')}
             </span>
             {currentUser ? (
               <>
@@ -66,29 +68,29 @@ function UserNavbar() {
                   className={`navbar-link ${activeLink === 'favorites' ? 'active' : ''}`}
                   onClick={() => navigate('/favorites')}
                 >
-                  <FontAwesomeIcon icon={faStar} className="mr-2" /> Mes favoris
+                  <FontAwesomeIcon icon={faStar} className="mr-2" /> {t('UserNavbar.Mes favoris')}
                 </span>
                 <span
                   className={`navbar-link ${activeLink === 'messages' ? 'active' : ''}`}
                   onClick={() => navigate('/user-chat-list')}
                 >
-                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> Mes messages
+                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> {t('UserNavbar.Mes messages')}
                 </span>
                 <span
                   className={`navbar-link ${activeLink === 'appointments' ? 'active' : ''}`}
                   onClick={() => navigate('/appointments')}
                 >
-                  <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Mes rendez-vous
+                  <FontAwesomeIcon icon={faCalendar} className="mr-2" /> {t('UserNavbar.Mes rendez-vous')}
                 </span>
                 <span
                   className="navbar-link logout-link"
                   onClick={handleLogout}
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Déconnexion
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> {t('UserNavbar.Déconnexion')}
                 </span>
               </>
             ) : (
-              <p className="text-gray">Utilisateur non connecté</p>
+              <p className="text-gray">{t('UserNavbar.Utilisateur non connecté')}</p>
             )}
           </div>
 
@@ -119,7 +121,7 @@ function UserNavbar() {
                 setMobileMenuOpen(false);
               }}
             >
-              <FontAwesomeIcon icon={faUser} className="mr-2" /> Mon profil
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> {t('UserNavbar.Mon profil')}
             </span>
             <span
               className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
@@ -130,7 +132,7 @@ function UserNavbar() {
                 setMobileMenuOpen(false);
               }}
             >
-              <FontAwesomeIcon icon={faSearch} className="mr-2" /> Rechercher un prestataire
+              <FontAwesomeIcon icon={faSearch} className="mr-2" /> {t('UserNavbar.Rechercher un prestataire')}
             </span>
             {currentUser ? (
               <>
@@ -143,7 +145,7 @@ function UserNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faStar} className="mr-2" /> Mes favoris
+                  <FontAwesomeIcon icon={faStar} className="mr-2" /> {t('UserNavbar.Mes favoris')}
                 </span>
                 <span
                   className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
@@ -154,7 +156,7 @@ function UserNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> Mes messages
+                  <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> {t('UserNavbar.Mes messages')}
                 </span>
                 <span
                   className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
@@ -165,7 +167,7 @@ function UserNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Mes rendez-vous
+                  <FontAwesomeIcon icon={faCalendar} className="mr-2" /> {t('UserNavbar.Mes rendez-vous')}
                 </span>
                 <span
                   className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer logout-link"
@@ -174,11 +176,11 @@ function UserNavbar() {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Déconnexion
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> {t('UserNavbar.Déconnexion')}
                 </span>
               </>
             ) : (
-              <p className="block px-3 py-2 text-gray">Utilisateur non connecté</p>
+              <p className="block px-3 py-2 text-gray">{t('UserNavbar.Utilisateur non connecté')}</p>
             )}
           </div>
         </div>
