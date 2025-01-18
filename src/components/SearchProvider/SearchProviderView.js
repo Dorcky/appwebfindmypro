@@ -11,6 +11,8 @@ import './SearchProviderView.css';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 const RatingStars = ({ rating }) => {
   const stars = [];
@@ -279,7 +281,7 @@ const SearchProviderView = () => {
         <h1 className="text-4xl font-bold tracking-wide">FindMyPro</h1>
         <p className="mt-2 text-lg text-[rgb(217,237,247)]">{t('SearchProviderView.discoverProviders')}</p>
       </header>
-  
+
       <main className="max-w-5xl mx-auto px-4 py-16">
         <div className="flex flex-col md:flex-row gap-2 bg-white rounded-xl shadow-lg p-2 mb-8 transition-all duration-300 hover:shadow-xl">
           <input
@@ -296,7 +298,7 @@ const SearchProviderView = () => {
             {t('SearchProviderView.search')}
           </button>
         </div>
-  
+
         <div className="flex justify-center mb-8">
           <button
             className={`px-4 py-2 rounded-l-full ${viewMode === 'list' ? 'bg-[rgb(102,148,191)] text-white' : 'bg-white text-[rgb(102,148,191)]'}`}
@@ -313,7 +315,7 @@ const SearchProviderView = () => {
             {t('SearchProviderView.viewMode.map')}
           </button>
         </div>
-  
+
         {isLoading ? (
           <div className="loading-message">{t('SearchProviderView.loading')}</div>
         ) : filteredServiceProviders.length === 0 ? (
@@ -355,7 +357,14 @@ const SearchProviderView = () => {
                       </div>
                       <div className="flex items-center gap-4">
                         <button
-                          className="bg-[rgb(102,148,191)] hover:bg-[rgb(82,128,171)] text-white rounded-xl px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
+                          className="bg-[rgb(102,148,191)] hover:bg-[#5A8DA0] text-white rounded-xl px-12 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
+                          onClick={() => navigate(`/service-provider-availability/${provider.id}`)}
+                        >
+                          <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
+                          {t('Favorites.Réserver')}
+                        </button>
+                        <button
+                          className="bg-[rgb(102,148,191)] hover:bg-[#5A8DA0] text-white rounded-xl px-8 py-3 transition-all duration-300 hover:shadow-md text-sm font-semibold"
                           onClick={() => handleProviderClick(provider.id)}
                         >
                           {t('SearchProviderView.providerDetails.viewProfile')}
@@ -414,7 +423,7 @@ const SearchProviderView = () => {
       </main>
     </div>
   );
-  
+
 };
 
 export default SearchProviderView;
