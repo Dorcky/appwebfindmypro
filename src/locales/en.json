@@ -142,6 +142,7 @@
   "SearchProviderView": {
     "discoverProviders": "Discover service providers near you",
     "search": "Search",
+    "distance": "km away",
     "searchPlaceholder": "Search for a service provider...",
     "noResultsFound": "No service providers found or a provider was ignored due to missing GPS coordinates.",
     "loading": "Loading...",

@@ -194,7 +194,7 @@ const ServiceProviderAvailabilityView = () => {
         provider_id: serviceProviderId,
         provider_name: selectedSlot.provider_name,
         service: selectedSlot.service,
-        status: t('AvailabilityView.Réservé'), // Utilisez la traduction
+        status: 'Réservé', // Utilisez la traduction
         user_id: userId,
         created_at: Timestamp.now(),        
       };
