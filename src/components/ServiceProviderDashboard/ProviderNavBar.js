@@ -95,7 +95,7 @@ function ProviderNavbar() {
           {/* Bouton hamburger pour les écrans mobiles */}
           <button
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden flex items-center"
+            className="lg:hidden flex hover:bg-transparent items-center"
           >
             {isMobileMenuOpen ? (
               <X className="h-6 w-6 text-gray hover:text-dark-blue transition" />
@@ -167,7 +167,7 @@ function ProviderNavbar() {
                 </span>
               </>
             ) : (
-              <p className="block px-3 py-2 text-gray">{t('ProviderNavbar.Utilisateur non connecté')}</p> 
+              <p className="block px-3 py-2 text-gray">{t('ProviderNavbar.Utilisateur non connecté')}</p>
             )}
           </div>
         </div>
