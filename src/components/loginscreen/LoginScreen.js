@@ -77,7 +77,7 @@ const LoginScreen = ({ onClose, onSignupClick }) => {
           </button>
         </form>
 
-        <button onClick={onSignupClick} className="sign-up-text py-3.5 px-5">
+        <button onClick={onSignupClick} className="sign-up-text mt-2 py-3.5 px-5">
           {t('login.noAccount')} <span className="underline">{t('login.signup')}</span>
         </button>
       </div>
