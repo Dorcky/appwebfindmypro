@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from 'react-i18next';
+import './ServiceProviderAvailabilityPlanning.css';
 
 const ServiceProviderAvailabilityPlanning = () => {
   const { t } = useTranslation();
