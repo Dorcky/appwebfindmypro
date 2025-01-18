@@ -26,11 +26,11 @@ const WelcomeScreen = () => {
 
   const navLinkStyles = (section) => `
     cursor-pointer
-    block px-3 py-2 
-    text-gray 
-    hover:text-dark-blue 
-    hover:bg-light-blue 
-    rounded-md 
+    block px-3 py-2
+    text-gray
+    hover:text-dark-blue
+    hover:bg-light-blue
+    rounded-md
     transition-all
     ${activeSection === section ? "bg-light-blue text-dark-blue font-medium" : ""}
   `;
@@ -49,7 +49,7 @@ const WelcomeScreen = () => {
               </a>
             </div>
 
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-8">
               <a
                 href="#"
                 onClick={() => handleSectionClick("home")}
@@ -107,7 +107,7 @@ const WelcomeScreen = () => {
 
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden flex items-center"
+              className="menu lg:hidden flex items-center hover:text-transparent"
             >
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6 text-gray" />
@@ -120,7 +120,7 @@ const WelcomeScreen = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-t">
+          <div className="lg:hidden bg-white border-t">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a
                 href="#"

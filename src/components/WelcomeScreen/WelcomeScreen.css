@@ -18,3 +18,7 @@
 .text-white {
   color: rgb(255, 255, 255); /* RGB équivalent à rgba(1.0, 1.0, 1.0) */
 }
+
+button.menu:hover {
+  background-color: transparent;
+}
