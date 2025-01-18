@@ -216,7 +216,7 @@ const ServiceProviderAvailabilityPlanning = () => {
           <button
             onClick={handleSaveAvailability}
             disabled={isBooking}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+            className="bg-btn_primary text-white p-2 rounded-xl hover:bg-green-600 disabled:bg-blue-300"
           >
             {isBooking ? t('ServiceProviderAvailabilityPlanning.Enregistrement...') : t('ServiceProviderAvailabilityPlanning.Enregistrer la disponibilité')}
           </button>

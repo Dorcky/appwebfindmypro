@@ -163,11 +163,11 @@ const FavoritesView = () => {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-[#334C66] text-center mb-12 mt-20" >{t('Favorites.Mes Prestataires Favoris')}</h1>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
-          <div className="relative w-full sm:w-2/3 mb-4 sm:mb-0">
+        <div className="flex flex-col md:flex-row  justify-center gap-2 mb-8">
+          <div className="relative w-full md:w-2/3 mb-4 md:mb-0">
             <input
               type="text"
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-[#A0C3E8] focus:outline-none focus:ring-2 focus:ring-[#A0C3E8]"
+              className="fav-search w-full rounded-xl border border-[#A0C3E8] focus:outline-none focus:ring-2 focus:ring-[#A0C3E8]"
               placeholder={t('Favorites.Rechercher un prestataire...')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -175,7 +175,7 @@ const FavoritesView = () => {
             <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-3 mt-1 text-[#A0C3E8]" />
           </div>
           <button
-            className="w-full sm:w-auto px-6 py-3 bg-[#669BC2] text-white rounded-full hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
+            className="w-full md:w-auto px-6 py-3 bg-[#669BC2] text-white rounded-xl hover:bg-[#5A8DA0] transition duration-300 ease-in-out flex items-center justify-center"
             onClick={handleDeleteAllFavorites}
           >
             <FontAwesomeIcon icon={faTrash} className="mr-2" />
