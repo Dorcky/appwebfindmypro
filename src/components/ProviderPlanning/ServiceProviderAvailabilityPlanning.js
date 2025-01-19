@@ -119,8 +119,8 @@ const ServiceProviderAvailabilityPlanning = () => {
 
     try {
       const availabilityData = {
-        start_time: startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        end_time: endDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        start_time: startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }), // Sans secondes
+        end_time: endDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }), // Sans secondes
         day_of_week: dayOfWeek,
         service_provider_id: userId,
         is_booked: false,

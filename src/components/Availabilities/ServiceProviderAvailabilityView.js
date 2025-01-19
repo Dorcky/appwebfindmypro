@@ -24,26 +24,34 @@ const ServiceProviderAvailabilityView = () => {
   const [confirmedSlot, setConfirmedSlot] = useState('');
 
   const isDateAvailableForProvider = (date, currentAvailabilities = availabilities) => {
-    const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' }).toUpperCase();
+    // Convert the input date to the same timezone and format we're using elsewhere
+    const localDate = new Date(date);
+    localDate.setHours(0, 0, 0, 0);
+    
+    const dayOfWeek = localDate.toLocaleString('en-US', { weekday: 'long' }).toUpperCase();
+    const dateStr = localDate.toISOString().split('T')[0];
 
-    const hasSlots = currentAvailabilities.some(
+    // Check if there are any availabilities for this day of the week
+    const slotsForDay = currentAvailabilities.filter(
       availability => availability.day_of_week === dayOfWeek
     );
 
-    if (hasSlots) {
-      const slotsForDay = currentAvailabilities.filter(
-        availability => availability.day_of_week === dayOfWeek
-      );
-      
-      const dateStr = date.toISOString().split('T')[0];
-      return slotsForDay.some(slot => 
-        !slot.booked_dates?.some(bookedDate => 
-          bookedDate.date === dateStr && bookedDate.isBooked
-        )
-      );
+    if (slotsForDay.length === 0) {
+      return false;
     }
 
-    return false;
+    // Check if the date is not fully booked
+    return slotsForDay.some(slot => {
+      // If there are no booked_dates, the slot is available
+      if (!slot.booked_dates || slot.booked_dates.length === 0) {
+        return true;
+      }
+
+      // Check if this specific date is not marked as booked
+      return !slot.booked_dates.some(
+        bookedDate => bookedDate.date === dateStr && bookedDate.isBooked
+      );
+    });
   };
 
   const getAuthenticatedUserId = () => {
@@ -130,7 +138,7 @@ const ServiceProviderAvailabilityView = () => {
   };
 
   const handleDateClick = (arg) => {
-    const date = new Date(arg.dateStr);
+    const date = new Date(arg.date);
     if (!isDateAvailable(date)) return;
     setSelectedDate(date);
     const slots = getAvailableSlotsForDate(date);
@@ -273,23 +281,28 @@ const ServiceProviderAvailabilityView = () => {
                     contentHeight={350}
                     aspectRatio={1}
                     dayCellClassNames={(arg) => {
-                    const dateStr = arg.date.toISOString().split('T')[0];
+                    const cellDate = new Date(arg.date);
+                    cellDate.setHours(0, 0, 0, 0);
+                    
                     const today = new Date();
                     today.setHours(0, 0, 0, 0);
-                    const cellDate = new Date(dateStr);
-                    cellDate.setHours(0, 0, 0, 0);
+                    
                     const classes = [];
-
-                      if (cellDate < today) {
-                        return 'disabled-day';
-                      }
-                        else if (isDateAvailableForProvider(cellDate)) {
-                        classes.push('available-day');
-                      }
-
-                      return classes;
-                    }}
-                  />
+                    
+                    if (cellDate < today) {
+                      classes.push('disabled-day');
+                    } else if (isDateAvailableForProvider(cellDate)) {
+                      classes.push('available-day');
+                    }
+                    
+                    if (selectedDate && 
+                        cellDate.getTime() === selectedDate.getTime()) {
+                      classes.push('selected-day');
+                    }
+                    
+                    return classes;
+                  }}
+                />
               </div>
             </div>
 
@@ -343,44 +356,35 @@ const ServiceProviderAvailabilityView = () => {
             background-color: #e9ecef !important;
             color: #6c757d !important;
             pointer-events: none;
-          }
-          .selected-day {
-            background-color: #669BC2 !important;
-            color: #ffffff !important;
-          }
-          
-          .disabled-day {
-            background-color: #e9ecef !important;
-            color: #6c757d !important;
-            pointer-events: none;
+            opacity: 0.5;
           }
 
           .selected-day {
             background-color: #669BC2 !important;
-            color: #ffffff !important;
+            color: white !important;
           }
 
           .available-day {
             background-color: #E3F2FD !important;
             position: relative;
+            cursor: pointer;
           }
 
           .available-day:hover {
             background-color: #BBDEFB !important;
-            cursor: pointer;
           }
 
           .available-day::after {
             content: '';
             position: absolute;
-            bottom: 2px;
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background-color: #669BC2;
-            }            
+          }
         `}
       </style>
     </div>
