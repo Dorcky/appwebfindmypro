@@ -207,7 +207,7 @@ const MyUserReviewView = () => {
                           onChange={handleResponseChange}
                         />
                         <button
-                          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                          className="w-full bg-[#6693BF] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#334D66] transition-colors duration-300"
                           onClick={() => handleSubmitResponse(review.id)}
                         >
                           Répondre

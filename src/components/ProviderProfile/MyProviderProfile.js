@@ -27,31 +27,25 @@ const MyProviderProfile = () => {
   const [autocompleteInstance, setAutocompleteInstance] = useState(null);
   const storage = getStorage();
   const [profileImage, setProfileImage] = useState(null);  
-
-  const [user, setUser] = useState(null); // Ajoutez un état pour l'utilisateur
+  const [user, setUser] = useState(null);
 
   const auth = getAuth();
 
   useEffect(() => {
-    // Écoutez les changements d'état d'authentification
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("Utilisateur authentifié :", user);
-        setUser(user); // Mettez à jour l'état de l'utilisateur
-        fetchProfileData(user.uid); // Récupérez les données de l'utilisateur
+        setUser(user);
+        fetchProfileData(user.uid);
       } else {
-        console.log('Aucun utilisateur authentifié');
-        setUser(null); // Réinitialisez l'état de l'utilisateur
+        setUser(null);
       }
     });
 
-    // Chargez Google Maps
     loadGoogleMapsScript(() => {
       setGeocoder(new window.google.maps.Geocoder());
       initAutocomplete();
     });
 
-    // Nettoyez l'écouteur lors du démontage du composant
     return () => unsubscribe();
   }, [auth]);
 
@@ -268,6 +262,14 @@ const MyProviderProfile = () => {
                     {profile.isAvailable ? 'Available' : 'Not Available'}
                   </p>
                 </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Description</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.description}</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Website</h3>
+                  <p className="text-base text-[rgb(128,128,128)] border-b-2 border-[rgb(217,237,247)] pb-2">{profile.website}</p>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
@@ -353,6 +355,28 @@ const MyProviderProfile = () => {
                     checked={profile.isAvailable}
                     onChange={handleInputChange}
                     className="ml-2"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="description" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Description</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={profile.description}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
+                    rows="4"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="website" className="text-xl font-semibold text-[rgb(51,77,102)] mb-2">Website</label>
+                  <input
+                    type="url"
+                    id="website"
+                    name="website"
+                    value={profile.website}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border-2 border-[rgb(217,237,247)] rounded-lg"
                   />
                 </div>
                 <div>

@@ -8,20 +8,20 @@ import {
   faCalendarAlt,
   faSignOutAlt,
   faClock,
+  faStar, // Ajoutez cette ligne
 } from '@fortawesome/free-solid-svg-icons';
-import { Menu, X } from 'lucide-react'; // Import des icônes de menu et de fermeture
+import { Menu, X } from 'lucide-react';
 import './ProviderNavBar.css';
 import { useTranslation } from 'react-i18next';
 
 function ProviderNavbar() {
   const navigate = useNavigate();
-  const location = useLocation(); // Pour détecter la page active
+  const location = useLocation();
   const { currentUser, logout } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(''); // Pour gérer l'état actif du lien
+  const [activeLink, setActiveLink] = useState('');
   const { t } = useTranslation();
 
-  // Mettre à jour l'état actif du lien en fonction de l'URL
   useEffect(() => {
     const path = location.pathname;
     if (path.includes('my-provider-profile')) {
@@ -32,6 +32,8 @@ function ProviderNavbar() {
       setActiveLink('availability');
     } else if (path.includes('appointments')) {
       setActiveLink('appointments');
+    } else if (path.includes('my-user-reviews')) { // Ajoutez cette condition
+      setActiveLink('reviews');
     } else {
       setActiveLink('');
     }
@@ -79,6 +81,12 @@ function ProviderNavbar() {
                   onClick={() => navigate('/appointments')}
                 >
                   <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />{t('ProviderNavbar.Mes rendez-vous')}
+                </span>
+                <span
+                  className={`navbar-link ${activeLink === 'reviews' ? 'active' : ''}`}
+                  onClick={() => navigate(`/my-user-reviews/${currentUser?.id}`)}
+                >
+                  <FontAwesomeIcon icon={faStar} className="mr-2" /> {t('ProviderNavbar.Mes avis')}
                 </span>
                 <span
                   className="navbar-link logout-link"
@@ -155,6 +163,17 @@ function ProviderNavbar() {
                   }}
                 >
                   <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />{t('ProviderNavbar.Mes rendez-vous')}
+                </span>
+                <span
+                  className={`block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer ${
+                    activeLink === 'reviews' ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    navigate(`/my-user-reviews/${currentUser?.id}`);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faStar} className="mr-2" /> {t('ProviderNavbar.Mes avis')}
                 </span>
                 <span
                   className="block px-3 py-2 text-gray hover:bg-light-blue rounded-md cursor-pointer logout-link"
