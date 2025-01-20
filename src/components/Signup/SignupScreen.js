@@ -71,17 +71,17 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       setErrorMessage(t('signup_screen.error_messages.password_mismatch'));
       return;
     }
-
+  
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const role = isServiceProvider ? "provider" : "user";
-
+  
       const baseUserData = {
         uid: user.uid,
         fullName,
@@ -94,9 +94,9 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
         gpsLocation,
         lastUpdated: new Date(),
       };
-
+  
       await setDoc(doc(db, "users", user.uid), baseUserData);
-
+  
       if (role === "provider") {
         const providerData = {
           ...baseUserData,
@@ -130,16 +130,17 @@ const SignupScreen = ({ onClose, onLoginClick }) => {
         };
         await setDoc(doc(db, "normal_users", user.uid), normalUserData);
       }
-
+  
       await sendEmailVerification(user);
       alert(t('signup_screen.error_messages.email_verification'));
       onClose(); // Ferme le modal après l'inscription
+      navigate('/login'); // Redirige l'utilisateur vers la page de connexion
     } catch (error) {
       console.error("Signup error:", error);
       setErrorMessage(t('signup_screen.error_messages.signup_error'));
     }
   };
-
+  
   if (isServiceProvider === null) {
     return (
       <div className="container">
