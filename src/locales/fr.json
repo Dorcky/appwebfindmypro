@@ -288,6 +288,25 @@
     "Error:": "Erreur :"
   },
 
+  "MyUserReviews": {
+    "Veuillez vous connecter pour voir les avis": "Veuillez vous connecter pour voir les avis",
+    "Début du chargement des avis...": "Début du chargement des avis...",
+    "Envoi de la requête Firestore...": "Envoi de la requête Firestore...",
+    "Erreur lors du chargement des avis:": "Erreur lors du chargement des avis:",
+    "La réponse ne peut pas être vide.": "La réponse ne peut pas être vide.",
+    "Cet avis n'existe plus.": "Cet avis n'existe plus.",
+    "Vous avez déjà répondu à cet avis.": "Vous avez déjà répondu à cet avis.",
+    "Réponse ajoutée avec succès!": "Réponse ajoutée avec succès!",
+    "Erreur lors de l'ajout de la réponse:": "Erreur lors de l'ajout de la réponse:",
+    "Chargement des avis...": "Chargement des avis...",
+    "Erreur:": "Erreur:",
+    "Mes Avis": "Mes Avis",
+    "Aucun avis trouvé pour ce fournisseur de service.": "Aucun avis trouvé pour ce fournisseur de service.",
+    "Votre réponse:": "Votre réponse:",
+    "Répondre à l'avis": "Répondre à l'avis",
+    "Répondre": "Répondre"
+  },
+
 
   "Chat": {
     "Contacts": "Contacts",

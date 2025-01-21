@@ -287,6 +287,25 @@
   "Erreur:": "Error:"
 },
 
+"MyUserReviews": {
+    "Veuillez vous connecter pour voir les avis": "Please log in to see reviews",
+    "Début du chargement des avis...": "Starting to load reviews...",
+    "Envoi de la requête Firestore...": "Sending Firestore request...",
+    "Erreur lors du chargement des avis:": "Error loading reviews:",
+    "La réponse ne peut pas être vide.": "Response cannot be empty.",
+    "Cet avis n'existe plus.": "This review no longer exists.",
+    "Vous avez déjà répondu à cet avis.": "You have already responded to this review.",
+    "Réponse ajoutée avec succès!": "Response added successfully!",
+    "Erreur lors de l'ajout de la réponse:": "Error adding response:",
+    "Chargement des avis...": "Loading reviews...",
+    "Erreur:": "Error:",
+    "Mes Avis": "My Reviews",
+    "Aucun avis trouvé pour ce fournisseur de service.": "No reviews found for this service provider.",
+    "Votre réponse:": "Your response:",
+    "Répondre à l'avis": "Respond to review",
+    "Répondre": "Respond"
+  },
+
    
     "Chat": {
     "Contacts": "Contacts",
